@@ -70,8 +70,10 @@ $router->get('/dashboard', 'Admin\\DashboardController@index', [AuthMiddleware::
 
 $router->get('/portal', 'Member\\MemberPortalController@dashboard', [AuthMiddleware::class]);
 
-// Public QR Code Receipt Verification
+// Public QR Code Receipt Verification & Direct View
 $router->get('/verify-receipt/{token}', 'PublicReceiptController@verify');
+$router->get('/receipt/{no}', 'PublicReceiptController@viewReceipt');
+$router->get('/receipt/print/{no}', 'PublicReceiptController@viewReceipt');
 
 /*
 |--------------------------------------------------------------------------

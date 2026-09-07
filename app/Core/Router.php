@@ -112,14 +112,14 @@ class Router
                 $handler = $route['handler'];
 
                 if (is_callable($handler)) {
-                    call_user_func_array($handler, array_merge([$request, $response], $params));
+                    call_user_func_array($handler, array_merge([$request, $response], array_values($params)));
                     return;
                 }
 
                 if (is_array($handler)) {
                     [$class, $action] = $handler;
                     $controller = new $class($request, $response);
-                    call_user_func_array([$controller, $action], $params);
+                    call_user_func_array([$controller, $action], array_values($params));
                     return;
                 }
 
@@ -128,7 +128,7 @@ class Router
                     $fullClass = "App\\Controllers\\" . $class;
                     if (class_exists($fullClass)) {
                         $controller = new $fullClass($request, $response);
-                        call_user_func_array([$controller, $action], $params);
+                        call_user_func_array([$controller, $action], array_values($params));
                         return;
                     }
                 }

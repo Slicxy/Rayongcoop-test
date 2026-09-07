@@ -23,4 +23,27 @@ class PublicReceiptController extends Controller
             'isValid' => $receipt !== null,
         ]);
     }
+
+    /**
+     * Public View/Print e-Receipt by receipt_no or verification token
+     */
+    public function viewReceipt(string $no): void
+    {
+        $receipt = ReceiptService::getReceiptDetails($no);
+        if (!$receipt) {
+            // Try lookup by token if token was passed
+            $receipt = ReceiptService::verifyByToken($no);
+        }
+
+        if (!$receipt) {
+            $this->response->setStatusCode(404);
+            $this->render('public.404', ['title' => '404 - ไม่พบใบเสร็จรับเงิน'], 'layouts.public');
+            return;
+        }
+
+        $this->render('member.receipt_print', [
+            'receipt' => $receipt,
+            'title' => "ใบเสร็จรับเงิน {$receipt['receipt_no']}"
+        ]);
+    }
 }

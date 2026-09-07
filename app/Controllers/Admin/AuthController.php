@@ -56,13 +56,15 @@ class AuthController extends Controller
         // 1. Check user in database
         $user = null;
         try {
+            $cleanInput = str_replace(['-', ' '], '', $inputUsername);
             $sql = "SELECT u.*, r.slug as role_slug, r.name as role_name 
                     FROM users u
                     LEFT JOIN user_roles ur ON u.id = ur.user_id
                     LEFT JOIN roles r ON ur.role_id = r.id
-                    WHERE (u.email = ? OR u.username = ?) AND u.deleted_at IS NULL
+                    LEFT JOIN members m ON u.id = m.user_id
+                    WHERE (u.username = ? OR u.username = ? OR u.email = ? OR m.member_no = ? OR REPLACE(m.member_no, '-', '') = ? OR m.id_card = ?) AND u.deleted_at IS NULL
                     LIMIT 1";
-            $user = Database::first($sql, [$inputUsername, $inputUsername]);
+            $user = Database::first($sql, [$inputUsername, $cleanInput, $inputUsername, $inputUsername, $cleanInput, $cleanInput]);
         } catch (\Throwable $e) {
             Logger::error("Database user query error: " . $e->getMessage());
         }

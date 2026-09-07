@@ -10,7 +10,7 @@
     <!-- 1. Username Field -->
     <div class="mb-3">
         <label for="usernameInput" class="form-label-custom">
-            <span>ชื่อผู้ใช้งาน (Username)</span>
+            <span>ชื่อผู้ใช้งาน / เลขที่สมาชิก (Username or Member No.)</span>
         </label>
         <div class="input-group-custom">
             <span class="input-icon-addon">
@@ -21,7 +21,7 @@
                 name="username" 
                 id="usernameInput" 
                 class="form-control form-control-custom" 
-                placeholder="กรอกชื่อผู้ใช้ เช่น rayongcoop1" 
+                placeholder="กรอกชื่อผู้ใช้ หรือเลขที่สมาชิก เช่น rayongcoop1 หรือ staff1" 
                 value="<?= e(old('username', '')) ?>" 
                 required 
                 autofocus
@@ -78,14 +78,20 @@
     <!-- 5. Test Account Helper Card -->
     <div class="demo-account-box">
         <div>
-            <div class="fw-bold text-navy"><i class="bi bi-info-circle me-1 text-primary"></i> บัญชีสำหรับทดสอบ:</div>
-            <div class="font-monospace text-muted mt-1" style="font-size: 12px;">
-                User: <span class="fw-bold text-dark">rayongcoop1</span> | Pass: <span class="fw-bold text-dark">coop1</span>
+            <div class="fw-bold text-navy"><i class="bi bi-info-circle me-1 text-primary"></i> บัญชีทดสอบระบบ:</div>
+            <div class="font-monospace text-muted mt-1" style="font-size: 11px;">
+                สมาชิก: <span class="fw-bold text-dark">rayongcoop1</span> / <span class="fw-bold text-dark">coop1</span><br>
+                เจ้าหน้าที่: <span class="fw-bold text-dark">staff1</span> / <span class="fw-bold text-dark">staff123</span>
             </div>
         </div>
-        <button type="button" class="btn-autofill" id="btnAutofill" title="คลิกเพื่อกรอกข้อมูลทดสอบอัตโนมัติ">
-            กรอกข้อมูล
-        </button>
+        <div class="d-flex flex-column gap-1">
+            <button type="button" class="btn-autofill" id="btnAutofill" title="กรอกบัญชีสมาชิก">
+                สมาชิก
+            </button>
+            <button type="button" class="btn-autofill bg-secondary text-white" id="btnAutofillStaff" title="กรอกบัญชีเจ้าหน้าที่">
+                เจ้าหน้าที่
+            </button>
+        </div>
     </div>
 
     <!-- 6. Return Link -->
@@ -121,11 +127,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 2. Autofill Test Account
+    // 2. Autofill Test Accounts
     if (btnAutofill) {
         btnAutofill.addEventListener('click', function() {
             usernameInput.value = 'rayongcoop1';
             passwordInput.value = 'coop1';
+            hideAlert();
+            passwordInput.focus();
+        });
+    }
+
+    const btnAutofillStaff = document.getElementById('btnAutofillStaff');
+    if (btnAutofillStaff) {
+        btnAutofillStaff.addEventListener('click', function() {
+            usernameInput.value = 'staff1';
+            passwordInput.value = 'staff123';
             hideAlert();
             passwordInput.focus();
         });

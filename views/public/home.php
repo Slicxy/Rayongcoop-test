@@ -1,4 +1,4 @@
-<!-- 1. Hero Slideshow Section (Ultra-Modern Premium Swiper) -->
+<!-- 1. Hero Slideshow Section (Swiper) -->
 <section class="hero-section position-relative">
     <div class="swiper hero-swiper">
         <div class="swiper-wrapper">
@@ -7,108 +7,50 @@
                     <div class="swiper-slide hero-slide" style="background-image: url('<?= asset('img/hero_bg_default.jpg') ?>');">
                         <div class="hero-overlay" style="opacity: <?= e($slide['overlay_opacity'] ?? '0.85') ?>;"></div>
                         <div class="container-xl position-relative z-2">
-                            <div class="row align-items-center g-4 g-lg-5">
+                            <div class="row align-items-center g-4">
                                 <div class="col-lg-7 col-md-12 text-<?= e($slide['text_alignment'] ?? 'left') ?>">
-                                    <div class="hero-chip-badge">
-                                        <i class="bi bi-patch-check-fill text-warning"></i>
-                                        <span><?= e($slide['subtitle'] ?? 'สหกรณ์ออมทรัพย์สาธารณสุขระยอง จำกัด') ?></span>
-                                    </div>
-                                    <h1 class="hero-title">
-                                        <?= e($slide['title']) ?>
-                                    </h1>
-                                    <p class="hero-subtitle">
-                                        <?= e($slide['description'] ?? 'ร่วมสร้างความมั่นคงทางการเงินและยกระดับคุณภาพชีวิต เพื่อสมาชิกสหกรณ์ทุกท่านอย่างยั่งยืนและโปร่งใส') ?>
-                                    </p>
-
-                                    <!-- Trust Feature Tags -->
-                                    <div class="hero-feature-tags <?= ($slide['text_alignment'] ?? 'left') === 'center' ? 'justify-content-center' : '' ?>">
-                                        <div class="hero-tag-item">
-                                            <i class="bi bi-shield-lock-fill text-info"></i> ความมั่นคงทางการเงินสูง
-                                        </div>
-                                        <div class="hero-tag-item">
-                                            <i class="bi bi-percent text-warning"></i> ปันผล & ดอกเบี้ยคุ้มค่า
-                                        </div>
-                                        <div class="hero-tag-item">
-                                            <i class="bi bi-phone-fill text-success"></i> บริการออนไลน์ 24 ชม.
-                                        </div>
-                                    </div>
-
-                                    <!-- Action Buttons -->
-                                    <div class="d-flex flex-wrap gap-3 mt-2 <?= ($slide['text_alignment'] ?? 'left') === 'center' ? 'justify-content-center' : '' ?>">
+                                    <span class="badge bg-gold text-white mb-3 px-3 py-2 rounded-pill fw-semibold shadow-sm">
+                                        <i class="bi bi-shield-check me-1"></i> <?= e($slide['subtitle'] ?? 'สอ.สธ.ระยอง') ?>
+                                    </span>
+                                    <h1 class="hero-title"><?= e($slide['title']) ?></h1>
+                                    <p class="hero-subtitle"><?= e($slide['description'] ?? '') ?></p>
+                                    <div class="d-flex flex-wrap gap-3 <?= ($slide['text_alignment'] ?? 'left') === 'center' ? 'justify-content-center' : '' ?>">
                                         <?php if (!empty($slide['button_text']) && !empty($slide['button_url'])): ?>
-                                            <a href="<?= url($slide['button_url']) ?>" target="<?= e($slide['button_target'] ?? '_self') ?>" class="btn-hero-primary">
-                                                <span><?= e($slide['button_text']) ?></span>
-                                                <i class="bi bi-arrow-right-circle-fill"></i>
-                                            </a>
-                                        <?php else: ?>
-                                            <a href="<?= url('eservice') ?>" class="btn-hero-primary">
-                                                <span>เข้าสู่ระบบ E-Service</span>
-                                                <i class="bi bi-box-arrow-in-right"></i>
+                                            <a href="<?= url($slide['button_url']) ?>" target="<?= e($slide['button_target'] ?? '_self') ?>" class="btn btn-primary btn-lg px-4 py-2 rounded-3 shadow">
+                                                <?= e($slide['button_text']) ?> <i class="bi bi-arrow-right ms-2"></i>
                                             </a>
                                         <?php endif; ?>
-                                        <a href="<?= url('calculator') ?>" class="btn-hero-secondary">
-                                            <i class="bi bi-calculator-fill text-warning"></i>
-                                            <span>คำนวณเงินกู้ / ผ่อนชำระ</span>
+                                        <a href="<?= url('calculator') ?>" class="btn btn-outline-light btn-lg px-4 py-2 rounded-3">
+                                            <i class="bi bi-calculator me-1"></i> คำนวณเงินกู้
                                         </a>
                                     </div>
                                 </div>
-
-                                <!-- Right Column: Glassmorphism Financial Live Widget -->
                                 <div class="col-lg-5 d-none d-lg-block">
                                     <div class="hero-highlight-glass">
                                         <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom border-white-20">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <i class="bi bi-stars text-warning fs-5"></i>
-                                                <span class="fw-bold text-white fs-6">Financial Highlights</span>
-                                            </div>
-                                            <div class="live-beacon">
-                                                <span class="live-dot"></span>
-                                                <span>อัปเดตล่าสุด</span>
-                                            </div>
+                                            <div class="fw-bold text-white fs-6"><i class="bi bi-stars text-warning me-1"></i> จุดเด่นทางการเงิน</div>
+                                            <span class="badge bg-white text-navy px-2 py-1 rounded-pill small fw-bold">อัปเดตล่าสุด</span>
                                         </div>
-
                                         <div class="row g-3">
                                             <div class="col-6">
-                                                <div class="hero-stat-card featured">
-                                                    <div class="small text-white-80"><i class="bi bi-piggy-bank me-1 text-warning"></i> ออมทรัพย์พิเศษ</div>
+                                                <div class="hero-stat-card text-center">
+                                                    <div class="small text-white-80">เงินฝากออมทรัพย์พิเศษ</div>
                                                     <div class="fs-2 fw-bold text-gold my-1">3.10%</div>
-                                                    <div class="small text-white-70">ต่อปี • ปลอดภาษี</div>
+                                                    <div class="small text-white-70">ต่อปี ปลอดภาษี</div>
                                                 </div>
                                             </div>
                                             <div class="col-6">
-                                                <div class="hero-stat-card">
-                                                    <div class="small text-white-80"><i class="bi bi-cash-coin me-1 text-info"></i> สินเชื่อสามัญ</div>
+                                                <div class="hero-stat-card text-center">
+                                                    <div class="small text-white-80">สินเชื่อสามัญ</div>
                                                     <div class="fs-2 fw-bold text-white my-1">4.50%</div>
-                                                    <div class="small text-white-70">ต่อปี • ลดต้นลดดอก</div>
+                                                    <div class="small text-white-70">ต่อปี ลดต้นลดดอก</div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <!-- Quick Trust Metrics Strip -->
-                                        <div class="mt-3 p-2 rounded-3 bg-white-10 d-flex justify-content-around text-center small text-white-80 border border-white-10">
-                                            <div>
-                                                <div class="fw-bold text-white fs-6">10,000+</div>
-                                                <div style="font-size: 0.72rem;">สมาชิกที่ไว้วางใจ</div>
-                                            </div>
-                                            <div class="border-start border-white-20"></div>
-                                            <div>
-                                                <div class="fw-bold text-gold fs-6">AAA</div>
-                                                <div style="font-size: 0.72rem;">เกรดมาตรฐานสหกรณ์</div>
-                                            </div>
-                                            <div class="border-start border-white-20"></div>
-                                            <div>
-                                                <div class="fw-bold text-info fs-6">100%</div>
-                                                <div style="font-size: 0.72rem;">บริการดิจิทัล</div>
-                                            </div>
-                                        </div>
-
                                         <div class="mt-3 pt-3 border-top border-white-20 d-flex justify-content-between align-items-center">
-                                            <small class="text-white-80 d-flex align-items-center gap-1">
-                                                <i class="bi bi-shield-check text-success fs-6"></i>
-                                                มั่นคง โปร่งใส เพื่อสมาชิก
-                                            </small>
-                                            <a href="<?= url('member/login') ?>" class="btn btn-sm btn-gold text-navy fw-bold px-3 py-1 rounded-pill shadow-sm">
-                                                Member Portal <i class="bi bi-chevron-right ms-1"></i>
+                                            <small class="text-white-90"><i class="bi bi-shield-check text-warning me-1"></i> มั่นคง โปร่งใส เพื่อสมาชิก</small>
+                                            <a href="<?= url('eservice') ?>" class="btn btn-sm btn-gold text-navy fw-bold px-3 shadow-sm rounded-pill">
+                                                เข้าสู่ระบบ E-Service <i class="bi bi-chevron-right ms-1"></i>
                                             </a>
                                         </div>
                                     </div>
@@ -120,27 +62,9 @@
             <?php else: ?>
                 <div class="swiper-slide hero-slide">
                     <div class="hero-overlay"></div>
-                    <div class="container-xl position-relative z-2">
-                        <div class="row align-items-center g-4">
-                            <div class="col-lg-7 text-white">
-                                <div class="hero-chip-badge">
-                                    <i class="bi bi-patch-check-fill text-warning"></i>
-                                    <span>สหกรณ์ออมทรัพย์สาธารณสุขระยอง จำกัด</span>
-                                </div>
-                                <h1 class="hero-title">มั่นคง โปร่งใส ทันสมัย <br><span class="text-gradient-gold">เพื่อคุณภาพชีวิตที่ดี</span>ของสมาชิก</h1>
-                                <p class="hero-subtitle">ร่วมสร้างรากฐานทางการเงินที่มั่นคง พร้อมสิทธิประโยชน์และสวัสดิการที่ครอบคลุมทุกช่วงชีวิต</p>
-                                <div class="d-flex flex-wrap gap-3">
-                                    <a href="<?= url('eservice') ?>" class="btn-hero-primary">
-                                        <span>เข้าสู่ระบบ E-Service</span>
-                                        <i class="bi bi-arrow-right-circle-fill"></i>
-                                    </a>
-                                    <a href="<?= url('calculator') ?>" class="btn-hero-secondary">
-                                        <i class="bi bi-calculator-fill text-warning"></i>
-                                        <span>คำนวณเงินกู้</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="container-xl position-relative z-2 text-white">
+                        <h1 class="hero-title">มั่นคง โปร่งใส ทันสมัย เพื่อคุณภาพชีวิตที่ดีของสมาชิก</h1>
+                        <p class="hero-subtitle">สหกรณ์ออมทรัพย์สาธารณสุขระยอง จำกัด</p>
                     </div>
                 </div>
             <?php endif; ?>
@@ -151,56 +75,46 @@
     </div>
 </section>
 
-<!-- 2. Quick Services Bar (Modern Floating Island) -->
+<!-- 2. Quick Services Bar (1-2 Clicks Access) -->
 <section class="container-xl">
     <div class="quick-services-card">
         <div class="row row-cols-2 row-cols-sm-3 row-cols-md-6 g-3 justify-content-center">
             <div class="col">
                 <a href="<?= url('deposits') ?>" class="quick-service-item">
-                    <div class="quick-service-icon" style="background: rgba(11, 94, 215, 0.1); color: var(--coop-blue);">
-                        <i class="bi bi-piggy-bank-fill"></i>
-                    </div>
-                    <span class="quick-service-label">เงินฝากดอกเบี้ยสูง</span>
+                    <div class="quick-service-icon"><i class="bi bi-piggy-bank"></i></div>
+                    <span class="quick-service-label">เงินฝาก</span>
                 </a>
             </div>
             <div class="col">
                 <a href="<?= url('loans') ?>" class="quick-service-item">
-                    <div class="quick-service-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
-                        <i class="bi bi-cash-stack"></i>
-                    </div>
-                    <span class="quick-service-label">สินเชื่อเพื่อสมาชิก</span>
+                    <div class="quick-service-icon"><i class="bi bi-cash-stack"></i></div>
+                    <span class="quick-service-label">เงินกู้</span>
                 </a>
             </div>
             <div class="col">
                 <a href="<?= url('calculator') ?>" class="quick-service-item">
-                    <div class="quick-service-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
-                        <i class="bi bi-calculator-fill"></i>
-                    </div>
+                    <div class="quick-service-icon"><i class="bi bi-calculator"></i></div>
                     <span class="quick-service-label">คำนวณเงินกู้</span>
                 </a>
             </div>
             <div class="col">
-                <a href="<?= url('member/receipts') ?>" class="quick-service-item">
-                    <div class="quick-service-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">
-                        <i class="bi bi-file-earmark-text-fill"></i>
-                    </div>
-                    <span class="quick-service-label">ใบเสร็จ e-Receipt</span>
+                <a href="<?= url('rates') ?>" class="quick-service-item">
+                    <div class="quick-service-icon"><i class="bi bi-percent"></i></div>
+                    <span class="quick-service-label">อัตราดอกเบี้ย</span>
                 </a>
             </div>
             <div class="col">
                 <a href="<?= url('welfare') ?>" class="quick-service-item">
-                    <div class="quick-service-icon" style="background: rgba(236, 72, 153, 0.1); color: #ec4899;">
-                        <i class="bi bi-heart-pulse-fill"></i>
-                    </div>
-                    <span class="quick-service-label">สวัสดิการสมาชิก</span>
+                    <div class="quick-service-icon"><i class="bi bi-heart-pulse"></i></div>
+                    <span class="quick-service-label">สวัสดิการ</span>
                 </a>
             </div>
             <div class="col">
                 <a href="<?= url('eservice') ?>" class="quick-service-item">
-                    <div class="quick-service-icon" style="background: linear-gradient(135deg, #073B74 0%, #0B5ED7 100%); color: #fff; box-shadow: 0 4px 12px rgba(11, 94, 215, 0.35);">
-                        <i class="bi bi-person-bounding-box"></i>
+                    <div class="quick-service-icon" style="background: linear-gradient(135deg, #073B74 0%, #0B5ED7 100%); color: #fff;">
+                        <i class="bi bi-person-circle"></i>
                     </div>
-                    <span class="quick-service-label text-navy fw-bold">Member Portal</span>
+                    <span class="quick-service-label text-navy fw-bold">E-Service</span>
                 </a>
             </div>
         </div>

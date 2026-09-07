@@ -59,14 +59,61 @@ $router->post('/api/popups/event', 'Public\\ApiController@logPopupEvent');
 
 /*
 |--------------------------------------------------------------------------
-| Authentication Routes
+| Authentication & Standard Dashboard Routes
 |--------------------------------------------------------------------------
 */
-$router->get('/admin/login', 'Admin\\AuthController@showLogin');
-$router->post('/admin/login', 'Admin\\AuthController@login', [CsrfMiddleware::class]);
-$router->get('/admin/2fa', 'Admin\\AuthController@showTwoFactor');
-$router->post('/admin/2fa/verify', 'Admin\\AuthController@verifyTwoFactor', [CsrfMiddleware::class]);
-$router->post('/admin/logout', 'Admin\\AuthController@logout', [CsrfMiddleware::class]);
+$router->get('/login', 'Admin\\AuthController@showLogin');
+$router->post('/login', 'Admin\\AuthController@login', [CsrfMiddleware::class]);
+$router->get('/logout', 'Admin\\AuthController@logout');
+$router->post('/logout', 'Admin\\AuthController@logout');
+$router->get('/dashboard', 'Admin\\DashboardController@index', [AuthMiddleware::class]);
+
+$router->get('/portal', 'Member\\MemberPortalController@dashboard', [AuthMiddleware::class]);
+
+/*
+|--------------------------------------------------------------------------
+| Protected Member Portal Routes
+|--------------------------------------------------------------------------
+*/
+$router->group(['prefix' => 'member', 'middleware' => [AuthMiddleware::class]], function (\App\Core\Router $r) {
+    $r->get('/dashboard', 'Member\\MemberPortalController@dashboard');
+    $r->get('/profile', 'Member\\MemberPortalController@profile');
+    $r->post('/profile/update', 'Member\\MemberPortalController@updateProfile', [CsrfMiddleware::class]);
+    $r->get('/shares', 'Member\\MemberPortalController@shares');
+    $r->post('/shares/change', 'Member\\MemberPortalController@submitShareChange', [CsrfMiddleware::class]);
+    $r->get('/deposits', 'Member\\MemberPortalController@deposits');
+    $r->get('/loans', 'Member\\MemberPortalController@loans');
+    $r->get('/loan-apply', 'Member\\MemberPortalController@loanApplication');
+    $r->post('/loan-apply', 'Member\\MemberPortalController@submitLoanApplication', [CsrfMiddleware::class]);
+    $r->get('/welfare', 'Member\\MemberPortalController@welfare');
+    $r->post('/welfare/claim', 'Member\\MemberPortalController@submitWelfareClaim', [CsrfMiddleware::class]);
+    $r->get('/beneficiaries', 'Member\\MemberPortalController@beneficiaries');
+    $r->post('/beneficiaries/save', 'Member\\MemberPortalController@saveBeneficiary', [CsrfMiddleware::class]);
+    $r->get('/receipts', 'Member\\MemberPortalController@receipts');
+    $r->get('/notifications', 'Member\\MemberPortalController@notifications');
+    $r->post('/notifications/read-all', 'Member\\MemberPortalController@markAllNotificationsRead');
+    $r->get('/online-services', 'Member\\MemberPortalController@onlineServices');
+    $r->get('/financial-summary', 'Member\\MemberPortalController@financialSummary');
+    $r->get('/settings', 'Member\\MemberPortalController@settings');
+    $r->post('/settings/password', 'Member\\MemberPortalController@changePassword', [CsrfMiddleware::class]);
+    $r->post('/settings/line', 'Member\\MemberPortalController@toggleLine', [CsrfMiddleware::class]);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Protected Staff Operations Routes
+|--------------------------------------------------------------------------
+*/
+$router->group(['prefix' => 'staff', 'middleware' => [AuthMiddleware::class]], function (\App\Core\Router $r) {
+    $r->get('/dashboard', 'Staff\\StaffController@dashboard');
+    $r->get('/members', 'Staff\\StaffController@members');
+    $r->get('/members/detail', 'Staff\\StaffController@memberDetail');
+    $r->get('/loans', 'Staff\\StaffController@loans');
+    $r->post('/loans/review', 'Staff\\StaffController@reviewLoan', [CsrfMiddleware::class]);
+    $r->get('/welfare', 'Staff\\StaffController@welfare');
+    $r->post('/welfare/review', 'Staff\\StaffController@reviewWelfare', [CsrfMiddleware::class]);
+    $r->get('/reports', 'Staff\\StaffController@reports');
+});
 
 /*
 |--------------------------------------------------------------------------

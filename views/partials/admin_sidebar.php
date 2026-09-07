@@ -22,6 +22,39 @@
             </a>
         </li>
 
+        <!-- Staff Operations -->
+        <li class="admin-nav-header">ระบบงานเจ้าหน้าที่ (Staff Management)</li>
+        <li class="admin-nav-item">
+            <a href="<?= url('staff/dashboard') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/staff/dashboard') ? 'active' : '' ?>">
+                <i class="bi bi-briefcase"></i> <span>Staff Dashboard</span>
+            </a>
+        </li>
+        <li class="admin-nav-item">
+            <a href="<?= url('staff/members') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/staff/members') ? 'active' : '' ?>">
+                <i class="bi bi-person-lines-fill"></i> <span>จัดการสมาชิก 360°</span>
+            </a>
+        </li>
+        <li class="admin-nav-item">
+            <a href="<?= url('staff/loans') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/staff/loans') ? 'active' : '' ?>">
+                <i class="bi bi-clipboard2-check"></i> <span>ตรวจคำขอกู้เงิน</span>
+            </a>
+        </li>
+        <li class="admin-nav-item">
+            <a href="<?= url('staff/welfare') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/staff/welfare') ? 'active' : '' ?>">
+                <i class="bi bi-heart-pulse"></i> <span>ตรวจคำขอสวัสดิการ</span>
+            </a>
+        </li>
+        <li class="admin-nav-item">
+            <a href="<?= url('staff/reports') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/staff/reports') ? 'active' : '' ?>">
+                <i class="bi bi-file-earmark-spreadsheet"></i> <span>ศูนย์รายงานและส่งออก</span>
+            </a>
+        </li>
+        <li class="admin-nav-item">
+            <a href="<?= url('member/dashboard') ?>" target="_blank" class="admin-nav-link text-info">
+                <i class="bi bi-box-arrow-up-right"></i> <span>ไปที่ Member Portal</span>
+            </a>
+        </li>
+
         <!-- Content & Marketing -->
         <li class="admin-nav-header">จัดการเนื้อหาและประชาสัมพันธ์</li>
         <li class="admin-nav-item">

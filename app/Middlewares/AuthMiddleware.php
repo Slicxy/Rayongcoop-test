@@ -29,7 +29,7 @@ class AuthMiddleware
             }
 
             Session::flash('error', 'กรุณาเข้าสู่ระบบก่อนเข้าใช้งาน');
-            $response->redirect(url('admin/login'));
+            $response->redirect(url('login'));
             return false;
         }
 

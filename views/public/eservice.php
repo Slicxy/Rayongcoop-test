@@ -1,40 +1,121 @@
-<div class="py-5 bg-navy text-white">
-    <div class="container">
-        <span class="badge bg-gold text-white mb-2 px-3 py-1">บริการออนไลน์ 24 ชั่วโมง</span>
-        <h1 class="text-white fw-bold display-6 mb-2">ศูนย์บริการออนไลน์ (E-Service Gateway)</h1>
-        <p class="text-light-blue lead mb-0">เข้าถึงระบบบริการสมาชิก ตรวจสอบข้อมูลหุ้น เงินฝาก เงินกู้ เงินปันผล และระบบสมาคมฌาปนกิจสงเคราะห์</p>
+<?php
+use App\Core\Auth;
+
+$isLoggedIn = Auth::check();
+$portalUrl = $isLoggedIn ? url('member/dashboard') : url('login');
+?>
+
+<!-- Header Banner -->
+<div class="py-5 bg-navy text-white" style="background: linear-gradient(135deg, #073B74 0%, #0066CC 100%);">
+    <div class="container-xl">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <span class="badge bg-gold text-white mb-2 px-3 py-1 rounded-pill">
+                    <i class="bi bi-shield-check me-1"></i> บริการออนไลน์ 24 ชั่วโมง
+                </span>
+                <h1 class="text-white fw-bold display-6 mb-2">ศูนย์บริการออนไลน์ (E-Service Gateway)</h1>
+                <p class="text-white-50 lead mb-0" style="font-size: 1.05rem;">
+                    เข้าถึงระบบบริการสมาชิก ตรวจสอบข้อมูลหุ้น เงินฝาก เงินกู้ ยื่นกู้ออนไลน์ และระบบสมาคมฌาปนกิจสงเคราะห์
+                </p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <a href="<?= $portalUrl ?>" class="btn btn-light text-navy fw-bold px-4 py-3 rounded-pill shadow-sm d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-box-arrow-in-right fs-5 text-primary"></i>
+                    <span><?= $isLoggedIn ? 'ไปที่ Member Portal' : 'เข้าสู่ระบบสมาชิก' ?></span>
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="container py-5">
-    <div class="row g-4">
+<!-- Main Content -->
+<div class="container-xl py-5">
+    <!-- Featured Integrated Member Portal Banner -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-5 text-white" style="background: linear-gradient(135deg, #073B74 0%, #0F6292 50%, #0066CC 100%);">
+        <div class="row align-items-center g-3">
+            <div class="col-auto">
+                <div class="bg-white text-primary rounded-4 p-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 64px; height: 64px; font-size: 28px;">
+                    <i class="bi bi-laptop"></i>
+                </div>
+            </div>
+            <div class="col">
+                <div class="badge bg-white text-navy fw-bold mb-1 px-3 py-1 rounded-pill">ระบบหลักของสหกรณ์</div>
+                <h4 class="fw-bold mb-1 text-white">ระบบบริหารจัดการสมาชิกสหกรณ์ดิจิทัล (RayongCoop Member Portal)</h4>
+                <p class="text-white-50 mb-0 small">
+                    ตรวจสอบทุนเรือนหุ้น, สมุดเงินฝากออนไลน์ (E-Passbook), สัญญาเงินกู้, ยื่นกู้ออนไลน์ (Loan Wizard), ใบเสร็จดิจิทัล และขอสวัสดิการ
+                </p>
+            </div>
+            <div class="col-lg-auto">
+                <a href="<?= $portalUrl ?>" class="btn btn-warning text-navy fw-bold px-4 py-2 rounded-pill shadow-sm">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> เข้าใช้งานทันที
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Filter Tabs -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 pb-2 border-bottom">
+        <div>
+            <h4 class="fw-bold text-navy mb-1">
+                <i class="bi bi-grid-3x3-gap-fill text-primary me-2"></i>บริการและระบบที่เชื่อมต่อทั้งหมด
+            </h4>
+            <p class="text-muted small mb-0">เลือกระบบที่ต้องการเข้าใช้งาน ทั้งระบบภายในและหน่วยงานภายนอกที่เกี่ยวข้อง</p>
+        </div>
+        <div class="btn-group rounded-pill p-1 bg-light border" role="group" id="eserviceFilterGroup">
+            <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 active" onclick="filterServices('all', this)">ทั้งหมด</button>
+            <button type="button" class="btn btn-sm btn-light rounded-pill px-3" onclick="filterServices('internal', this)">ระบบสหกรณ์</button>
+            <button type="button" class="btn btn-sm btn-light rounded-pill px-3" onclick="filterServices('external', this)">หน่วยงานภายนอก</button>
+        </div>
+    </div>
+
+    <!-- Service Cards Grid -->
+    <div class="row g-4" id="serviceCardsContainer">
         <?php foreach ($eservices as $es): ?>
-            <div class="col-lg-6">
-                <div class="coop-card p-4 h-100 d-flex flex-column justify-content-between">
-                    <div class="d-flex align-items-start mb-3">
-                        <div class="quick-service-icon me-3 flex-shrink-0" style="background: linear-gradient(135deg, var(--coop-navy) 0%, var(--coop-blue) 100%); color: #fff;">
-                            <i class="bi <?= e($es['icon']) ?>"></i>
-                        </div>
-                        <div>
-                            <div class="d-flex align-items-center gap-2 mb-1">
-                                <h5 class="fw-bold text-navy mb-0"><?= e($es['name']) ?></h5>
-                                <?php if ($es['is_maintenance']): ?>
-                                    <span class="badge bg-danger">ปิดปรับปรุงชั่วคราว</span>
-                                <?php else: ?>
-                                    <span class="badge bg-success">เปิดให้บริการ</span>
-                                <?php endif; ?>
+            <?php
+            $isExternal = in_array($es['category'] ?? '', ['external', 'association']) || !empty($es['confirm_before_redirect']);
+            $targetUrl = match($es['id']) {
+                1 => url('member/dashboard'),
+                2 => url('member/deposits'),
+                3 => url('member/loan-apply'),
+                default => e($es['url'])
+            };
+            $cardCategory = $isExternal ? 'external' : 'internal';
+            ?>
+            <div class="col-lg-6 service-item" data-category="<?= $cardCategory ?>">
+                <div class="coop-card p-4 h-100 d-flex flex-column justify-content-between border rounded-4 shadow-sm bg-white" style="transition: transform 0.2s ease, box-shadow 0.2s ease;">
+                    <div>
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="quick-service-icon me-3 flex-shrink-0 rounded-4 d-flex align-items-center justify-content-center" style="width: 52px; height: 52px; background: linear-gradient(135deg, #073B74 0%, #0066CC 100%); color: #fff; font-size: 24px;">
+                                <i class="bi <?= e($es['icon']) ?>"></i>
                             </div>
-                            <p class="text-muted small mb-0"><?= e($es['description']) ?></p>
+                            <div>
+                                <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+                                    <h5 class="fw-bold text-navy mb-0"><?= e($es['name']) ?></h5>
+                                    <?php if (!empty($es['is_maintenance'])): ?>
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill">ปิดปรับปรุงชั่วคราว</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">เปิดให้บริการปกติ</span>
+                                    <?php endif; ?>
+                                </div>
+                                <p class="text-muted small mb-0 mt-2" style="line-height: 1.5;"><?= e($es['description']) ?></p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="pt-3 border-top d-flex justify-content-between align-items-center mt-3">
-                        <small class="text-muted"><i class="bi bi-shield-check text-success me-1"></i> เชื่อมต่อความปลอดภัยระดับสูง</small>
-                        <?php if ($es['is_maintenance']): ?>
-                            <button class="btn btn-secondary btn-sm" disabled>อยู่ระหว่างปิดปรับปรุง</button>
+                    <div class="pt-3 border-top d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3">
+                        <small class="text-muted d-flex align-items-center">
+                            <i class="bi bi-shield-check text-success fs-6 me-1"></i> 
+                            <?= $isExternal ? 'ลิงก์ภายนอก • มีระบบยืนยันความปลอดภัย' : 'ระบบเชื่อมต่อภายในสหกรณ์' ?>
+                        </small>
+                        <?php if (!empty($es['is_maintenance'])): ?>
+                            <button class="btn btn-secondary btn-sm rounded-pill px-4" disabled>อยู่ระหว่างปิดปรับปรุง</button>
                         <?php else: ?>
-                            <a href="<?= e($es['url']) ?>" class="btn btn-primary btn-sm px-4" data-confirm-external="<?= $es['confirm_before_redirect'] ?>" data-service-name="<?= e($es['name']) ?>">
-                                เข้าใช้งานระบบ <i class="bi bi-box-arrow-up-right ms-1"></i>
+                            <a href="<?= $targetUrl ?>" 
+                               class="btn btn-primary btn-sm rounded-pill px-4" 
+                               data-confirm-external="<?= $isExternal ? '1' : '0' ?>" 
+                               data-service-name="<?= e($es['name']) ?>"
+                               <?= $isExternal ? 'target="_blank"' : '' ?>>
+                                เข้าใช้งานระบบ <i class="bi <?= $isExternal ? 'bi-box-arrow-up-right' : 'bi-arrow-right' ?> ms-1"></i>
                             </a>
                         <?php endif; ?>
                     </div>
@@ -42,4 +123,54 @@
             </div>
         <?php endforeach; ?>
     </div>
+
+    <!-- Security & Assistance Box -->
+    <div class="row g-4 mt-4">
+        <div class="col-md-6">
+            <div class="p-4 bg-light rounded-4 border h-100">
+                <h6 class="fw-bold text-navy mb-2"><i class="bi bi-shield-lock-fill text-primary me-2"></i>คำแนะนำความปลอดภัยในการใช้งาน</h6>
+                <ul class="text-muted small mb-0 ps-3">
+                    <li class="mb-1">ห้ามเปิดเผย Username และ Password ของท่านแก่บุคคลอื่น</li>
+                    <li class="mb-1">สหกรณ์ไม่มีนโยบายสอบถามรหัสผ่านหรือรหัส OTP ผ่านทางโทรศัพท์หรือข้อความ SMS</li>
+                    <li>ควรออกจากระบบ (Logout) ทุกครั้งหลังเสร็จสิ้นการใช้งานบนอุปกรณ์สาธารณะ</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="p-4 bg-light rounded-4 border h-100">
+                <h6 class="fw-bold text-navy mb-2"><i class="bi bi-headset text-primary me-2"></i>ต้องการความช่วยเหลือในการเข้าใช้งาน?</h6>
+                <p class="text-muted small mb-2">หากท่านพบปัญหาในการเข้าสู่ระบบ ลืมรหัสผ่าน หรือต้องการความช่วยเหลือด้านธุรกรรม</p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="<?= url('contact') ?>" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                        <i class="bi bi-telephone me-1"></i> ติดต่อเจ้าหน้าที่
+                    </a>
+                    <a href="<?= url('faqs') ?>" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                        <i class="bi bi-question-circle me-1"></i> คำถามที่พบบ่อย (FAQs)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+function filterServices(category, btn) {
+    // Update active button
+    document.querySelectorAll('#eserviceFilterGroup button').forEach(b => {
+        b.classList.remove('btn-primary', 'active');
+        b.classList.add('btn-light');
+    });
+    btn.classList.remove('btn-light');
+    btn.classList.add('btn-primary', 'active');
+
+    // Filter items
+    const items = document.querySelectorAll('.service-item');
+    items.forEach(item => {
+        if (category === 'all' || item.getAttribute('data-category') === category) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+</script>

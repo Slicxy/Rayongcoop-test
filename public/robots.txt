@@ -1,0 +1,33 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /member/
+Disallow: /staff/
+Disallow: /portal
+Disallow: /dashboard
+Disallow: /login
+Disallow: /logout
+Disallow: /api/
+Disallow: /storage/uploads/private/
+
+Allow: /
+Allow: /announcements
+Allow: /calendar
+Allow: /events
+Allow: /loan-readiness
+Allow: /loans/checklist
+Allow: /about
+Allow: /board
+Allow: /statistics
+Allow: /deposits
+Allow: /loans
+Allow: /calculator
+Allow: /welfare
+Allow: /eservice
+Allow: /documents
+Allow: /news
+Allow: /faqs
+Allow: /contact
+Allow: /privacy/policy
+Allow: /terms
+
+Sitemap: https://www.rayongcoop.com/sitemap.xml

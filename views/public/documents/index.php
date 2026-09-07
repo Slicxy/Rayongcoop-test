@@ -6,7 +6,21 @@
     </div>
 </div>
 
-<div class="container py-5">
+<div class="container-xl py-5">
+    <?php if ($success = flash('success')): ?>
+        <div class="alert alert-success alert-dismissible fade show mb-4 shadow-sm" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> <?= e($success) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($error = flash('error')): ?>
+        <div class="alert alert-danger alert-dismissible fade show mb-4 shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> <?= e($error) ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
     <!-- Filter & Search Bar -->
     <div class="coop-card p-4 mb-4">
         <form action="<?= url('documents') ?>" method="GET" class="row g-3">

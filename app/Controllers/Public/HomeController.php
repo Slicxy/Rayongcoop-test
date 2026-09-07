@@ -31,6 +31,22 @@ class HomeController extends Controller
         // 6. E-Service Quick Links
         $eservices = Database::query("SELECT * FROM eservice_links WHERE status = 'active' ORDER BY sort_order ASC LIMIT 6");
 
+        // 7. Important Announcements (Latest Published & Active)
+        $importantAnnouncements = [];
+        try {
+            $importantAnnouncements = Database::query("SELECT * FROM important_announcements WHERE status = 'published' AND publication_date <= CURDATE() AND (expiry_date IS NULL OR expiry_date >= CURDATE()) ORDER BY is_pinned DESC, priority DESC, publication_date DESC LIMIT 3");
+        } catch (\Throwable $e) {
+            // ignore if table doesn't exist
+        }
+
+        // 8. Upcoming Events
+        $upcomingEvents = [];
+        try {
+            $upcomingEvents = Database::query("SELECT * FROM events WHERE status = 'upcoming' AND deleted_at IS NULL AND start_date >= CURDATE() ORDER BY start_date ASC, start_time ASC LIMIT 4");
+        } catch (\Throwable $e) {
+            // ignore
+        }
+
         $this->render('public.home', [
             'title' => 'หน้าแรก',
             'heroSlides' => $heroSlides,
@@ -41,6 +57,9 @@ class HomeController extends Controller
             'featuredLoans' => $featuredLoans,
             'latestStats' => $latestStats,
             'eservices' => $eservices,
+            'importantAnnouncements' => $importantAnnouncements,
+            'upcomingEvents' => $upcomingEvents,
         ]);
     }
 }
+

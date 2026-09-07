@@ -98,10 +98,24 @@
                     <div class="col-6 text-end font-monospace"><?= date('d/m/Y', strtotime($receipt['issue_date'])) ?></div>
 
                     <div class="col-6 text-muted">ผู้รับใบเสร็จ:</div>
-                    <div class="col-6 text-end fw-bold"><?= e(($receipt['prefix'] ?? '') . $receipt['first_name'] . ' ' . $receipt['last_name']) ?></div>
+                    <div class="col-6 text-end fw-bold">
+                        <?php
+                            $fname = $receipt['first_name'] ?? '';
+                            $lname = $receipt['last_name'] ?? '';
+                            $prefix = $receipt['prefix'] ?? '';
+                            $maskedName = $prefix . (mb_substr($fname, 0, 2) . '***') . ' ' . (mb_substr($lname, 0, 2) . '***');
+                            echo e($maskedName);
+                        ?>
+                    </div>
 
                     <div class="col-6 text-muted">เลขที่สมาชิก:</div>
-                    <div class="col-6 text-end font-monospace text-dark"><?= e($receipt['member_no']) ?></div>
+                    <div class="col-6 text-end font-monospace text-dark">
+                        <?php
+                            $memNo = (string)($receipt['member_no'] ?? '');
+                            $maskedMemNo = strlen($memNo) > 4 ? substr($memNo, 0, 2) . '***' . substr($memNo, -2) : '***';
+                            echo e($maskedMemNo);
+                        ?>
+                    </div>
 
                     <div class="col-6 text-muted">สังกัด / หน่วยงาน:</div>
                     <div class="col-6 text-end"><?= e($receipt['department'] ?? '-') ?></div>
@@ -117,6 +131,10 @@
                         (<?= $receipt['baht_text'] ?>)
                     </div>
                 </div>
+            </div>
+
+            <div class="alert alert-info border-0 rounded-3 small text-center mb-4">
+                <i class="bi bi-shield-lock me-1"></i> เพื่อความปลอดภัยและความเป็นส่วนตัวตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล (PDPA) ข้อมูลชื่อและเลขสมาชิกจะถูกปิดบังบางส่วน
             </div>
 
             <div class="text-center">

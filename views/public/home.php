@@ -92,21 +92,21 @@
                 </a>
             </div>
             <div class="col">
+                <a href="<?= url('loan-readiness') ?>" class="quick-service-item">
+                    <div class="quick-service-icon" style="background-color: #FFF8E1; color: #B78103;"><i class="bi bi-check2-square"></i></div>
+                    <span class="quick-service-label">เช็คสิทธิ์กู้</span>
+                </a>
+            </div>
+            <div class="col">
                 <a href="<?= url('calculator') ?>" class="quick-service-item">
                     <div class="quick-service-icon"><i class="bi bi-calculator"></i></div>
                     <span class="quick-service-label">คำนวณเงินกู้</span>
                 </a>
             </div>
             <div class="col">
-                <a href="<?= url('rates') ?>" class="quick-service-item">
-                    <div class="quick-service-icon"><i class="bi bi-percent"></i></div>
-                    <span class="quick-service-label">อัตราดอกเบี้ย</span>
-                </a>
-            </div>
-            <div class="col">
-                <a href="<?= url('welfare') ?>" class="quick-service-item">
-                    <div class="quick-service-icon"><i class="bi bi-heart-pulse"></i></div>
-                    <span class="quick-service-label">สวัสดิการ</span>
+                <a href="<?= url('calendar') ?>" class="quick-service-item">
+                    <div class="quick-service-icon" style="background-color: #EEF2FF; color: #4338CA;"><i class="bi bi-calendar3"></i></div>
+                    <span class="quick-service-label">ปฏิทินกิจกรรม</span>
                 </a>
             </div>
             <div class="col">
@@ -120,6 +120,40 @@
         </div>
     </div>
 </section>
+
+<!-- 2.1 Important Announcements Ribbon / Card Section -->
+<?php if (!empty($importantAnnouncements)): ?>
+<section class="container-xl mt-4">
+    <div class="card border-0 rounded-4 shadow-sm overflow-hidden" style="background: linear-gradient(135deg, #FEF2F2 0%, #FFF1F2 100%); border-left: 5px solid #EF4444 !important;">
+        <div class="card-body p-3 p-md-4">
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white flex-shrink-0" style="width: 44px; height: 44px; background-color: #EF4444;">
+                        <i class="bi bi-pin-angle-fill fs-5"></i>
+                    </div>
+                    <div>
+                        <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                            <span class="badge bg-danger">ประกาศสำคัญ</span>
+                            <span class="small text-muted"><?= date('d/m/Y', strtotime($importantAnnouncements[0]['publication_date'] ?? 'now')) ?></span>
+                        </div>
+                        <a href="<?= url('announcements/' . $importantAnnouncements[0]['slug']) ?>" class="fw-bold text-dark text-decoration-none hover-primary mb-0" style="font-size: 1.05rem;">
+                            <?= e($importantAnnouncements[0]['title']) ?>
+                        </a>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-2 flex-shrink-0 ms-auto">
+                    <a href="<?= url('announcements/' . $importantAnnouncements[0]['slug']) ?>" class="btn btn-sm btn-danger rounded-pill px-3">
+                        อ่านประกาศ <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                    <a href="<?= url('announcements') ?>" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                        ดูทั้งหมด (<?= count($importantAnnouncements) ?>)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 
 <!-- 3. Financial Rates Dashboard Section -->
 <section class="py-5">
@@ -387,6 +421,63 @@
         </div>
     </div>
 </section>
+
+<!-- 6.1 Upcoming Events & Important Schedule Section -->
+<?php if (!empty($upcomingEvents)): ?>
+<section class="py-5 bg-white border-top border-bottom">
+    <div class="container-xl">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="text-primary fw-bold text-uppercase small"><i class="bi bi-calendar-event me-1"></i> ปฏิทินและกำหนดการ</span>
+                <h2 class="fw-bold text-navy mb-0">กำหนดการและกิจกรรมสำคัญเร็ว ๆ นี้</h2>
+            </div>
+            <a href="<?= url('calendar') ?>" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                ดูปฏิทินทั้งหมด <i class="bi bi-chevron-right ms-1"></i>
+            </a>
+        </div>
+
+        <div class="row g-3">
+            <?php 
+            $catIcons = [
+                'meeting' => ['icon' => 'bi-people-fill', 'bg' => '#EFF6FF', 'color' => '#1D4ED8'],
+                'loan_window' => ['icon' => 'bi-cash-coin', 'bg' => '#ECFDF5', 'color' => '#047857'],
+                'dividend' => ['icon' => 'bi-gift-fill', 'bg' => '#FEF3C7', 'color' => '#B45309'],
+                'holiday' => ['icon' => 'bi-slash-circle-fill', 'bg' => '#FEE2E2', 'color' => '#B91C1C'],
+                'activity' => ['icon' => 'bi-calendar-check', 'bg' => '#F3E8FF', 'color' => '#6D28D9'],
+            ];
+            foreach ($upcomingEvents as $evt): 
+                $cfg = $catIcons[$evt['category'] ?? 'activity'] ?? $catIcons['activity'];
+                $eDate = strtotime($evt['start_date']);
+                $thaiDay = date('j', $eDate);
+                $thaiMonth = thai_month((int)date('n', $eDate));
+            ?>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card h-100 border-0 rounded-4 shadow-sm p-3 hover-shadow transition-all" style="background-color: #F8FAFC;">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="rounded-3 text-center p-2 flex-shrink-0" style="background: <?= $cfg['bg'] ?>; color: <?= $cfg['color'] ?>; min-width: 58px;">
+                                <div class="fw-bold fs-4 lh-1"><?= $thaiDay ?></div>
+                                <div class="small fw-semibold lh-1 mt-1"><?= $thaiMonth ?></div>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="fw-bold text-navy mb-1 line-clamp-2"><?= e($evt['title']) ?></h6>
+                                <div class="small text-muted mb-1">
+                                    <i class="bi bi-clock me-1"></i>
+                                    <?= !empty($evt['is_all_day']) ? 'ตลอดทั้งวัน' : (!empty($evt['start_time']) ? substr($evt['start_time'], 0, 5) . ' น.' : 'ตามกำหนดการ') ?>
+                                </div>
+                                <?php if (!empty($evt['location'])): ?>
+                                    <div class="small text-muted text-truncate" style="max-width: 170px;">
+                                        <i class="bi bi-geo-alt me-1"></i> <?= e($evt['location']) ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 
 <!-- 7. E-Service Gateway Section -->
 <section class="py-5 bg-light">

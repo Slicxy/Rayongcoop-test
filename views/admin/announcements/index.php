@@ -1,141 +1,136 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h3 class="fw-bold text-navy mb-1"><i class="bi bi-megaphone me-2 text-primary"></i> จัดการแถบประกาศสำคัญ</h3>
-        <p class="text-muted small mb-0">แถบข้อความแจ้งเตือนด้านบนสุดของหน้าเว็บ (Top Announcement Bar)</p>
+        <h4 class="fw-bold text-navy mb-1"><i class="bi bi-megaphone-fill text-warning me-2"></i> จัดการประกาศสำคัญ (Important Announcements)</h4>
+        <p class="text-muted small mb-0">ประกาศ มติคณะกรรมการ และข้อมูลสำคัญที่มีผลบังคับใช้สำหรับสมาชิก</p>
     </div>
-    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createAnnounceModal">
+    <a href="<?= url('admin/announcements/create') ?>" class="btn btn-primary rounded-pill px-4">
         <i class="bi bi-plus-lg me-1"></i> สร้างประกาศใหม่
-    </button>
+    </a>
 </div>
 
-<div class="admin-card">
-    <div class="admin-card-body p-0">
-        <div class="table-responsive p-3">
+<!-- Filters -->
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-body p-3">
+        <form action="<?= url('admin/announcements') ?>" method="GET" class="row g-2 align-items-center">
+            <div class="col-md-4">
+                <select name="priority" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">-- ทุกระดับความสำคัญ --</option>
+                    <option value="urgent" <?= ($priority === 'urgent') ? 'selected' : '' ?>>ด่วนที่สุด (Urgent)</option>
+                    <option value="important" <?= ($priority === 'important') ? 'selected' : '' ?>>สำคัญ (Important)</option>
+                    <option value="general" <?= ($priority === 'general') ? 'selected' : '' ?>>ทั่วไป (General)</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">-- ทุกสถานะ --</option>
+                    <option value="published" <?= ($status === 'published') ? 'selected' : '' ?>>เผยแพร่แล้ว (Published)</option>
+                    <option value="draft" <?= ($status === 'draft') ? 'selected' : '' ?>>แบบร่าง (Draft)</option>
+                    <option value="archived" <?= ($status === 'archived') ? 'selected' : '' ?>>จัดเก็บ (Archived)</option>
+                </select>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <?php if (!empty($priority) || !empty($status)): ?>
+                    <a href="<?= url('admin/announcements') ?>" class="btn btn-sm btn-outline-secondary rounded-pill">
+                        <i class="bi bi-x-circle me-1"></i> ล้างตัวกรอง
+                    </a>
+                <?php endif; ?>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="card border-0 shadow-sm rounded-4">
+    <div class="card-body p-0">
+        <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
+                <thead class="bg-light">
                     <tr>
-                        <th style="width: 50px;">#</th>
+                        <th class="ps-4" style="width: 50px;">#</th>
                         <th>หัวข้อประกาศ</th>
-                        <th>ข้อความแจ้งเตือน</th>
-                        <th>Priority</th>
-                        <th>ปุ่มลิงก์</th>
+                        <th>ระดับความสำคัญ</th>
+                        <th>วันที่ประกาศ / วันหมดอายุ</th>
+                        <th>เอกสารแนบ</th>
                         <th>สถานะ</th>
-                        <th class="text-end">จัดการ</th>
+                        <th class="text-end pe-4" style="width: 150px;">จัดการ</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($announcements as $i => $a): ?>
+                    <?php if (empty($announcements)): ?>
                         <tr>
-                            <td><?= $i + 1 ?></td>
-                            <td class="fw-bold text-navy"><?= e($a['title']) ?></td>
-                            <td class="small text-muted text-truncate" style="max-width: 300px;"><?= e($a['message']) ?></td>
-                            <td>
-                                <span class="badge <?= $a['priority'] === 'urgent' ? 'bg-danger' : ($a['priority'] === 'important' ? 'bg-warning text-dark' : 'bg-secondary') ?>">
-                                    <?= e(strtoupper($a['priority'])) ?>
-                                </span>
-                            </td>
-                            <td>
-                                <?php if (!empty($a['link_url'])): ?>
-                                    <span class="badge bg-light text-navy border"><?= e($a['link_text'] ?? 'ลิงก์') ?></span>
-                                <?php else: ?>
-                                    <span class="text-muted small">-</span>
-                                <?php endif; ?>
-                            </td>
-                            <td>
-                                <span class="badge <?= $a['is_active'] ? 'bg-success' : 'bg-secondary' ?>">
-                                    <?= $a['is_active'] ? 'เปิดแสดงผล' : 'ปิด' ?>
-                                </span>
-                            </td>
-                            <td class="text-end">
-                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteAnnounce(<?= $a['id'] ?>)">
-                                    <i class="bi bi-trash"></i>
-                                </button>
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                <i class="bi bi-inbox fs-1 d-block mb-2 text-secondary"></i>
+                                ไม่พบรายการประกาศสำคัญ
                             </td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php else: ?>
+                        <?php foreach ($announcements as $i => $item): ?>
+                            <tr>
+                                <td class="ps-4 fw-bold text-muted"><?= $i + 1 ?></td>
+                                <td>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <?php if ($item['is_pinned']): ?>
+                                            <span class="badge bg-primary"><i class="bi bi-pin-angle-fill"></i></span>
+                                        <?php endif; ?>
+                                        <div class="fw-bold text-navy"><?= e($item['title']) ?></div>
+                                    </div>
+                                    <?php if (!empty($item['resolution_no'])): ?>
+                                        <small class="text-muted"><i class="bi bi-file-earmark-check me-1"></i> <?= e($item['resolution_no']) ?></small>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if ($item['priority'] === 'urgent'): ?>
+                                        <span class="badge bg-danger">ด่วนที่สุด</span>
+                                    <?php elseif ($item['priority'] === 'important'): ?>
+                                        <span class="badge bg-warning text-dark">สำคัญ</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-secondary">ทั่วไป</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <div class="small fw-semibold"><?= thai_date($item['publication_date']) ?></div>
+                                    <?php if (!empty($item['expiry_date'])): ?>
+                                        <small class="text-muted">ถึง <?= thai_date($item['expiry_date']) ?></small>
+                                    <?php else: ?>
+                                        <small class="text-muted">ไม่มีกำหนดหมดอายุ</small>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if (!empty($item['attachment_path'])): ?>
+                                        <a href="<?= asset('storage/' . $item['attachment_path']) ?>" target="_blank" class="badge bg-light text-primary border text-decoration-none">
+                                            <i class="bi bi-paperclip me-1"></i> ไฟล์แนบ
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="text-muted small">-</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if ($item['status'] === 'published'): ?>
+                                        <span class="badge bg-success">เผยแพร่</span>
+                                    <?php elseif ($item['status'] === 'draft'): ?>
+                                        <span class="badge bg-secondary">แบบร่าง</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-dark">จัดเก็บ</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="<?= url("admin/announcements/{$item['id']}/edit") ?>" class="btn btn-outline-primary" title="แก้ไข">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form action="<?= url("admin/announcements/{$item['id']}/delete") ?>" method="POST" onsubmit="return confirm('คุณต้องการลบประกาศนี้ใช่หรือไม่?');" class="d-inline">
+                                            <?= csrf_field() ?>
+                                            <button type="submit" class="btn btn-outline-danger" title="ลบ">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
-<!-- Create Announcement Modal -->
-<div class="modal fade" id="createAnnounceModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content rounded-4 border-0">
-            <div class="modal-header bg-light border-0 py-3 px-4">
-                <h5 class="modal-title fw-bold text-navy">สร้างแถบประกาศใหม่</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form action="<?= url('admin/announcements/store') ?>" method="POST">
-                <?= csrf_field() ?>
-                <div class="modal-body px-4 py-3">
-                    <div class="mb-3">
-                        <label class="form-label fw-bold small">หัวข้อประกาศ <span class="text-danger">*</span></label>
-                        <input type="text" name="title" class="form-control" required placeholder="เช่น แจ้งสมาชิกตรวจสอบเงินปันผล...">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold small">ข้อความประกาศ <span class="text-danger">*</span></label>
-                        <textarea name="message" class="form-control" rows="3" required></textarea>
-                    </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small">URL ปลายทาง</label>
-                            <input type="text" name="link_url" class="form-control" placeholder="/eservice">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small">ข้อความบนปุ่ม</label>
-                            <input type="text" name="link_text" class="form-control" value="คลิกอ่านเพิ่มเติม">
-                        </div>
-                    </div>
-                    <div class="row g-3 mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small">ระดับความสำคัญ</label>
-                            <select name="priority" class="form-select">
-                                <option value="general">General (ทั่วไป)</option>
-                                <option value="important" selected>Important (สำคัญ)</option>
-                                <option value="urgent">Urgent (ด่วนที่สุด)</option>
-                                <option value="loan">Loan (สินเชื่อ)</option>
-                                <option value="welfare">Welfare (สวัสดิการ)</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold small">สถานะ</label>
-                            <select name="is_active" class="form-select">
-                                <option value="1">เปิดแสดงผลทันที</option>
-                                <option value="0">ปิดการแสดงผล</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer bg-light border-0 px-4 py-3">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">ยกเลิก</button>
-                    <button type="submit" class="btn btn-primary px-4 fw-bold">บันทึกประกาศ</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script>
-function deleteAnnounce(id) {
-    showDeleteConfirm(() => {
-        fetch(window.APP_URL + '/admin/announcements/' + id + '/delete', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': window.CSRF_TOKEN,
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                showToast('success', 'ลบประกาศเรียบร้อยแล้ว');
-                setTimeout(() => location.reload(), 800);
-            } else {
-                showError('เกิดข้อผิดพลาด', data.message);
-            }
-        });
-    });
-}
-</script>

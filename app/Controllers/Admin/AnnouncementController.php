@@ -9,16 +9,48 @@ use App\Core\Controller;
 use App\Core\Database;
 use App\Core\Session;
 use App\Services\AuditService;
+use App\Services\MediaService;
 
 class AnnouncementController extends Controller
 {
     public function index(): void
     {
-        $announcements = Database::query("SELECT * FROM announcements WHERE deleted_at IS NULL ORDER BY created_at DESC");
+        $status = $this->request->query('status');
+        $priority = $this->request->query('priority');
+
+        $where = ["deleted_at IS NULL"];
+        $params = [];
+
+        if (!empty($status)) {
+            $where[] = "status = ?";
+            $params[] = $status;
+        }
+
+        if (!empty($priority)) {
+            $where[] = "priority = ?";
+            $params[] = $priority;
+        }
+
+        $whereSql = implode(" AND ", $where);
+        $announcements = Database::query(
+            "SELECT * FROM important_announcements 
+             WHERE {$whereSql} 
+             ORDER BY is_pinned DESC, publication_date DESC, created_at DESC",
+            $params
+        );
 
         $this->render('admin.announcements.index', [
-            'title' => 'จัดการแถบประกาศสำคัญ (Announcement Bar)',
+            'title' => 'จัดการประกาศสำคัญ (Important Announcements)',
             'announcements' => $announcements,
+            'status' => $status,
+            'priority' => $priority,
+        ], 'layouts.admin');
+    }
+
+    public function create(): void
+    {
+        $this->render('admin.announcements.create', [
+            'title' => 'สร้างประกาศสำคัญใหม่',
         ], 'layouts.admin');
     }
 
@@ -26,34 +58,131 @@ class AnnouncementController extends Controller
     {
         $data = $this->validate([
             'title' => 'required',
-            'message' => 'required',
+            'content' => 'required',
+            'publication_date' => 'required',
         ]);
 
-        $sql = "INSERT INTO announcements (title, message, link_url, link_text, priority, display_type, start_at, is_active, created_by, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?, NOW())";
+        $slug = str_slug($data['title']) . '-' . time();
+        $attachmentPath = null;
+        $attachmentName = null;
+
+        if ($this->request->hasFile('attachment') && !empty($this->request->file('attachment')['tmp_name'])) {
+            try {
+                $uploaded = MediaService::upload($this->request->file('attachment'), 'announcements');
+                $attachmentPath = $uploaded['path'];
+                $attachmentName = $this->request->file('attachment')['name'] ?? 'attachment.pdf';
+            } catch (\Exception $e) {
+                Session::flash('error', 'อัปโหลดไฟล์แนบไม่สำเร็จ: ' . $e->getMessage());
+                $this->redirect(url('admin/announcements/create'));
+                return;
+            }
+        }
+
+        $sql = "INSERT INTO important_announcements 
+                (title, slug, content, summary, attachment_path, attachment_name, publication_date, effective_start_date, expiry_date, priority, resolution_no, related_link, status, is_pinned, created_by, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
         $id = Database::insert($sql, [
             $data['title'],
-            $data['message'],
-            $this->request->input('link_url'),
-            $this->request->input('link_text', 'คลิกอ่านเพิ่มเติม'),
+            $slug,
+            $data['content'],
+            $this->request->input('summary'),
+            $attachmentPath,
+            $attachmentName,
+            $data['publication_date'],
+            $this->request->input('effective_start_date') ?: null,
+            $this->request->input('expiry_date') ?: null,
             $this->request->input('priority', 'general'),
-            $this->request->input('display_type', 'top_bar'),
-            (int) ($this->request->input('is_active') ? 1 : 0),
+            $this->request->input('resolution_no'),
+            $this->request->input('related_link'),
+            $this->request->input('status', 'published'),
+            (int)($this->request->input('is_pinned') ? 1 : 0),
             Auth::id()
         ]);
 
-        AuditService::log('announcements', 'create', (string)$id, null, ['title' => $data['title']]);
-        Session::flash('success', 'สร้างประกาศเรียบร้อยแล้ว');
+        AuditService::log('important_announcements', 'create', (string)$id, null, ['title' => $data['title']]);
+        Session::flash('success', 'สร้างประกาศสำคัญเรียบร้อยแล้ว');
+        $this->redirect(url('admin/announcements'));
+    }
+
+    public function edit(string $id): void
+    {
+        $announcement = Database::first("SELECT * FROM important_announcements WHERE id = ? AND deleted_at IS NULL LIMIT 1", [(int)$id]);
+        if (!$announcement) {
+            Session::flash('error', 'ไม่พบประกาศที่ระบุ');
+            $this->redirect(url('admin/announcements'));
+            return;
+        }
+
+        $this->render('admin.announcements.edit', [
+            'title' => 'แก้ไขประกาศสำคัญ: ' . $announcement['title'],
+            'announcement' => $announcement,
+        ], 'layouts.admin');
+    }
+
+    public function update(string $id): void
+    {
+        $announcement = Database::first("SELECT * FROM important_announcements WHERE id = ? AND deleted_at IS NULL LIMIT 1", [(int)$id]);
+        if (!$announcement) {
+            Session::flash('error', 'ไม่พบประกาศที่ระบุ');
+            $this->redirect(url('admin/announcements'));
+            return;
+        }
+
+        $data = $this->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'publication_date' => 'required',
+        ]);
+
+        $attachmentPath = $announcement['attachment_path'];
+        $attachmentName = $announcement['attachment_name'];
+
+        if ($this->request->hasFile('attachment') && !empty($this->request->file('attachment')['tmp_name'])) {
+            try {
+                $uploaded = MediaService::upload($this->request->file('attachment'), 'announcements');
+                $attachmentPath = $uploaded['path'];
+                $attachmentName = $this->request->file('attachment')['name'] ?? 'attachment.pdf';
+            } catch (\Exception $e) {
+                Session::flash('error', 'อัปโหลดไฟล์แนบไม่สำเร็จ: ' . $e->getMessage());
+                $this->redirect(url("admin/announcements/{$id}/edit"));
+                return;
+            }
+        }
+
+        $sql = "UPDATE important_announcements 
+                SET title = ?, content = ?, summary = ?, attachment_path = ?, attachment_name = ?, publication_date = ?, effective_start_date = ?, expiry_date = ?, priority = ?, resolution_no = ?, related_link = ?, status = ?, is_pinned = ?, updated_by = ?, updated_at = NOW() 
+                WHERE id = ?";
+
+        Database::execute($sql, [
+            $data['title'],
+            $data['content'],
+            $this->request->input('summary'),
+            $attachmentPath,
+            $attachmentName,
+            $data['publication_date'],
+            $this->request->input('effective_start_date') ?: null,
+            $this->request->input('expiry_date') ?: null,
+            $this->request->input('priority', 'general'),
+            $this->request->input('resolution_no'),
+            $this->request->input('related_link'),
+            $this->request->input('status', 'published'),
+            (int)($this->request->input('is_pinned') ? 1 : 0),
+            Auth::id(),
+            (int)$id
+        ]);
+
+        AuditService::log('important_announcements', 'update', (string)$id, $announcement, $data);
+        Session::flash('success', 'บันทึกการแก้ไขประกาศสำคัญเรียบร้อยแล้ว');
         $this->redirect(url('admin/announcements'));
     }
 
     public function destroy(string $id): void
     {
-        $a = Database::first("SELECT * FROM announcements WHERE id = ? LIMIT 1", [(int) $id]);
+        $a = Database::first("SELECT * FROM important_announcements WHERE id = ? LIMIT 1", [(int) $id]);
         if ($a) {
-            Database::execute("UPDATE announcements SET deleted_at = NOW() WHERE id = ?", [(int) $id]);
-            AuditService::log('announcements', 'delete', (string)$id, $a);
+            Database::execute("UPDATE important_announcements SET deleted_at = NOW(), updated_by = ? WHERE id = ?", [Auth::id(), (int) $id]);
+            AuditService::log('important_announcements', 'delete', (string)$id, $a);
         }
 
         if ($this->request->isAjax()) {

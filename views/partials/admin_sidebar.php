@@ -50,6 +50,11 @@
             </a>
         </li>
         <li class="admin-nav-item">
+            <a href="<?= url('staff/import') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/staff/import') ? 'active' : '' ?>">
+                <i class="bi bi-file-earmark-arrow-up-fill text-success"></i> <span>นำเข้าข้อมูล Excel/CSV</span>
+            </a>
+        </li>
+        <li class="admin-nav-item">
             <a href="<?= url('member/dashboard') ?>" target="_blank" class="admin-nav-link text-info">
                 <i class="bi bi-box-arrow-up-right"></i> <span>ไปที่ Member Portal</span>
             </a>

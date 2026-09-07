@@ -136,4 +136,71 @@ class StaffController extends Controller
             'reportData' => $reportData,
         ], 'layouts.admin');
     }
+
+    /**
+     * Show Bulk Import Wizard View
+     */
+    public function import(): void
+    {
+        $this->render('staff.import', [
+            'title' => 'ระบบนำเข้าข้อมูลสมาชิกจาก Excel / CSV (Bulk Import Tool)',
+        ], 'layouts.admin');
+    }
+
+    /**
+     * Download Sample CSV Template
+     */
+    public function downloadTemplate(): void
+    {
+        $csvContent = \App\Services\MemberImportService::generateTemplateCsv();
+        header('Content-Type: text/csv; charset=UTF-8');
+        header('Content-Disposition: attachment; filename="rayongcoop_member_template.csv"');
+        header('Pragma: no-cache');
+        header('Expires: 0');
+        echo $csvContent;
+        exit;
+    }
+
+    /**
+     * Handle File Upload & Validation Preview (AJAX)
+     */
+    public function previewImport(): void
+    {
+        if (empty($_FILES['import_file']['tmp_name'])) {
+            $this->response->json(['success' => false, 'message' => 'กรุณาเลือกไฟล์ที่ต้องการนำเข้า'], 400);
+            return;
+        }
+
+        $tmpFile = $_FILES['import_file']['tmp_name'];
+        $fileName = $_FILES['import_file']['name'];
+        $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+        if (!in_array($ext, ['csv', 'txt', 'xlsx', 'xls'])) {
+            $this->response->json(['success' => false, 'message' => 'รองรับเฉพาะไฟล์ประเภท .csv หรือ .txt'], 400);
+            return;
+        }
+
+        $result = \App\Services\MemberImportService::parseAndValidate($tmpFile);
+        $this->response->json($result);
+    }
+
+    /**
+     * Process Confirmed Batch Import (AJAX)
+     */
+    public function processImport(): void
+    {
+        $rowsJson = $this->request->input('rows');
+        $updateDuplicates = (bool)$this->request->input('update_duplicates');
+        $createAccounts = (bool)$this->request->input('create_accounts');
+
+        $rows = is_array($rowsJson) ? $rowsJson : json_decode((string)$rowsJson, true);
+
+        if (empty($rows) || !is_array($rows)) {
+            $this->response->json(['success' => false, 'message' => 'ไม่มีข้อมูลแถวสำหรับนำเข้า'], 400);
+            return;
+        }
+
+        $result = \App\Services\MemberImportService::executeImport($rows, $updateDuplicates, $createAccounts);
+        $this->response->json($result);
+    }
 }

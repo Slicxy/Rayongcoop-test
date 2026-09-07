@@ -229,9 +229,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!fileInput.files.length) return;
 
+        const csrfToken = document.querySelector('input[name="_csrf_token"]')?.value || window.CSRF_TOKEN || '';
         const formData = new FormData();
         formData.append('import_file', fileInput.files[0]);
-        formData.append('_csrf_token', window.CSRF_TOKEN || '');
+        formData.append('_csrf_token', csrfToken);
 
         setPreviewLoading(true);
 
@@ -239,7 +240,8 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'POST',
             body: formData,
             headers: {
-                'X-Requested-With': 'XMLHttpRequest'
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': csrfToken
             }
         })
         .then(res => res.json())
@@ -364,14 +366,16 @@ function executeBatchImport() {
         if (result.isConfirmed) {
             setImportLoading(true);
 
+            const csrfToken = document.querySelector('input[name="_csrf_token"]')?.value || window.CSRF_TOKEN || '';
             fetch("<?= url('staff/import/process') ?>", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': csrfToken
                 },
                 body: JSON.stringify({
-                    _csrf_token: window.CSRF_TOKEN || '',
+                    _csrf_token: csrfToken,
                     rows: parsedRows,
                     update_duplicates: updateDuplicates ? 1 : 0,
                     create_accounts: createAccounts ? 1 : 0

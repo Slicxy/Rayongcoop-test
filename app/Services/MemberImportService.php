@@ -133,7 +133,6 @@ class MemberImportService
         // Get existing member numbers & id cards from DB for duplicate checking
         $existingMembers = Database::query("SELECT member_no, id_card, email FROM members");
         $existingMemberNos = array_flip(array_column($existingMembers, 'member_no'));
-        $existingIdCards = array_flip(array_filter(array_column($existingMembers, 'id_card')));
 
         $headerRow = str_getcsv(array_shift($lines), $delimiter);
         $rows = [];
@@ -159,9 +158,14 @@ class MemberImportService
             $email = trim((string)($cols[8] ?? ''));
             $address = trim((string)($cols[9] ?? ''));
             $joinDate = trim((string)($cols[10] ?? ''));
-            $monthlyShare = (float)($cols[11] ?? 1000);
-            $totalShares = (int)($cols[12] ?? 100);
-            $initialDeposit = (float)($cols[13] ?? 0);
+            $rawMonthlyShare = str_replace([',', ' ', '฿'], '', (string)($cols[11] ?? '1000'));
+            $monthlyShare = is_numeric($rawMonthlyShare) ? (float)$rawMonthlyShare : 1000.0;
+
+            $rawTotalShares = str_replace([',', ' ', 'หุ้น'], '', (string)($cols[12] ?? '100'));
+            $totalShares = is_numeric($rawTotalShares) ? (int)$rawTotalShares : 100;
+
+            $rawInitialDeposit = str_replace([',', ' ', '฿'], '', (string)($cols[13] ?? '0'));
+            $initialDeposit = is_numeric($rawInitialDeposit) ? (float)$rawInitialDeposit : 0.0;
 
             $status = 'valid';
             $errors = [];
@@ -243,6 +247,17 @@ class MemberImportService
     }
 
     /**
+     * Generate UUID v4
+     */
+    private static function generateUuid(): string
+    {
+        $data = random_bytes(16);
+        $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
+        $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
+        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+    }
+
+    /**
      * Execute batch database import
      */
     public static function executeImport(array $rows, bool $updateDuplicates = true, bool $createLoginAccounts = true): array
@@ -281,9 +296,9 @@ class MemberImportService
                             address = ?, updated_at = NOW() 
                          WHERE id = ?",
                         [
-                            $r['prefix'], $r['first_name'], $r['last_name'], $r['id_card'] ?? null,
-                            $r['department'], $r['position'] ?? null, $r['phone'] ?? null, $r['email'] ?? null,
-                            $r['address'] ?? null, $existing['id']
+                            $r['prefix'], $r['first_name'], $r['last_name'], $r['id_card'] ?? '',
+                            $r['department'], $r['position'] ?? '', $r['phone'] ?? '', $r['email'] ?? '',
+                            $r['address'] ?? '', $existing['id']
                         ]
                     );
                     $memberId = (int)$existing['id'];
@@ -300,13 +315,15 @@ class MemberImportService
                         if ($existingUser) {
                             $userId = (int)$existingUser['id'];
                         } else {
+                            $userUuid = self::generateUuid();
                             $passwordHash = password_hash('coop123', PASSWORD_DEFAULT);
                             $userId = Database::insert(
-                                "INSERT INTO users (name, username, email, password, status, created_at) VALUES (?, ?, ?, ?, 'active', NOW())",
-                                ["{$r['prefix']}{$r['first_name']} {$r['last_name']}", $username, $email, $passwordHash]
+                                "INSERT INTO users (uuid, name, username, email, password, status, two_factor_enabled, created_at, updated_at) 
+                                 VALUES (?, ?, ?, ?, ?, 'active', 0, NOW(), NOW())",
+                                [$userUuid, "{$r['prefix']}{$r['first_name']} {$r['last_name']}", $username, $email, $passwordHash]
                             );
 
-                            // Assign 'member' role (role_id = 3 or slug = member)
+                            // Assign 'member' role (role_id = 12 or slug = member)
                             $role = Database::first("SELECT id FROM roles WHERE slug = 'member' LIMIT 1");
                             if ($role) {
                                 Database::execute("INSERT IGNORE INTO user_roles (user_id, role_id) VALUES (?, ?)", [$userId, $role['id']]);
@@ -316,13 +333,15 @@ class MemberImportService
                     }
 
                     // Insert new member
+                    $memberUuid = self::generateUuid();
+                    $joinDate = !empty($r['join_date']) ? $r['join_date'] : date('Y-m-d');
                     $memberId = Database::insert(
-                        "INSERT INTO members (user_id, member_no, prefix, first_name, last_name, id_card, department, position, phone, email, address, join_date, status, created_at) 
-                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active', NOW())",
+                        "INSERT INTO members (uuid, user_id, member_no, prefix, first_name, last_name, id_card, department, position, phone, email, address, join_date, status, created_at, updated_at) 
+                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active', NOW(), NOW())",
                         [
-                            $userId, $memberNo, $r['prefix'], $r['first_name'], $r['last_name'],
-                            $r['id_card'] ?? null, $r['department'], $r['position'] ?? null, $r['phone'] ?? null,
-                            $r['email'] ?? null, $r['address'] ?? null, $r['join_date'] ?? date('Y-m-d')
+                            $memberUuid, $userId, $memberNo, $r['prefix'], $r['first_name'], $r['last_name'],
+                            $r['id_card'] ?? '', $r['department'], $r['position'] ?? '', $r['phone'] ?? '',
+                            $r['email'] ?? '', $r['address'] ?? '', $joinDate
                         ]
                     );
                     $importedCount++;
@@ -330,15 +349,16 @@ class MemberImportService
 
                 // Insert / Update Member Shares
                 $shareTotalAmount = $r['total_shares'] * 10;
+                $joinDate = !empty($r['join_date']) ? $r['join_date'] : date('Y-m-d');
                 Database::execute(
-                    "INSERT INTO member_shares (member_id, monthly_share, total_shares, total_amount, last_payment_date, updated_at) 
-                     VALUES (?, ?, ?, ?, NOW(), NOW())
+                    "INSERT INTO member_shares (member_id, monthly_share, total_shares, share_value, total_amount, start_date, last_payment_date, updated_at) 
+                     VALUES (?, ?, ?, 10.00, ?, ?, NOW(), NOW()) 
                      ON DUPLICATE KEY UPDATE 
                         monthly_share = VALUES(monthly_share), 
                         total_shares = VALUES(total_shares), 
                         total_amount = VALUES(total_amount), 
                         updated_at = NOW()",
-                    [$memberId, $r['monthly_share'], $r['total_shares'], $shareTotalAmount]
+                    [$memberId, $r['monthly_share'], $r['total_shares'], $shareTotalAmount, $joinDate]
                 );
 
                 // Insert Deposit Account if initial deposit > 0 and no account exists
@@ -347,9 +367,9 @@ class MemberImportService
                     if (!$hasDeposit) {
                         $accNo = '01-0' . str_pad((string)$memberId, 5, '0', STR_PAD_LEFT);
                         Database::insert(
-                            "INSERT INTO deposit_accounts (member_id, account_no, account_type, account_name, interest_rate, balance, accrued_interest, open_date, status, created_at) 
-                             VALUES (?, ?, 'special_savings', ?, 2.75, ?, 0, NOW(), 'active', NOW())",
-                            [$memberId, $accNo, "บัญชีเงินฝาก {$r['prefix']}{$r['first_name']} {$r['last_name']}", $r['initial_deposit']]
+                            "INSERT INTO deposit_accounts (member_id, account_no, account_type, account_name, interest_rate, balance, accrued_interest, open_date, status, created_at, updated_at) 
+                             VALUES (?, ?, 'special_savings', ?, 2.75, ?, 0, ?, 'active', NOW(), NOW())",
+                            [$memberId, $accNo, "บัญชีเงินฝาก {$r['prefix']}{$r['first_name']} {$r['last_name']}", $r['initial_deposit'], $joinDate]
                         );
                     }
                 }

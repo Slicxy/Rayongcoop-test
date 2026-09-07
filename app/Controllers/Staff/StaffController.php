@@ -203,4 +203,77 @@ class StaffController extends Controller
         $result = \App\Services\MemberImportService::executeImport($rows, $updateDuplicates, $createAccounts);
         $this->response->json($result);
     }
+
+    /**
+     * Show Monthly Billing and Receipts Management View
+     */
+    public function billing(): void
+    {
+        $year = $this->request->query('year') ? (int)$this->request->query('year') : null;
+        $month = $this->request->query('month') ? (int)$this->request->query('month') : null;
+        $search = trim((string)$this->request->query('search', ''));
+
+        $sql = "SELECT r.*, m.member_no, m.prefix, m.first_name, m.last_name, m.department 
+                FROM receipts r 
+                JOIN members m ON r.member_id = m.id 
+                WHERE 1=1";
+        $params = [];
+
+        if ($year) {
+            $sql .= " AND r.billing_year = ?";
+            $params[] = $year;
+        }
+        if ($month) {
+            $sql .= " AND r.billing_month = ?";
+            $params[] = $month;
+        }
+        if ($search !== '') {
+            $sql .= " AND (r.receipt_no LIKE ? OR m.member_no LIKE ? OR m.first_name LIKE ? OR m.last_name LIKE ?)";
+            $params[] = "%{$search}%";
+            $params[] = "%{$search}%";
+            $params[] = "%{$search}%";
+            $params[] = "%{$search}%";
+        }
+
+        $sql .= " ORDER BY r.billing_year DESC, r.billing_month DESC, r.id DESC";
+
+        $receipts = Database::query($sql, $params);
+
+        // Overall stats
+        $totalShareSum = array_sum(array_column($receipts, 'share_amount'));
+        $totalLoanSum = array_sum(array_column($receipts, 'loan_principal')) + array_sum(array_column($receipts, 'loan_interest'));
+        $totalGrandSum = array_sum(array_column($receipts, 'total_amount'));
+
+        $this->render('staff.billing', [
+            'title' => 'ระบบประมวลผลใบเสร็จรับเงินรายเดือน (Billing Engine)',
+            'receipts' => $receipts,
+            'selectedYear' => $year,
+            'selectedMonth' => $month,
+            'search' => $search,
+            'totalCount' => count($receipts),
+            'totalShareSum' => $totalShareSum,
+            'totalLoanSum' => $totalLoanSum,
+            'totalGrandSum' => $totalGrandSum,
+        ], 'layouts.admin');
+    }
+
+    /**
+     * Batch Generate Monthly Receipts for All Members
+     */
+    public function generateBatchBilling(): void
+    {
+        $year = (int)$this->request->input('billing_year', (string)date('Y'));
+        $month = (int)$this->request->input('billing_month', (string)date('n'));
+
+        $res = \App\Services\ReceiptService::batchGenerateMonthlyReceipts($year, $month);
+
+        if ($res['success']) {
+            Session::flash('success', $res['message']);
+        } else {
+            Session::flash('error', $res['message'] ?? 'เกิดข้อผิดพลาดในการประมวลผล');
+        }
+
+        $this->redirect(url("staff/billing?year={$year}&month={$month}"));
+    }
 }
+

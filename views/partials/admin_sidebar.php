@@ -45,6 +45,11 @@
             </a>
         </li>
         <li class="admin-nav-item">
+            <a href="<?= url('staff/billing') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/staff/billing') ? 'active' : '' ?>">
+                <i class="bi bi-receipt-cutoff text-warning"></i> <span>ออกใบเสร็จรายเดือน</span>
+            </a>
+        </li>
+        <li class="admin-nav-item">
             <a href="<?= url('staff/reports') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/staff/reports') ? 'active' : '' ?>">
                 <i class="bi bi-file-earmark-spreadsheet"></i> <span>ศูนย์รายงานและส่งออก</span>
             </a>

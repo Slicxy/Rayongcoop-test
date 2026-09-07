@@ -70,6 +70,9 @@ $router->get('/dashboard', 'Admin\\DashboardController@index', [AuthMiddleware::
 
 $router->get('/portal', 'Member\\MemberPortalController@dashboard', [AuthMiddleware::class]);
 
+// Public QR Code Receipt Verification
+$router->get('/verify-receipt/{token}', 'PublicReceiptController@verify');
+
 /*
 |--------------------------------------------------------------------------
 | Protected Member Portal Routes
@@ -90,6 +93,7 @@ $router->group(['prefix' => 'member', 'middleware' => [AuthMiddleware::class]], 
     $r->get('/beneficiaries', 'Member\\MemberPortalController@beneficiaries');
     $r->post('/beneficiaries/save', 'Member\\MemberPortalController@saveBeneficiary', [CsrfMiddleware::class]);
     $r->get('/receipts', 'Member\\MemberPortalController@receipts');
+    $r->get('/receipts/print/{no}', 'Member\\MemberPortalController@printReceipt');
     $r->get('/notifications', 'Member\\MemberPortalController@notifications');
     $r->post('/notifications/read-all', 'Member\\MemberPortalController@markAllNotificationsRead');
     $r->get('/online-services', 'Member\\MemberPortalController@onlineServices');
@@ -112,6 +116,8 @@ $router->group(['prefix' => 'staff', 'middleware' => [AuthMiddleware::class]], f
     $r->post('/loans/review', 'Staff\\StaffController@reviewLoan', [CsrfMiddleware::class]);
     $r->get('/welfare', 'Staff\\StaffController@welfare');
     $r->get('/reports', 'Staff\\StaffController@reports');
+    $r->get('/billing', 'Staff\\StaffController@billing');
+    $r->post('/billing/generate', 'Staff\\StaffController@generateBatchBilling', [CsrfMiddleware::class]);
     $r->get('/import', 'Staff\\StaffController@import');
     $r->get('/import/template', 'Staff\\StaffController@downloadTemplate');
     $r->post('/import/preview', 'Staff\\StaffController@previewImport', [CsrfMiddleware::class]);

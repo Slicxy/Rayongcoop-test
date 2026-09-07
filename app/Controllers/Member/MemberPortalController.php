@@ -316,15 +316,47 @@ class MemberPortalController extends Controller
      */
     public function receipts(): void
     {
-        $receipts = MemberPortalService::getReceipts($this->memberId);
+        $year = (int)$this->request->query('year', (string)date('Y'));
+        $month = $this->request->query('month') ? (int)$this->request->query('month') : null;
+
+        $receipts = \App\Services\ReceiptService::getMemberReceipts($this->memberId, $year ?: null, $month);
         $notifications = MemberPortalService::getNotifications($this->memberId);
 
+        // Calculate yearly stats
+        $yearlyReceipts = \App\Services\ReceiptService::getMemberReceipts($this->memberId, $year ?: (int)date('Y'), null);
+        $stats = [
+            'total_paid' => array_sum(array_column($yearlyReceipts, 'total_amount')),
+            'share_paid' => array_sum(array_column($yearlyReceipts, 'share_amount')),
+            'loan_paid' => array_sum(array_column($yearlyReceipts, 'loan_principal')) + array_sum(array_column($yearlyReceipts, 'loan_interest')),
+        ];
+
         $this->render('member.receipts', [
-            'title' => 'ใบเสร็จรับเงิน (E-Receipts)',
+            'title' => 'ใบเสร็จรับเงินประจำเดือน (Electronic Receipts)',
             'member' => $this->member,
             'receipts' => $receipts,
+            'stats' => $stats,
+            'selectedYear' => $year,
+            'selectedMonth' => $month,
             'unreadCount' => $notifications['unread_count'],
         ], 'layouts.member');
+    }
+
+    /**
+     * Print e-Receipt (Standard A4 Page)
+     */
+    public function printReceipt(string $receiptNo): void
+    {
+        $receipt = \App\Services\ReceiptService::getReceiptDetails($receiptNo);
+        if (!$receipt || (int)$receipt['member_id'] !== $this->memberId) {
+            Session::flash('error', 'ไม่พบใบเสร็จรับเงินที่ต้องการพิมพ์ หรือไม่มีสิทธิ์เข้าถึง');
+            $this->redirect(url('member/receipts'));
+            return;
+        }
+
+        $this->render('member.receipt_print', [
+            'receipt' => $receipt,
+            'title' => "ใบเสร็จรับเงิน {$receipt['receipt_no']}"
+        ]);
     }
 
     /**

@@ -10,6 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
+    <!-- html2pdf.js for client-side direct PDF generation & download -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -31,7 +34,7 @@
             justify-content: space-between;
             align-items: center;
             background: #ffffff;
-            padding: 12px 20px;
+            padding: 14px 20px;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
@@ -55,6 +58,13 @@
         }
         .btn-primary:hover {
             background-color: #0052a3;
+        }
+        .btn-pdf {
+            background-color: #dc2626;
+            color: #ffffff;
+        }
+        .btn-pdf:hover {
+            background-color: #b91c1c;
         }
         .btn-secondary {
             background-color: #e2e8f0;
@@ -299,6 +309,23 @@
             color: #94a3b8;
         }
 
+        /* Loading Indicator */
+        #pdfLoadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: #ffffff;
+            font-family: 'Sarabun', sans-serif;
+            text-align: center;
+        }
+
         /* Print Media Styles */
         @media print {
             body {
@@ -325,24 +352,36 @@
 </head>
 <body>
 
-    <!-- Action Bar (Hidden on Print) -->
-    <div class="no-print-bar">
-        <div>
-            <span style="font-weight: 700; color: #0066CC;"><i class="bi bi-file-earmark-check-fill me-1"></i> เอกสารใบเสร็จอิเล็กทรอนิกส์</span>
-            <span style="color: #64748b; font-size: 13px; margin-left: 8px;">(สถานะ: ชำระแล้ว)</span>
-        </div>
-        <div style="display: flex; gap: 8px;">
-            <button type="button" class="btn-action btn-primary" onclick="window.print()">
-                <i class="bi bi-printer-fill"></i> พิมพ์ / บันทึกเป็น PDF
-            </button>
-            <a href="<?= url('member/receipts') ?>" class="btn-action btn-secondary">
-                <i class="bi bi-arrow-left"></i> ย้อนกลับ
-            </a>
+    <!-- Loading Overlay -->
+    <div id="pdfLoadingOverlay">
+        <div style="background: #ffffff; color: #0f172a; padding: 24px 36px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+            <div style="font-size: 28px; margin-bottom: 8px; color: #dc2626;"><i class="bi bi-file-earmark-pdf-fill"></i></div>
+            <div style="font-size: 16px; font-weight: 700; margin-bottom: 4px;">กำลังสร้างไฟล์ PDF...</div>
+            <div style="font-size: 13px; color: #64748b;">กรุณารอสักครู่ ระบบกำลังดาวน์โหลดเอกสาร</div>
         </div>
     </div>
 
-    <!-- Main Receipt Body -->
-    <div class="receipt-container">
+    <!-- Action Bar (Hidden on Print) -->
+    <div class="no-print-bar">
+        <div>
+            <span style="font-weight: 700; color: #0066CC;"><i class="bi bi-file-earmark-check-fill me-1"></i> ใบเสร็จรับเงินอิเล็กทรอนิกส์ (e-Receipt)</span>
+            <span style="color: #64748b; font-size: 13px; margin-left: 8px;">เลขที่: <?= e($receipt['receipt_no']) ?></span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn-action btn-pdf" id="btnDownloadPdf" onclick="downloadPDF()">
+                <i class="bi bi-file-earmark-pdf-fill"></i> ดาวน์โหลดไฟล์ PDF
+            </button>
+            <button type="button" class="btn-action btn-primary" onclick="window.print()">
+                <i class="bi bi-printer-fill"></i> พิมพ์เอกสาร
+            </button>
+            <button type="button" class="btn-action btn-secondary" onclick="window.history.back()">
+                <i class="bi bi-arrow-left"></i> ย้อนกลับ
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Receipt Body (Captured for PDF) -->
+    <div class="receipt-container" id="receiptContent">
         <div class="watermark">RAYONG COOP</div>
 
         <!-- Header -->
@@ -502,7 +541,7 @@
                     $verifyUrl = url('verify-receipt/' . $receipt['qr_verify_token']);
                     $qrImgSrc = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . urlencode($verifyUrl);
                 ?>
-                <img src="<?= $qrImgSrc ?>" alt="QR Verification" class="qr-img">
+                <img src="<?= $qrImgSrc ?>" alt="QR Verification" class="qr-img" crossOrigin="anonymous">
                 <span class="qr-label">สแกนตรวจสอบความถูกต้อง</span>
             </div>
 
@@ -519,5 +558,38 @@
         </div>
     </div>
 
+    <script>
+    function downloadPDF() {
+        const overlay = document.getElementById('pdfLoadingOverlay');
+        overlay.style.display = 'flex';
+
+        const element = document.getElementById('receiptContent');
+        const filename = 'Receipt_<?= e($receipt['receipt_no']) ?>_<?= $receipt['billing_month'] ?>-<?= $receipt['thai_year'] ?>.pdf';
+
+        const opt = {
+            margin: [8, 8, 8, 8],
+            filename: filename,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, logging: false },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            overlay.style.display = 'none';
+        }).catch(err => {
+            console.error('PDF generation error:', err);
+            overlay.style.display = 'none';
+            alert('เกิดข้อผิดพลาดในการสร้าง PDF กรุณาใช้ปุ่มพิมพ์เอกสารและเลือก Save as PDF แทน');
+        });
+    }
+
+    // Auto trigger download if URL parameter ?download=pdf is present
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('download') === 'pdf' || urlParams.get('download') === '1') {
+            setTimeout(downloadPDF, 600);
+        }
+    });
+    </script>
 </body>
 </html>

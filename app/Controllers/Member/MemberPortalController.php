@@ -342,13 +342,16 @@ class MemberPortalController extends Controller
     }
 
     /**
-     * Print e-Receipt (Standard A4 Page)
+     * Print e-Receipt (Standard A4 Page & PDF Generator)
      */
     public function printReceipt(string $receiptNo): void
     {
         $receipt = \App\Services\ReceiptService::getReceiptDetails($receiptNo);
-        if (!$receipt || (int)$receipt['member_id'] !== $this->memberId) {
-            Session::flash('error', 'ไม่พบใบเสร็จรับเงินที่ต้องการพิมพ์ หรือไม่มีสิทธิ์เข้าถึง');
+        $user = \App\Core\Auth::user();
+        $isStaffOrAdmin = $user && in_array($user['role_slug'] ?? '', ['super_admin', 'staff', 'admin']);
+
+        if (!$receipt || (!$isStaffOrAdmin && (int)$receipt['member_id'] !== $this->memberId)) {
+            \App\Core\Session::flash('error', 'ไม่พบใบเสร็จรับเงินที่ต้องการพิมพ์ หรือไม่มีสิทธิ์เข้าถึง');
             $this->redirect(url('member/receipts'));
             return;
         }

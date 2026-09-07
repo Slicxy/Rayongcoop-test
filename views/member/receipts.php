@@ -113,23 +113,11 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="d-flex justify-content-center gap-1">
-                                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3" 
-                                            onclick="viewReceipt(
-                                                '<?= e($r['receipt_no']) ?>', 
-                                                '<?= $r['billing_month'] ?>/<?= (int)$r['billing_year'] + 543 ?>', 
-                                                '<?= date('d/m/Y', strtotime($r['issue_date'])) ?>',
-                                                '<?= number_format((float)$r['total_amount'], 2) ?>', 
-                                                '<?= number_format((float)$r['share_amount'], 2) ?>', 
-                                                '<?= number_format((float)$r['loan_principal'], 2) ?>', 
-                                                '<?= number_format((float)$r['loan_interest'], 2) ?>', 
-                                                '<?= number_format((float)$r['deposit_amount'], 2) ?>',
-                                                '<?= url('member/receipts/print/' . $r['receipt_no']) ?>',
-                                                '<?= $r['qr_verify_token'] ?? '' ?>'
-                                            )">
-                                            <i class="bi bi-eye me-1"></i> ดูรายละเอียด
-                                        </button>
-                                        <a href="<?= url('member/receipts/print/' . $r['receipt_no']) ?>" target="_blank" class="btn btn-primary btn-sm rounded-pill px-3" title="พิมพ์หรือดาวน์โหลด PDF">
-                                            <i class="bi bi-printer-fill me-1"></i> พิมพ์ / PDF
+                                        <a href="<?= url('member/receipts/print/' . $r['receipt_no']) ?>" target="_blank" class="btn btn-primary btn-sm rounded-pill px-3" title="เปิดดูเอกสารทางการ">
+                                            <i class="bi bi-eye-fill me-1"></i> ดูใบเสร็จ
+                                        </a>
+                                        <a href="<?= url('member/receipts/print/' . $r['receipt_no'] . '?download=pdf') ?>" target="_blank" class="btn btn-outline-danger btn-sm rounded-pill px-3" title="ดาวน์โหลดไฟล์ PDF ทันที">
+                                            <i class="bi bi-file-earmark-pdf-fill me-1"></i> PDF
                                         </a>
                                     </div>
                                 </td>
@@ -197,8 +185,11 @@
             </div>
             <div class="modal-footer bg-light border-top-0 p-3">
                 <button type="button" class="btn btn-outline-secondary rounded-pill px-3" data-bs-dismiss="modal">ปิด</button>
-                <a id="rcpPrintBtn" href="#" target="_blank" class="btn btn-primary rounded-pill px-4 fw-semibold">
-                    <i class="bi bi-printer-fill me-1"></i> เปิดหน้าพิมพ์มาตรฐาน A4 / PDF
+                <a id="rcpPdfBtn" href="#" target="_blank" class="btn btn-danger rounded-pill px-3 fw-semibold">
+                    <i class="bi bi-file-earmark-pdf-fill me-1"></i> ดาวน์โหลด PDF (.pdf)
+                </a>
+                <a id="rcpPrintBtn" href="#" target="_blank" class="btn btn-primary rounded-pill px-3 fw-semibold">
+                    <i class="bi bi-printer-fill me-1"></i> พิมพ์เอกสาร A4
                 </a>
             </div>
         </div>
@@ -216,6 +207,7 @@ function viewReceipt(no, period, date, total, share, lp, li, dep, printUrl, qrTo
     document.getElementById('rcpDep').textContent = dep + ' บาท';
     document.getElementById('rcpTotal').textContent = '฿' + total;
     document.getElementById('rcpPrintBtn').href = printUrl;
+    document.getElementById('rcpPdfBtn').href = printUrl + '?download=pdf';
 
     if (qrToken) {
         const verifyUrl = "<?= url('verify-receipt/') ?>" + qrToken;

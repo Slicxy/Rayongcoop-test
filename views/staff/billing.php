@@ -146,9 +146,14 @@
                                         ฿<?= number_format((float)$r['total_amount'], 2) ?>
                                     </td>
                                     <td class="text-center">
-                                        <a href="<?= url('member/receipts/print/' . $r['receipt_no']) ?>" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill px-3" title="ดูและพิมพ์ใบเสร็จ">
-                                            <i class="bi bi-printer me-1"></i> พิมพ์ / PDF
-                                        </a>
+                                        <div class="d-flex justify-content-center gap-1">
+                                            <a href="<?= url('member/receipts/print/' . $r['receipt_no']) ?>" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill px-2" title="เปิดดูเอกสารทางการ">
+                                                <i class="bi bi-eye me-1"></i> ดูใบเสร็จ
+                                            </a>
+                                            <a href="<?= url('member/receipts/print/' . $r['receipt_no'] . '?download=pdf') ?>" target="_blank" class="btn btn-outline-danger btn-sm rounded-pill px-2" title="ดาวน์โหลดไฟล์ PDF ทันที">
+                                                <i class="bi bi-file-earmark-pdf-fill me-1"></i> PDF
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

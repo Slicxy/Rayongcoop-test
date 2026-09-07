@@ -98,6 +98,11 @@
             </a>
         </li>
         <li class="admin-nav-item">
+            <a href="<?= url('admin/surveys') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/admin/surveys') ? 'active' : '' ?>">
+                <i class="bi bi-ui-checks-grid text-success"></i> <span>แบบสำรวจ & โพลล์ (Surveys)</span>
+            </a>
+        </li>
+        <li class="admin-nav-item">
             <a href="<?= url('admin/contact-messages') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/admin/contact-messages') ? 'active' : '' ?>">
                 <i class="bi bi-chat-left-text-fill text-primary"></i> <span>ข้อความติดต่อจากผู้ใช้งาน</span>
             </a>

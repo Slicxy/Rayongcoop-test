@@ -92,21 +92,21 @@
                 </a>
             </div>
             <div class="col">
-                <a href="<?= url('loan-readiness') ?>" class="quick-service-item">
-                    <div class="quick-service-icon" style="background-color: #FFF8E1; color: #B78103;"><i class="bi bi-check2-square"></i></div>
-                    <span class="quick-service-label">เช็คสิทธิ์กู้</span>
-                </a>
-            </div>
-            <div class="col">
                 <a href="<?= url('calculator') ?>" class="quick-service-item">
                     <div class="quick-service-icon"><i class="bi bi-calculator"></i></div>
                     <span class="quick-service-label">คำนวณเงินกู้</span>
                 </a>
             </div>
             <div class="col">
-                <a href="<?= url('calendar') ?>" class="quick-service-item">
-                    <div class="quick-service-icon" style="background-color: #EEF2FF; color: #4338CA;"><i class="bi bi-calendar3"></i></div>
-                    <span class="quick-service-label">ปฏิทินกิจกรรม</span>
+                <a href="<?= url('rates') ?>" class="quick-service-item">
+                    <div class="quick-service-icon"><i class="bi bi-percent"></i></div>
+                    <span class="quick-service-label">อัตราดอกเบี้ย</span>
+                </a>
+            </div>
+            <div class="col">
+                <a href="<?= url('welfare') ?>" class="quick-service-item">
+                    <div class="quick-service-icon"><i class="bi bi-heart-pulse"></i></div>
+                    <span class="quick-service-label">สวัสดิการ</span>
                 </a>
             </div>
             <div class="col">

@@ -243,6 +243,32 @@ if (!function_exists('thai_date')) {
 }
 
 /**
+ * คืนชื่อเดือนภาษาไทยแบบย่อจากลำดับเดือน 1-12
+ */
+if (!function_exists('thai_month')) {
+    function thai_month(int $month): string
+    {
+        $months = [
+            1 => 'ม.ค.', 2 => 'ก.พ.', 3 => 'มี.ค.', 4 => 'เม.ย.',
+            5 => 'พ.ค.', 6 => 'มิ.ย.', 7 => 'ก.ค.', 8 => 'ส.ค.',
+            9 => 'ก.ย.', 10 => 'ต.ค.', 11 => 'พ.ย.', 12 => 'ธ.ค.',
+        ];
+
+        return $months[$month] ?? '';
+    }
+}
+
+/**
+ * อ่านข้อความแจ้งเตือนครั้งเดียวจาก session
+ */
+if (!function_exists('flash')) {
+    function flash(string $key, mixed $default = null): mixed
+    {
+        return Session::getFlash($key, $default);
+    }
+}
+
+/**
  * JSON Response helper
  */
 if (!function_exists('json_response')) {

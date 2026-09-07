@@ -28,28 +28,51 @@
                                 <div class="col-lg-5 d-none d-lg-block">
                                     <div class="hero-highlight-glass">
                                         <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom border-white-20">
-                                            <div class="fw-bold text-white fs-6"><i class="bi bi-stars text-warning me-1"></i> จุดเด่นทางการเงิน</div>
-                                            <span class="badge bg-white text-navy px-2 py-1 rounded-pill small fw-bold">อัปเดตล่าสุด</span>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="d-flex align-items-center justify-content-center rounded-circle bg-warning bg-opacity-20 text-warning" style="width: 26px; height: 26px; font-size: 0.85rem;">
+                                                    <i class="bi bi-graph-up-arrow"></i>
+                                                </div>
+                                                <span class="fw-bold text-white fs-6">จุดเด่นทางการเงิน</span>
+                                            </div>
+                                            <span class="badge bg-white bg-opacity-20 text-white border border-white border-opacity-25 px-2.5 py-1 rounded-pill small fw-normal">
+                                                <i class="bi bi-clock-history me-1"></i> อัปเดตล่าสุด
+                                            </span>
                                         </div>
                                         <div class="row g-3">
                                             <div class="col-6">
-                                                <div class="hero-stat-card text-center">
-                                                    <div class="small text-white-80">เงินฝากออมทรัพย์พิเศษ</div>
-                                                    <div class="fs-2 fw-bold text-gold my-1">3.10%</div>
-                                                    <div class="small text-white-70">ต่อปี ปลอดภาษี</div>
+                                                <div class="hero-stat-card deposit-card text-center">
+                                                    <div class="d-flex align-items-center justify-content-center gap-1 small text-white-90 mb-1">
+                                                        <i class="bi bi-piggy-bank text-warning"></i>
+                                                        <span>เงินฝากออมทรัพย์พิเศษ</span>
+                                                    </div>
+                                                    <div class="hero-stat-rate text-warning my-1">
+                                                        3.10<span class="fs-6 fw-bold ms-1">%</span>
+                                                    </div>
+                                                    <div class="hero-stat-tag">
+                                                        ต่อปี • ปลอดภาษี
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-6">
-                                                <div class="hero-stat-card text-center">
-                                                    <div class="small text-white-80">สินเชื่อสามัญ</div>
-                                                    <div class="fs-2 fw-bold text-white my-1">4.50%</div>
-                                                    <div class="small text-white-70">ต่อปี ลดต้นลดดอก</div>
+                                                <div class="hero-stat-card loan-card text-center">
+                                                    <div class="d-flex align-items-center justify-content-center gap-1 small text-white-90 mb-1">
+                                                        <i class="bi bi-cash-stack text-info"></i>
+                                                        <span>สินเชื่อสามัญ</span>
+                                                    </div>
+                                                    <div class="hero-stat-rate text-white my-1">
+                                                        4.50<span class="fs-6 fw-bold text-info ms-1">%</span>
+                                                    </div>
+                                                    <div class="hero-stat-tag">
+                                                        ต่อปี • ลดต้นลดดอก
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="mt-3 pt-3 border-top border-white-20 d-flex justify-content-between align-items-center">
-                                            <small class="text-white-90"><i class="bi bi-shield-check text-warning me-1"></i> มั่นคง โปร่งใส เพื่อสมาชิก</small>
-                                            <a href="<?= url('eservice') ?>" class="btn btn-sm btn-gold text-navy fw-bold px-3 shadow-sm rounded-pill">
+                                            <small class="text-white-80 d-flex align-items-center gap-1">
+                                                <i class="bi bi-shield-check text-warning"></i> มั่นคง โปร่งใส เพื่อสมาชิก
+                                            </small>
+                                            <a href="<?= url('eservice') ?>" class="btn btn-sm btn-gold text-navy fw-bold px-3 py-1 shadow-sm rounded-pill">
                                                 เข้าสู่ระบบ E-Service <i class="bi bi-chevron-right ms-1"></i>
                                             </a>
                                         </div>

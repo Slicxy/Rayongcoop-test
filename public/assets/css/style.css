@@ -356,27 +356,66 @@ a:hover {
 
 /* Glass Highlights Card (Right Column) */
 .hero-highlight-glass {
-    background: rgba(255, 255, 255, 0.10);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.20);
-    border-radius: 20px;
-    padding: 24px;
-    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 22px;
+    padding: 22px 24px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
 }
 
 .hero-stat-card {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 16px 12px;
     transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .hero-stat-card:hover {
-    background: rgba(255, 255, 255, 0.14);
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.hero-stat-card.deposit-card {
+    background: linear-gradient(180deg, rgba(245, 158, 11, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%);
+    border: 1px solid rgba(245, 158, 11, 0.30);
+}
+
+.hero-stat-card.deposit-card:hover {
+    border-color: rgba(245, 158, 11, 0.50);
+    background: linear-gradient(180deg, rgba(245, 158, 11, 0.20) 0%, rgba(255, 255, 255, 0.07) 100%);
+}
+
+.hero-stat-card.loan-card {
+    background: linear-gradient(180deg, rgba(56, 189, 248, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.30);
+}
+
+.hero-stat-card.loan-card:hover {
+    border-color: rgba(56, 189, 248, 0.50);
+    background: linear-gradient(180deg, rgba(56, 189, 248, 0.20) 0%, rgba(255, 255, 255, 0.07) 100%);
+}
+
+.hero-stat-rate {
+    font-size: 2.15rem;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+.hero-stat-tag {
+    display: inline-block;
+    font-size: 0.74rem;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.22);
+    color: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.10);
 }
 
 /* Swiper Controls */

@@ -180,11 +180,14 @@ $portalName = match($authRole) {
                                     <div class="p-3 bg-light-blue rounded-4 border h-100 d-flex flex-column justify-content-between">
                                         <div>
                                             <h6 class="fw-bold text-navy mb-2"><i class="bi bi-calculator me-1 text-warning"></i> เครื่องมือช่วยสมาชิก</h6>
-                                            <p class="small text-muted mb-3">จำลองการผ่อนชำระรายเดือน คำนวณดอกเบี้ยแบบลดต้นลดดอก และตรวจเช็คเอกสารยื่นกู้</p>
+                                            <p class="small text-muted mb-3">จำลองการผ่อนชำระรายเดือน และประมาณการเงินปันผล-เฉลี่ยคืนล่วงหน้า</p>
                                         </div>
                                         <div class="d-flex flex-column gap-2">
                                             <a href="<?= url('calculator') ?>" class="btn btn-sm btn-warning text-navy fw-bold w-100 rounded-pill shadow-sm">
                                                 <i class="bi bi-calculator me-1"></i> คำนวณเงินกู้ทันที
+                                            </a>
+                                            <a href="<?= url('dividend-estimator') ?>" class="btn btn-sm btn-primary fw-medium w-100 rounded-pill">
+                                                <i class="bi bi-pie-chart-fill me-1"></i> ประมาณการเงินปันผล
                                             </a>
                                             <a href="<?= url('loan-readiness') ?>" class="btn btn-sm btn-outline-primary fw-medium w-100 rounded-pill">
                                                 <i class="bi bi-clipboard-check me-1"></i> รายการตรวจความพร้อม
@@ -303,12 +306,17 @@ $portalName = match($authRole) {
                                 <div class="col-md-4">
                                     <div class="p-3 bg-light-blue rounded-4 border h-100 d-flex flex-column justify-content-between">
                                         <div>
-                                            <h6 class="fw-bold text-navy mb-2"><i class="bi bi-question-circle-fill me-1 text-warning"></i> คำถามที่พบบ่อย (FAQs)</h6>
-                                            <p class="small text-muted mb-3">รวบรวมคำถามและข้อสงสัยเกี่ยวกับการสมัครสมาชิก การกู้เงิน และการฝากเงิน</p>
+                                            <h6 class="fw-bold text-navy mb-2"><i class="bi bi-chat-heart-fill me-1 text-primary"></i> เสียงสะท้อนสมาชิก & FAQs</h6>
+                                            <p class="small text-muted mb-3">ร่วมตอบแบบสำรวจความพึงพอใจเพื่อพัฒนาบริการ หรือค้นหาคำตอบข้อสงสัยที่พบบ่อย</p>
                                         </div>
-                                        <a href="<?= url('faqs') ?>" class="btn btn-sm btn-outline-primary w-100 fw-medium rounded-pill">
-                                            <i class="bi bi-search me-1"></i> ดูคำถามที่พบบ่อย
-                                        </a>
+                                        <div class="d-flex flex-column gap-2">
+                                            <a href="<?= url('surveys/member-satisfaction-2569') ?>" class="btn btn-sm btn-primary fw-medium w-100 rounded-pill shadow-sm">
+                                                <i class="bi bi-ui-checks me-1"></i> ทำแบบสำรวจความพึงพอใจ
+                                            </a>
+                                            <a href="<?= url('faqs') ?>" class="btn btn-sm btn-outline-primary w-100 fw-medium rounded-pill">
+                                                <i class="bi bi-search me-1"></i> ดูคำถามที่พบบ่อย (FAQs)
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -412,8 +420,9 @@ $portalName = match($authRole) {
             <div class="list-group-item bg-light text-muted small fw-bold text-uppercase py-2 px-3">บริการทางการเงิน</div>
             <a href="<?= url('deposits') ?>" class="list-group-item list-group-item-action py-2 ps-4 small"><i class="bi bi-piggy-bank me-2 text-success"></i> เงินฝากสหกรณ์</a>
             <a href="<?= url('loans') ?>" class="list-group-item list-group-item-action py-2 ps-4 small"><i class="bi bi-cash-stack me-2 text-primary"></i> สินเชื่อและเงินกู้</a>
-            <a href="<?= url('loan-readiness') ?>" class="list-group-item list-group-item-action py-2 ps-4 small"><i class="bi bi-check2-square me-2 text-warning"></i> เช็คความพร้อมก่อนยื่นกู้</a>
             <a href="<?= url('calculator') ?>" class="list-group-item list-group-item-action py-2 ps-4 small"><i class="bi bi-calculator me-2 text-warning"></i> คำนวณเงินกู้ออนไลน์</a>
+            <a href="<?= url('dividend-estimator') ?>" class="list-group-item list-group-item-action py-2 ps-4 small"><i class="bi bi-pie-chart-fill me-2 text-primary"></i> ประมาณการเงินปันผล-เฉลี่ยคืน</a>
+            <a href="<?= url('loan-readiness') ?>" class="list-group-item list-group-item-action py-2 ps-4 small"><i class="bi bi-check2-square me-2 text-warning"></i> เช็คความพร้อมก่อนยื่นกู้</a>
 
             <!-- สวัสดิการและเอกสาร -->
             <div class="list-group-item bg-light text-muted small fw-bold text-uppercase py-2 px-3">สวัสดิการและเอกสาร</div>
@@ -424,6 +433,7 @@ $portalName = match($authRole) {
             <!-- ข่าวสารและติดต่อ -->
             <div class="list-group-item bg-light text-muted small fw-bold text-uppercase py-2 px-3">ข่าวสารและติดต่อ</div>
             <a href="<?= url('announcements') ?>" class="list-group-item list-group-item-action py-2 ps-4 small"><i class="bi bi-pin-angle-fill me-2 text-danger"></i> ประกาศสำคัญของสหกรณ์</a>
+            <a href="<?= url('surveys/member-satisfaction-2569') ?>" class="list-group-item list-group-item-action py-2 ps-4 small text-primary fw-medium"><i class="bi bi-ui-checks me-2 text-primary"></i> ทำแบบสำรวจความพึงพอใจ</a>
             <a href="<?= url('calendar') ?>" class="list-group-item list-group-item-action py-2 ps-4 small"><i class="bi bi-calendar3 me-2 text-primary"></i> ปฏิทินกิจกรรมและกำหนดการ</a>
             <a href="<?= url('news') ?>" class="list-group-item list-group-item-action py-2 ps-4 small"><i class="bi bi-newspaper me-2 text-primary"></i> ข่าวสารและกิจกรรม</a>
             <a href="<?= url('contact') ?>" class="list-group-item list-group-item-action py-2 ps-4 small"><i class="bi bi-geo-alt me-2 text-secondary"></i> ติดต่อสหกรณ์</a>

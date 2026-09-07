@@ -354,69 +354,38 @@ a:hover {
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Glass Highlights Card (Right Column) */
+/* Glassmorphism Highlight Card */
 .hero-highlight-glass {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 22px;
-    padding: 22px 24px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.hero-highlight-glass:hover {
+    transform: translateY(-4px);
 }
 
 .hero-stat-card {
-    border-radius: 16px;
-    padding: 16px 12px;
-    transition: all 0.25s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    transition: transform 0.2s ease;
 }
 
 .hero-stat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.22);
 }
 
-.hero-stat-card.deposit-card {
-    background: linear-gradient(180deg, rgba(245, 158, 11, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%);
-    border: 1px solid rgba(245, 158, 11, 0.30);
+.border-white-20 {
+    border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-.hero-stat-card.deposit-card:hover {
-    border-color: rgba(245, 158, 11, 0.50);
-    background: linear-gradient(180deg, rgba(245, 158, 11, 0.20) 0%, rgba(255, 255, 255, 0.07) 100%);
-}
-
-.hero-stat-card.loan-card {
-    background: linear-gradient(180deg, rgba(56, 189, 248, 0.14) 0%, rgba(255, 255, 255, 0.04) 100%);
-    border: 1px solid rgba(56, 189, 248, 0.30);
-}
-
-.hero-stat-card.loan-card:hover {
-    border-color: rgba(56, 189, 248, 0.50);
-    background: linear-gradient(180deg, rgba(56, 189, 248, 0.20) 0%, rgba(255, 255, 255, 0.07) 100%);
-}
-
-.hero-stat-rate {
-    font-size: 2.15rem;
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-}
-
-.hero-stat-tag {
-    display: inline-block;
-    font-size: 0.74rem;
-    font-weight: 500;
-    padding: 3px 10px;
-    border-radius: 20px;
-    background: rgba(0, 0, 0, 0.22);
-    color: rgba(255, 255, 255, 0.88);
-    border: 1px solid rgba(255, 255, 255, 0.10);
-}
+.text-white-70 { color: rgba(255, 255, 255, 0.75) !important; }
+.text-white-80 { color: rgba(255, 255, 255, 0.85) !important; }
+.text-white-90 { color: rgba(255, 255, 255, 0.95) !important; }
 
 /* Swiper Controls */
 .hero-swiper .swiper-pagination-bullet {

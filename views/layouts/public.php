@@ -10,8 +10,32 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="<?= e($title ?? config('app.name')) ?>">
-    <meta property="og:description" content="<?= e($metaDescription ?? 'สหกรณ์ออมทรัพย์สาธารณสุขระยอง จำกัด') ?>">
+    <meta property="og:description" content="<?= e($metaDescription ?? 'สหกรณ์ออมทรัพย์สาธารณสุขระยอง จำกัด บริการเงินฝาก สินเชื่อ สวัสดิการ มั่นคง โปร่งใส ทันสมัย เพื่อสมาชิก') ?>">
     <meta property="og:url" content="<?= url($request->uri()) ?>">
+    <meta property="og:image" content="<?= asset('images/og-rayongcoop.png') ?>">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FinancialService",
+      "name": "สหกรณ์ออมทรัพย์สาธารณสุขระยอง จำกัด",
+      "alternateName": "Rayong Public Health Cooperative",
+      "url": "<?= url('/') ?>",
+      "logo": "<?= asset('images/logo.png') ?>",
+      "telephone": "+66-38-611-123",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "สำนักงานสาธารณสุขจังหวัดระยอง",
+        "addressLocality": "เมืองระยอง",
+        "addressRegion": "ระยอง",
+        "postalCode": "21000",
+        "addressCountry": "TH"
+      },
+      "openingHours": "Mo-Fr 08:30-16:30"
+    }
+    </script>
 
     <!-- Bootstrap 5.3 & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -22,7 +46,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.6/dist/sweetalert2.min.css">
     
     <!-- Custom Theme CSS -->
-    <link rel="stylesheet" href="<?= asset('css/style.css') ?>?v=1.0.2">
+    <link rel="stylesheet" href="<?= asset('css/style.css') ?>?v=1.0.3">
 
     <script>
         window.APP_URL = "<?= url('/') ?>";
@@ -30,6 +54,8 @@
     </script>
 </head>
 <body>
+    <!-- Skip to main content link for accessibility -->
+    <a href="#mainContent" class="skip-link">ข้ามไปยังเนื้อหาหลัก (Skip to Content)</a>
 
     <!-- 1. Top Announcement Bar -->
     <?php include dirname(__DIR__) . '/partials/announcement_bar.php'; ?>

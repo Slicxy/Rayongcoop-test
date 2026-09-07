@@ -68,13 +68,18 @@
         <!-- Content & Marketing -->
         <li class="admin-nav-header">จัดการเนื้อหาและประชาสัมพันธ์</li>
         <li class="admin-nav-item">
-            <a href="<?= url('admin/news') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/admin/news') ? 'active' : '' ?>">
-                <i class="bi bi-newspaper"></i> <span>ข่าวสารและกิจกรรม</span>
+            <a href="<?= url('admin/announcements') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/admin/announcements') ? 'active' : '' ?>">
+                <i class="bi bi-megaphone-fill text-warning"></i> <span>ประกาศสำคัญ (Announcements)</span>
             </a>
         </li>
         <li class="admin-nav-item">
-            <a href="<?= url('admin/announcements') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/admin/announcements') ? 'active' : '' ?>">
-                <i class="bi bi-megaphone"></i> <span>แถบประกาศสำคัญ</span>
+            <a href="<?= url('admin/events') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/admin/events') ? 'active' : '' ?>">
+                <i class="bi bi-calendar-event-fill text-info"></i> <span>ปฏิทินกิจกรรม & กำหนดการ</span>
+            </a>
+        </li>
+        <li class="admin-nav-item">
+            <a href="<?= url('admin/news') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/admin/news') ? 'active' : '' ?>">
+                <i class="bi bi-newspaper"></i> <span>ข่าวสารและกิจกรรม</span>
             </a>
         </li>
         <li class="admin-nav-item">
@@ -90,6 +95,11 @@
         <li class="admin-nav-item">
             <a href="<?= url('admin/media') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/admin/media') ? 'active' : '' ?>">
                 <i class="bi bi-folder2-open"></i> <span>Media Library</span>
+            </a>
+        </li>
+        <li class="admin-nav-item">
+            <a href="<?= url('admin/contact-messages') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/admin/contact-messages') ? 'active' : '' ?>">
+                <i class="bi bi-chat-left-text-fill text-primary"></i> <span>ข้อความติดต่อจากผู้ใช้งาน</span>
             </a>
         </li>
 

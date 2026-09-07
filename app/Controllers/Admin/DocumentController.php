@@ -36,23 +36,36 @@ class DocumentController extends Controller
             'title' => 'required',
         ]);
 
-        $filePath = 'sample_document.pdf';
-        $fileSize = 1024 * 50;
+        $status = $this->request->input('status', 'active');
+        $filePath = null;
+        $fileSize = 0;
+        $fileType = 'application/pdf';
 
-        if ($this->request->hasFile('file')) {
+        if ($this->request->hasFile('file') && !empty($this->request->file('file')['tmp_name'])) {
             try {
                 $uploaded = MediaService::upload($this->request->file('file'), 'documents');
                 $filePath = $uploaded['path'];
                 $fileSize = $uploaded['size'];
+                $fileType = $uploaded['mime'] ?? 'application/pdf';
             } catch (\Exception $e) {
-                Session::flash('error', $e->getMessage());
+                Session::flash('error', 'อัปโหลดไฟล์ไม่สำเร็จ: ' . $e->getMessage());
                 $this->redirect(url('admin/documents'));
                 return;
             }
         }
 
-        $sql = "INSERT INTO documents (category_id, title, slug, document_number, file_path, file_size, year, tag, status, created_by, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+        // Do not allow published/active documents without an uploaded file
+        if (empty($filePath)) {
+            if ($status === 'active') {
+                Session::flash('error', 'ไม่สามารถเผยแพร่เอกสารได้เนื่องจากยังไม่มีการอัปโหลดไฟล์จริง กรุณาแนบไฟล์เอกสาร (PDF, DOCX) หรือบันทึกเป็นแบบร่าง (Inactive)');
+                $this->redirect(url('admin/documents'));
+                return;
+            }
+            $filePath = ''; // Draft document without file
+        }
+
+        $sql = "INSERT INTO documents (category_id, title, slug, document_number, file_path, file_size, file_type, year, tag, status, created_by, created_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
         $id = Database::insert($sql, [
             $data['category_id'],
@@ -61,13 +74,14 @@ class DocumentController extends Controller
             $this->request->input('document_number'),
             $filePath,
             $fileSize,
+            $fileType,
             (int) ($this->request->input('year') ?: date('Y') + 543),
             $this->request->input('tag'),
-            $this->request->input('status', 'active'),
+            $status,
             Auth::id()
         ]);
 
-        AuditService::log('documents', 'create', (string)$id, null, ['title' => $data['title']]);
+        AuditService::log('documents', 'create', (string)$id, null, ['title' => $data['title'], 'status' => $status, 'file_path' => $filePath]);
         Session::flash('success', 'เพิ่มเอกสารเรียบร้อยแล้ว');
         $this->redirect(url('admin/documents'));
     }

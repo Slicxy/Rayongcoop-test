@@ -25,6 +25,8 @@ $router->get('/rates', 'Public\\DepositController@index');
 // Loans & Calculator
 $router->get('/loans', 'Public\\LoanController@index');
 $router->get('/calculator', 'Public\\CalculatorController@index');
+$router->get('/loan-readiness', 'Public\\LoanChecklistController@index');
+$router->get('/loans/checklist', 'Public\\LoanChecklistController@index');
 
 // Welfare & Services
 $router->get('/welfare', 'Public\\WelfareController@index');
@@ -34,7 +36,11 @@ $router->get('/eservice', 'Public\\EServiceController@index');
 $router->get('/documents', 'Public\\DocumentController@index');
 $router->get('/documents/{id}/download', 'Public\\DocumentController@download');
 
-// News
+// Announcements & News & Events
+$router->get('/announcements', 'Public\\AnnouncementController@index');
+$router->get('/announcements/{slug}', 'Public\\AnnouncementController@show');
+$router->get('/calendar', 'Public\\EventController@index');
+$router->get('/events', 'Public\\EventController@index');
 $router->get('/news', 'Public\\NewsController@index');
 $router->get('/news/{slug}', 'Public\\NewsController@show');
 
@@ -48,10 +54,11 @@ $router->get('/contact', 'Public\\ContactController@index');
 $router->post('/contact/submit', 'Public\\ContactController@submit', [CsrfMiddleware::class]);
 $router->get('/faqs', 'Public\\ContactController@faqs');
 
-// Privacy & Terms
+// Privacy & Terms & SEO
 $router->get('/privacy/policy', 'Public\\PrivacyController@policy');
 $router->get('/privacy/cookies', 'Public\\PrivacyController@cookies');
 $router->get('/terms', 'Public\\PrivacyController@terms');
+$router->get('/sitemap.xml', 'Public\\SitemapController@index');
 
 // APIs
 $router->post('/api/cookie-consent', 'Public\\ApiController@logCookieConsent');
@@ -70,10 +77,8 @@ $router->get('/dashboard', 'Admin\\DashboardController@index', [AuthMiddleware::
 
 $router->get('/portal', 'Member\\MemberPortalController@dashboard', [AuthMiddleware::class]);
 
-// Public QR Code Receipt Verification & Direct View
+// Public QR Code Receipt Verification
 $router->get('/verify-receipt/{token}', 'PublicReceiptController@verify');
-$router->get('/receipt/{no}', 'PublicReceiptController@viewReceipt');
-$router->get('/receipt/print/{no}', 'PublicReceiptController@viewReceipt');
 
 /*
 |--------------------------------------------------------------------------
@@ -144,10 +149,27 @@ $router->group(['prefix' => 'admin', 'middleware' => [AuthMiddleware::class]], f
     $r->post('/news/{id}/update', 'Admin\\NewsController@update', [CsrfMiddleware::class]);
     $r->post('/news/{id}/delete', 'Admin\\NewsController@destroy', [CsrfMiddleware::class]);
 
-    // Announcements
+    // Important Announcements CRUD
     $r->get('/announcements', 'Admin\\AnnouncementController@index');
+    $r->get('/announcements/create', 'Admin\\AnnouncementController@create');
     $r->post('/announcements/store', 'Admin\\AnnouncementController@store', [CsrfMiddleware::class]);
+    $r->get('/announcements/{id}/edit', 'Admin\\AnnouncementController@edit');
+    $r->post('/announcements/{id}/update', 'Admin\\AnnouncementController@update', [CsrfMiddleware::class]);
     $r->post('/announcements/{id}/delete', 'Admin\\AnnouncementController@destroy', [CsrfMiddleware::class]);
+
+    // Events Calendar CRUD
+    $r->get('/events', 'Admin\\EventController@index');
+    $r->get('/events/create', 'Admin\\EventController@create');
+    $r->post('/events/store', 'Admin\\EventController@store', [CsrfMiddleware::class]);
+    $r->get('/events/{id}/edit', 'Admin\\EventController@edit');
+    $r->post('/events/{id}/update', 'Admin\\EventController@update', [CsrfMiddleware::class]);
+    $r->post('/events/{id}/delete', 'Admin\\EventController@destroy', [CsrfMiddleware::class]);
+
+    // Contact Messages Management
+    $r->get('/contact-messages', 'Admin\\ContactMessageController@index');
+    $r->get('/contact-messages/{id}', 'Admin\\ContactMessageController@show');
+    $r->post('/contact-messages/{id}/update', 'Admin\\ContactMessageController@updateStatus', [CsrfMiddleware::class]);
+    $r->post('/contact-messages/{id}/delete', 'Admin\\ContactMessageController@destroy', [CsrfMiddleware::class]);
 
     // Hero Slides
     $r->get('/hero-slides', 'Admin\\HeroSlideController@index');

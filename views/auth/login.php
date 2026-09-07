@@ -75,24 +75,26 @@
         </span>
     </button>
 
-    <!-- 5. Test Account Helper Card -->
-    <div class="demo-account-box">
-        <div>
-            <div class="fw-bold text-navy"><i class="bi bi-info-circle me-1 text-primary"></i> บัญชีทดสอบระบบ:</div>
-            <div class="font-monospace text-muted mt-1" style="font-size: 11px;">
-                สมาชิก: <span class="fw-bold text-dark">rayongcoop1</span> / <span class="fw-bold text-dark">coop1</span><br>
-                เจ้าหน้าที่: <span class="fw-bold text-dark">staff1</span> / <span class="fw-bold text-dark">staff123</span>
+    <!-- 5. Test Account Helper Card (Local / Development Mode Only) -->
+    <?php if (config('app.env') === 'local' || config('app.debug')): ?>
+        <div class="demo-account-box">
+            <div>
+                <div class="fw-bold text-navy"><i class="bi bi-info-circle me-1 text-primary"></i> บัญชีทดสอบระบบ (Dev Mode):</div>
+                <div class="font-monospace text-muted mt-1" style="font-size: 11px;">
+                    สมาชิก: <span class="fw-bold text-dark">rayongcoop1</span> / <span class="fw-bold text-dark">coop1</span><br>
+                    เจ้าหน้าที่: <span class="fw-bold text-dark">staff1</span> / <span class="fw-bold text-dark">staff123</span>
+                </div>
+            </div>
+            <div class="d-flex flex-column gap-1">
+                <button type="button" class="btn-autofill" id="btnAutofill" title="กรอกบัญชีสมาชิก">
+                    สมาชิก
+                </button>
+                <button type="button" class="btn-autofill bg-secondary text-white" id="btnAutofillStaff" title="กรอกบัญชีเจ้าหน้าที่">
+                    เจ้าหน้าที่
+                </button>
             </div>
         </div>
-        <div class="d-flex flex-column gap-1">
-            <button type="button" class="btn-autofill" id="btnAutofill" title="กรอกบัญชีสมาชิก">
-                สมาชิก
-            </button>
-            <button type="button" class="btn-autofill bg-secondary text-white" id="btnAutofillStaff" title="กรอกบัญชีเจ้าหน้าที่">
-                เจ้าหน้าที่
-            </button>
-        </div>
-    </div>
+    <?php endif; ?>
 
     <!-- 6. Return Link -->
     <div class="auth-footer-link">

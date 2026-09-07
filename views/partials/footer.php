@@ -60,7 +60,7 @@
                 </ul>
                 <div class="p-3 bg-dark rounded-3 border border-secondary border-opacity-25">
                     <small class="d-block text-muted mb-1"><i class="bi bi-lock-fill text-success me-1"></i> ช่องทางเจ้าหน้าที่</small>
-                    <a href="<?= url('admin/login') ?>" class="btn btn-sm btn-outline-light w-100" style="font-size: 0.8rem;">
+                    <a href="<?= url('login') ?>" class="btn btn-sm btn-outline-light w-100" style="font-size: 0.8rem;">
                         <i class="bi bi-person-lock me-1"></i> เข้าสู่ระบบเจ้าหน้าที่ (Admin CMS)
                     </a>
                 </div>

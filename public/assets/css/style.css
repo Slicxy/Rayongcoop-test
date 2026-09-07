@@ -707,8 +707,29 @@ a:hover {
     font-family: var(--font-family-base) !important;
 }
 
-/* Accessibility */
+/* Accessibility & Skip Link */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 20px;
+    background: var(--coop-navy);
+    color: #ffffff !important;
+    padding: 12px 20px;
+    z-index: 100000;
+    font-weight: 600;
+    border-radius: var(--border-radius-sm);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: top 0.2s ease-in-out;
+    text-decoration: none;
+}
+
+.skip-link:focus {
+    top: 20px;
+    outline: 3px solid var(--coop-gold);
+}
+
 :focus-visible {
     outline: 3px solid var(--coop-blue);
     outline-offset: 2px;
 }
+

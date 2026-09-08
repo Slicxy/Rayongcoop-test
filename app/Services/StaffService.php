@@ -105,7 +105,7 @@ class StaffService
             $params[] = $status;
         }
 
-        $sql .= " ORDER BY a.id ASC";
+        $sql .= " ORDER BY a.id DESC";
         return Database::query($sql, $params);
     }
 

@@ -52,21 +52,28 @@
     <script>
         $(document).ready(function() {
             if ($.fn.DataTable) {
-                $('.coop-datatable').DataTable({
-                    language: {
-                        search: "ค้นหา:",
-                        lengthMenu: "แสดง _MENU_ รายการ",
-                        info: "แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
-                        infoEmpty: "แสดง 0 ถึง 0 จาก 0 รายการ",
-                        zeroRecords: "ไม่พบข้อมูลที่ตรงกัน",
-                        emptyTable: "ไม่มีรายการข้อมูลที่จะแสดง",
-                        paginate: {
-                            first: "หน้าแรก",
-                            last: "หน้าสุดท้าย",
-                            next: "ถัดไป",
-                            previous: "ก่อนหน้า"
-                        }
+                $('.coop-datatable').each(function() {
+                    let orderConf = $(this).data('order') || [[0, 'desc']];
+                    if (typeof orderConf === 'string') {
+                        try { orderConf = JSON.parse(orderConf); } catch(e) { orderConf = [[0, 'desc']]; }
                     }
+                    $(this).DataTable({
+                        order: orderConf,
+                        language: {
+                            search: "ค้นหา:",
+                            lengthMenu: "แสดง _MENU_ รายการ",
+                            info: "แสดง _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                            infoEmpty: "แสดง 0 ถึง 0 จาก 0 รายการ",
+                            zeroRecords: "ไม่พบข้อมูลที่ตรงกัน",
+                            emptyTable: "ไม่มีรายการข้อมูลที่จะแสดง",
+                            paginate: {
+                                first: "หน้าแรก",
+                                last: "หน้าสุดท้าย",
+                                next: "ถัดไป",
+                                previous: "ก่อนหน้า"
+                            }
+                        }
+                    });
                 });
             }
 

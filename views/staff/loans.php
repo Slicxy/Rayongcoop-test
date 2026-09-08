@@ -22,7 +22,7 @@
     <!-- Loan Applications Table Card -->
     <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
         <div class="table-responsive">
-            <table class="table table-hover align-middle coop-datatable">
+            <table class="table table-hover align-middle coop-datatable" data-order='[[0, "desc"]]'>
                 <thead class="table-light">
                     <tr>
                         <th>เลขที่คำขอ</th>

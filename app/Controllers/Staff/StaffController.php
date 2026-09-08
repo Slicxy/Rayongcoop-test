@@ -127,13 +127,42 @@ class StaffController extends Controller
 
     public function reports(): void
     {
-        $reportType = $this->request->query('type') ?? 'members';
-        $reportData = StaffService::generateReport($reportType);
+        $reportType = (string)($this->request->query('type') ?? 'members');
+        $search = trim((string)$this->request->query('q', ''));
+        $dept = trim((string)$this->request->query('dept', ''));
+        $status = trim((string)$this->request->query('status', ''));
+        $export = $this->request->query('export');
+
+        $filters = [
+            'search' => $search,
+            'dept' => $dept,
+            'status' => $status,
+        ];
+
+        // If Export requested, stream CSV download
+        if ($export === 'csv') {
+            $csv = StaffService::exportReportCsv($reportType, $filters);
+            $filename = "rayongcoop_report_{$reportType}_" . date('Ymd_His') . ".csv";
+
+            header('Content-Type: text/csv; charset=UTF-8');
+            header("Content-Disposition: attachment; filename=\"{$filename}\"");
+            header('Pragma: no-cache');
+            header('Expires: 0');
+            echo $csv;
+            exit;
+        }
+
+        $reportData = StaffService::generateReport($reportType, $filters);
+        $departments = Database::query("SELECT DISTINCT department FROM members WHERE department IS NOT NULL AND department != '' ORDER BY department ASC");
 
         $this->render('staff.reports', [
-            'title' => 'ระบบรายงานและส่งออกข้อมูล (Reporting System)',
+            'title' => 'ระบบรายงานและส่งออกข้อมูล (Reporting & Export Engine)',
             'reportType' => $reportType,
             'reportData' => $reportData,
+            'departments' => array_column($departments, 'department'),
+            'search' => $search,
+            'selectedDept' => $dept,
+            'selectedStatus' => $status,
         ], 'layouts.admin');
     }
 

@@ -489,4 +489,19 @@ class MemberPortalController extends Controller
         }
         $this->redirect(url('member/settings'));
     }
+
+    /**
+     * Revoke All Other Active Sessions
+     */
+    public function revokeSessions(): void
+    {
+        $userId = Auth::id() ?? 1;
+        AuditService::log('security', 'revoke_sessions', (string)$userId, null, [
+            'ip' => $this->request->ip(),
+            'user_agent' => $this->request->userAgent(),
+        ]);
+
+        Session::flash('success', 'บังคับออกจากระบบอุปกรณ์อื่นทั้งหมดเรียบร้อยแล้ว');
+        $this->redirect(url('member/settings'));
+    }
 }

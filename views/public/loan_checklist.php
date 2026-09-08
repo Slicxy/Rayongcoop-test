@@ -54,6 +54,85 @@
             </div>
         </div>
 
+        <!-- 2.5. Interactive DSR & Loan Readiness Pre-Check Calculator -->
+        <div class="coop-card p-4 p-md-5 mb-4 border-start border-4 border-primary">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                <div>
+                    <h5 class="fw-bold text-navy mb-1"><i class="bi bi-speedometer2 text-primary me-2"></i>เครื่องมือประเมินภาระหนี้ (DSR) และความสามารถในการกู้เงิน</h5>
+                    <p class="text-muted small mb-0">ทดลองคำนวณเงินเดือนคงเหลือสุทธิและสัดส่วนภาระหนี้ตามเกณฑ์มาตรฐานสหกรณ์ (เงินเดือนคงเหลือไม่น้อยกว่า 30%)</p>
+                </div>
+                <span class="badge bg-primary-subtle text-primary border px-3 py-2 rounded-pill font-monospace">อัตราดอกเบี้ย <?= number_format((float)$currentLoan['interest_rate'], 2) ?>% ต่อปี</span>
+            </div>
+
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-7">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-navy">เงินได้รวมต่อเดือน (บาท)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-wallet2"></i></span>
+                                <input type="number" id="chkSalary" class="form-control font-monospace" value="35000" step="1000" min="10000">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-navy">ภาระหนี้ผ่อนเดิม/เดือน (บาท)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-credit-card"></i></span>
+                                <input type="number" id="chkOldDebt" class="form-control font-monospace" value="5000" step="500" min="0">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-navy">วงเงินกู้ที่ต้องการ (บาท)</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-cash"></i></span>
+                                <input type="number" id="chkLoanAmount" class="form-control font-monospace" value="100000" step="10000" min="10000" max="<?= (float)$currentLoan['max_loan_limit'] ?>">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold text-navy">ระยะเวลาผ่อนชำระ (งวด)</label>
+                            <select id="chkLoanTerm" class="form-select font-monospace">
+                                <option value="12">12 งวด (1 ปี)</option>
+                                <option value="24">24 งวด (2 ปี)</option>
+                                <option value="36" selected>36 งวด (3 ปี)</option>
+                                <option value="48">48 งวด (4 ปี)</option>
+                                <option value="60">60 งวด (5 ปี)</option>
+                                <option value="84">84 งวด (7 ปี)</option>
+                                <?php if ((int)$currentLoan['max_term_months'] > 84): ?>
+                                    <option value="<?= (int)$currentLoan['max_term_months'] ?>"><?= (int)$currentLoan['max_term_months'] ?> งวด (สูงสุดตามระเบียบ)</option>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="p-4 bg-light rounded-4 border">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted small">ค่างวดผ่อนใหม่:</span>
+                            <span class="fw-bold text-danger font-monospace fs-5" id="chkMonthlyInstallment">฿3,173.61</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted small">เงินได้สุทธิคงเหลือ:</span>
+                            <span class="fw-bold text-success font-monospace fs-5" id="chkNetRemaining">฿26,826.39</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center small mb-1">
+                            <span class="text-muted">สัดส่วนเงินคงเหลือ:</span>
+                            <span class="fw-bold font-monospace" id="chkRemainingRatio">76.6%</span>
+                        </div>
+                        
+                        <div class="progress rounded-pill mb-3" style="height: 12px;">
+                            <div class="progress-bar bg-danger" id="chkBarDsr" style="width: 23%"></div>
+                            <div class="progress-bar bg-success" id="chkBarRemaining" style="width: 77%"></div>
+                        </div>
+
+                        <div class="p-2 rounded-3 text-center small fw-bold" id="chkResultBadge" style="background-color: #D1E7DD; color: #0F5132;">
+                            <i class="bi bi-check-circle-fill me-1"></i> ผ่านเกณฑ์ความพร้อมทางการเงิน (เงินเหลือ > 30%)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row g-4">
             <!-- Left Column: Qualifications & Guarantor -->
             <div class="col-lg-6">
@@ -248,5 +327,58 @@ document.addEventListener('DOMContentLoaded', function() {
             updateProgress();
         });
     }
+
+    // DSR Calculator Logic
+    const currentRate = <?= (float)($currentLoan['interest_rate'] ?? 4.75) ?>;
+    const chkSalary = document.getElementById('chkSalary');
+    const chkOldDebt = document.getElementById('chkOldDebt');
+    const chkLoanAmount = document.getElementById('chkLoanAmount');
+    const chkLoanTerm = document.getElementById('chkLoanTerm');
+
+    function calculatePreCheck() {
+        if (!chkSalary || !chkLoanAmount || !chkLoanTerm) return;
+
+        const salary = parseFloat(chkSalary.value) || 35000;
+        const oldDebt = parseFloat(chkOldDebt.value) || 0;
+        const loanAmount = parseFloat(chkLoanAmount.value) || 100000;
+        const term = parseInt(chkLoanTerm.value) || 36;
+
+        const monthlyNew = (loanAmount / term) + (loanAmount * (currentRate / 100) / 12);
+        const totalDebt = oldDebt + monthlyNew;
+        const netRemaining = Math.max(0, salary - totalDebt);
+        const dsr = (totalDebt / salary) * 100;
+        const remainingRatio = (netRemaining / salary) * 100;
+
+        document.getElementById('chkMonthlyInstallment').textContent = '฿' + monthlyNew.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        document.getElementById('chkNetRemaining').textContent = '฿' + netRemaining.toLocaleString('th-TH', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        document.getElementById('chkRemainingRatio').textContent = remainingRatio.toFixed(1) + '%';
+
+        document.getElementById('chkBarDsr').style.width = Math.min(100, dsr) + '%';
+        document.getElementById('chkBarRemaining').style.width = Math.min(100, remainingRatio) + '%';
+
+        const badge = document.getElementById('chkResultBadge');
+        if (remainingRatio >= 30) {
+            badge.style.backgroundColor = '#D1E7DD';
+            badge.style.color = '#0F5132';
+            badge.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i> ผ่านเกณฑ์ความพร้อมทางการเงิน (เงินเหลือ ' + remainingRatio.toFixed(1) + '% >= 30%)';
+        } else if (remainingRatio >= 20) {
+            badge.style.backgroundColor = '#FFF3CD';
+            badge.style.color = '#664D03';
+            badge.innerHTML = '<i class="bi bi-exclamation-triangle-fill me-1"></i> เฝ้าระวัง (เงินเหลือ ' + remainingRatio.toFixed(1) + '% แนะนำขยายงวดผ่อน)';
+        } else {
+            badge.style.backgroundColor = '#F8D7DA';
+            badge.style.color = '#842029';
+            badge.innerHTML = '<i class="bi bi-x-circle-fill me-1"></i> เกินเกณฑ์ภาระหนี้ (เงินเหลือ ' + remainingRatio.toFixed(1) + '% < 20%)';
+        }
+    }
+
+    [chkSalary, chkOldDebt, chkLoanAmount, chkLoanTerm].forEach(el => {
+        if (el) {
+            el.addEventListener('input', calculatePreCheck);
+            el.addEventListener('change', calculatePreCheck);
+        }
+    });
+
+    calculatePreCheck();
 });
 </script>

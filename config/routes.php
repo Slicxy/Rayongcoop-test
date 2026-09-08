@@ -127,6 +127,7 @@ $router->group(['prefix' => 'member', 'middleware' => [AuthMiddleware::class]], 
     $r->get('/settings', 'Member\\MemberPortalController@settings');
     $r->post('/settings/password', 'Member\\MemberPortalController@changePassword', [CsrfMiddleware::class]);
     $r->post('/settings/line', 'Member\\MemberPortalController@toggleLine', [CsrfMiddleware::class]);
+    $r->post('/settings/revoke-sessions', 'Member\\MemberPortalController@revokeSessions', [CsrfMiddleware::class]);
 });
 
 /*

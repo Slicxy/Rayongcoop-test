@@ -207,6 +207,7 @@ $router->group(['prefix' => 'admin', 'middleware' => [AuthMiddleware::class]], f
     // Hero Slides
     $r->get('/hero-slides', 'Admin\\HeroSlideController@index');
     $r->post('/hero-slides/store', 'Admin\\HeroSlideController@store', [CsrfMiddleware::class]);
+    $r->post('/hero-slides/{id}/update', 'Admin\\HeroSlideController@update', [CsrfMiddleware::class]);
     $r->post('/hero-slides/{id}/delete', 'Admin\\HeroSlideController@destroy', [CsrfMiddleware::class]);
 
     // Popups

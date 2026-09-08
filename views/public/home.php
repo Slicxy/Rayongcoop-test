@@ -6,7 +6,13 @@
                 <?php foreach ($heroSlides as $slide): ?>
                     <?php 
                         $slideImg = !empty($slide['desktop_image']) ? $slide['desktop_image'] : 'hero_bg_default.jpg';
-                        $bgUrl = asset('img/' . $slideImg);
+                        if (str_starts_with($slideImg, 'http://') || str_starts_with($slideImg, 'https://')) {
+                            $bgUrl = $slideImg;
+                        } elseif (str_starts_with($slideImg, 'storage/') || str_starts_with($slideImg, '/storage/')) {
+                            $bgUrl = url(ltrim($slideImg, '/'));
+                        } else {
+                            $bgUrl = asset('img/' . $slideImg);
+                        }
                     ?>
                     <div class="swiper-slide hero-slide" style="background-image: url('<?= $bgUrl ?>');">
                         <div class="hero-overlay" style="opacity: <?= e($slide['overlay_opacity'] ?? '0.80') ?>;"></div>

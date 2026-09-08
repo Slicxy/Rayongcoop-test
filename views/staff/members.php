@@ -90,13 +90,6 @@
                                 </td>
                             </tr>
                         <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="7" class="text-center py-5 text-muted">
-                                <i class="bi bi-people fs-1 d-block mb-2 text-secondary"></i>
-                                ไม่พบข้อมูลสมาชิกตามเงื่อนไขที่ระบุ
-                            </td>
-                        </tr>
                     <?php endif; ?>
                 </tbody>
             </table>

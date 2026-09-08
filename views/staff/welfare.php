@@ -59,53 +59,55 @@
                                     </button>
                                 </td>
                             </tr>
-
-                            <!-- Modal for Welfare Review -->
-                            <div class="modal fade" id="welfareModal<?= $app['id'] ?>" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content rounded-4 border-0 shadow">
-                                        <div class="modal-header border-0 pb-0">
-                                            <h5 class="modal-title fw-bold">พิจารณาคำขอสวัสดิการ</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <form action="<?= url('staff/welfare/review') ?>" method="POST">
-                                            <?= csrf_field() ?>
-                                            <input type="hidden" name="application_id" value="<?= $app['id'] ?>">
-                                            <div class="modal-body py-4">
-                                                <div class="p-3 bg-light rounded-3 mb-3">
-                                                    <div class="text-muted small">ผู้ขอรับสวัสดิการ:</div>
-                                                    <div class="fw-bold"><?= e($app['member_name']) ?> (<?= e($app['member_no']) ?>)</div>
-                                                    <div class="text-muted small mt-2">สวัสดิการ:</div>
-                                                    <div class="fw-bold text-primary"><?= e($app['welfare_name']) ?> — ฿<?= number_format((float)$app['claim_amount'], 2) ?></div>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label class="form-label fw-semibold">ผลการพิจารณา</label>
-                                                    <select name="action" class="form-select">
-                                                        <option value="approved">อนุมัติการจ่ายสวัสดิการ</option>
-                                                        <option value="rejected">ไม่อนุมัติ</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label class="form-label fw-semibold">ความเห็น / หมายเหตุ</label>
-                                                    <textarea name="comment" class="form-control" rows="2" placeholder="ระบุเหตุผลหรือข้อความแจ้งสมาชิก..."></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer border-0 pt-0">
-                                                <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">ยกเลิก</button>
-                                                <button type="submit" class="btn btn-primary rounded-pill px-4">บันทึก</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
                         <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr><td colspan="7" class="text-center py-4 text-muted">ไม่มีคำขอสวัสดิการ</td></tr>
                     <?php endif; ?>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<!-- Modals rendered outside Table for DataTables Compliance -->
+<?php if (!empty($applications)): ?>
+    <?php foreach ($applications as $app): ?>
+        <div class="modal fade" id="welfareModal<?= $app['id'] ?>" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-4 border-0 shadow">
+                    <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title fw-bold">พิจารณาคำขอสวัสดิการ</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="<?= url('staff/welfare/review') ?>" method="POST">
+                        <?= csrf_field() ?>
+                        <input type="hidden" name="application_id" value="<?= $app['id'] ?>">
+                        <div class="modal-body py-4">
+                            <div class="p-3 bg-light rounded-3 mb-3">
+                                <div class="text-muted small">ผู้ขอรับสวัสดิการ:</div>
+                                <div class="fw-bold"><?= e($app['member_name']) ?> (<?= e($app['member_no']) ?>)</div>
+                                <div class="text-muted small mt-2">สวัสดิการ:</div>
+                                <div class="fw-bold text-primary"><?= e($app['welfare_name']) ?> — ฿<?= number_format((float)$app['claim_amount'], 2) ?></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">ผลการพิจารณา</label>
+                                <select name="action" class="form-select">
+                                    <option value="approved">อนุมัติการจ่ายสวัสดิการ</option>
+                                    <option value="rejected">ไม่อนุมัติ</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">ความเห็น / หมายเหตุ</label>
+                                <textarea name="comment" class="form-control" rows="2" placeholder="ระบุเหตุผลหรือข้อความแจ้งสมาชิก..."></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0 pt-0">
+                            <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">ยกเลิก</button>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4">บันทึก</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>

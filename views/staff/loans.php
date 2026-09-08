@@ -85,90 +85,87 @@
                                     </button>
                                 </td>
                             </tr>
-
-                            <!-- Review Modal -->
-                            <div class="modal fade" id="reviewModal<?= $app['id'] ?>" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-lg">
-                                    <div class="modal-content rounded-4 border-0 shadow">
-                                        <div class="modal-header border-0 pb-0">
-                                            <h5 class="modal-title fw-bold">
-                                                <i class="bi bi-file-earmark-check text-primary me-2"></i>พิจารณาคำขอกู้เงิน: <?= e($app['application_no']) ?>
-                                            </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <form action="<?= url('staff/loans/review') ?>" method="POST">
-                                            <?= csrf_field() ?>
-                                            <input type="hidden" name="application_id" value="<?= $app['id'] ?>">
-                                            <div class="modal-body py-4">
-                                                <div class="p-3 bg-light rounded-3 mb-3">
-                                                    <div class="row g-2">
-                                                        <div class="col-md-6">
-                                                            <div class="text-muted small">ผู้ขอกู้</div>
-                                                            <div class="fw-bold"><?= e($app['member_name']) ?> (<?= e($app['member_no']) ?>)</div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="text-muted small">ประเภทสินเชื่อ</div>
-                                                            <div class="fw-bold text-primary"><?= e($app['loan_type']) ?></div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="text-muted small">วงเงินที่ยื่นขอ</div>
-                                                            <div class="fw-bold fs-5 text-dark">฿<?= number_format((float)$app['requested_amount'], 2) ?></div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="text-muted small">จำนวนงวดที่ขอผ่อน</div>
-                                                            <div class="fw-bold"><?= (int)$app['term_months'] ?> งวด</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label class="form-label fw-semibold">ผลการพิจารณา <span class="text-danger">*</span></label>
-                                                    <div class="d-flex gap-3">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="action" id="act_approve<?= $app['id'] ?>" value="approved" checked>
-                                                            <label class="form-check-label text-success fw-bold" for="act_approve<?= $app['id'] ?>">
-                                                                <i class="bi bi-check-circle me-1"></i>อนุมัติเงินกู้
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="action" id="act_doc<?= $app['id'] ?>" value="document_review">
-                                                            <label class="form-check-label text-info fw-bold" for="act_doc<?= $app['id'] ?>">
-                                                                <i class="bi bi-file-earmark-arrow-up me-1"></i>ขอเอกสารเพิ่มเติม
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="radio" name="action" id="act_reject<?= $app['id'] ?>" value="rejected">
-                                                            <label class="form-check-label text-danger fw-bold" for="act_reject<?= $app['id'] ?>">
-                                                                <i class="bi bi-x-circle me-1"></i>ไม่อนุมัติ
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label class="form-label fw-semibold">ความเห็นเจ้าหน้าที่ / หมายเหตุ</label>
-                                                    <textarea name="comment" class="form-control" rows="3" placeholder="ระบุเหตุผลในการอนุมัติ หรือเอกสารที่ต้องการเพิ่มเติม..."></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer border-0 pt-0">
-                                                <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">ยกเลิก</button>
-                                                <button type="submit" class="btn btn-primary rounded-pill px-4">บันทึกผลการพิจารณา</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
                         <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="7" class="text-center py-5 text-muted">
-                                <i class="bi bi-clipboard-check fs-1 d-block mb-2 text-secondary"></i>
-                                ไม่พบคำขอกู้เงินในสถานะนี้
-                            </td>
-                        </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<!-- Modals rendered outside Table for DataTables Compliance -->
+<?php if (!empty($applications)): ?>
+    <?php foreach ($applications as $app): ?>
+        <div class="modal fade" id="reviewModal<?= $app['id'] ?>" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content rounded-4 border-0 shadow">
+                    <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title fw-bold">
+                            <i class="bi bi-file-earmark-check text-primary me-2"></i>พิจารณาคำขอกู้เงิน: <?= e($app['application_no']) ?>
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="<?= url('staff/loans/review') ?>" method="POST">
+                        <?= csrf_field() ?>
+                        <input type="hidden" name="application_id" value="<?= $app['id'] ?>">
+                        <div class="modal-body py-4">
+                            <div class="p-3 bg-light rounded-3 mb-3">
+                                <div class="row g-2">
+                                    <div class="col-md-6">
+                                        <div class="text-muted small">ผู้ขอกู้</div>
+                                        <div class="fw-bold"><?= e($app['member_name']) ?> (<?= e($app['member_no']) ?>)</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="text-muted small">ประเภทสินเชื่อ</div>
+                                        <div class="fw-bold text-primary"><?= e($app['loan_type']) ?></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="text-muted small">วงเงินที่ยื่นขอ</div>
+                                        <div class="fw-bold fs-5 text-dark">฿<?= number_format((float)$app['requested_amount'], 2) ?></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="text-muted small">จำนวนงวดที่ขอผ่อน</div>
+                                        <div class="fw-bold"><?= (int)$app['term_months'] ?> งวด</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">ผลการพิจารณา <span class="text-danger">*</span></label>
+                                <div class="d-flex gap-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="action" id="act_approve<?= $app['id'] ?>" value="approved" checked>
+                                        <label class="form-check-label text-success fw-bold" for="act_approve<?= $app['id'] ?>">
+                                            <i class="bi bi-check-circle me-1"></i>อนุมัติเงินกู้
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="action" id="act_doc<?= $app['id'] ?>" value="document_review">
+                                        <label class="form-check-label text-info fw-bold" for="act_doc<?= $app['id'] ?>">
+                                            <i class="bi bi-file-earmark-arrow-up me-1"></i>ขอเอกสารเพิ่มเติม
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="action" id="act_reject<?= $app['id'] ?>" value="rejected">
+                                        <label class="form-check-label text-danger fw-bold" for="act_reject<?= $app['id'] ?>">
+                                            <i class="bi bi-x-circle me-1"></i>ไม่อนุมัติ
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">ความเห็นเจ้าหน้าที่ / หมายเหตุ</label>
+                                <textarea name="comment" class="form-control" rows="3" placeholder="ระบุเหตุผลในการอนุมัติ หรือเอกสารที่ต้องการเพิ่มเติม..."></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0 pt-0">
+                            <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">ยกเลิก</button>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4">บันทึกผลการพิจารณา</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+<?php endif; ?>

@@ -94,6 +94,74 @@ class StaffController extends Controller
         $this->redirect(url('staff/loans'));
     }
 
+    public function viewLoanDocument(): void
+    {
+        $file = trim((string)$this->request->query('file'));
+        $download = (bool)$this->request->query('download');
+        $origName = trim((string)$this->request->query('name'));
+
+        if (empty($file)) {
+            Session::flash('error', 'ไม่พบชื่อไฟล์เอกสาร');
+            $this->redirect(url('staff/loans'));
+            return;
+        }
+
+        $filename = basename($file);
+        
+        $searchPaths = [
+            dirname(__DIR__, 3) . '/public/uploads/loans/' . $filename,
+            dirname(__DIR__, 3) . '/storage/uploads/loans/' . $filename,
+            dirname(__DIR__, 3) . '/public/uploads/' . $filename,
+            dirname(__DIR__, 3) . '/storage/uploads/' . $filename,
+        ];
+
+        $targetPath = null;
+        foreach ($searchPaths as $path) {
+            if (file_exists($path) && is_file($path)) {
+                $targetPath = $path;
+                break;
+            }
+        }
+
+        if (!$targetPath) {
+            http_response_code(404);
+            echo "<!DOCTYPE html><html><head><meta charset='utf-8'><title>ไม่พบไฟล์</title></head><body style='font-family:sans-serif;padding:40px;text-align:center;'>";
+            echo "<h2 style='color:#dc3545;'>ขออภัย ไม่พบไฟล์เอกสารในระบบ</h2>";
+            echo "<p style='color:#6c757d;'>ชื่อไฟล์: " . htmlspecialchars($filename) . "</p>";
+            echo "<a href='javascript:history.back()' style='display:inline-block;padding:8px 16px;background:#0d6efd;color:#fff;text-decoration:none;border-radius:20px;margin-top:10px;'>กลับไปหน้าก่อนหน้า</a>";
+            echo "</body></html>";
+            exit;
+        }
+
+        $ext = strtolower(pathinfo($targetPath, PATHINFO_EXTENSION));
+        $mimeTypes = [
+            'pdf' => 'application/pdf',
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'gif' => 'image/gif',
+            'webp' => 'image/webp',
+            'doc' => 'application/msword',
+            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'xls' => 'application/vnd.ms-excel',
+            'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'zip' => 'application/zip',
+            'txt' => 'text/plain',
+        ];
+
+        $mime = $mimeTypes[$ext] ?? mime_content_type($targetPath) ?: 'application/octet-stream';
+        $disposition = $download ? 'attachment' : 'inline';
+        $displayName = !empty($origName) ? basename($origName) : $filename;
+
+        header('Content-Type: ' . $mime);
+        header('Content-Disposition: ' . $disposition . '; filename="' . $displayName . '"');
+        header('Content-Length: ' . filesize($targetPath));
+        header('Cache-Control: private, max-age=3600, must-revalidate');
+        header('Pragma: public');
+        readfile($targetPath);
+        exit;
+    }
+
     public function welfare(): void
     {
         $status = $this->request->query('status');

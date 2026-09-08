@@ -191,15 +191,14 @@
                                                 $origName = $doc['original_name'] ?? $doc['filename'] ?? basename($filePath);
                                                 $docSize = $doc['size'] ?? '1.2 MB';
                                                 $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION) ?: pathinfo($origName, PATHINFO_EXTENSION) ?: 'pdf');
+                                                $fileName = basename($filePath);
 
                                                 if (str_starts_with($filePath, 'http://') || str_starts_with($filePath, 'https://')) {
-                                                    $docUrl = $filePath;
-                                                } elseif (str_starts_with($filePath, 'uploads/')) {
-                                                    $docUrl = asset($filePath);
-                                                } elseif (!empty($filePath)) {
-                                                    $docUrl = asset('uploads/loans/' . $filePath);
+                                                    $streamUrl = $filePath;
+                                                    $downloadUrl = $filePath;
                                                 } else {
-                                                    $docUrl = '#';
+                                                    $streamUrl = url('staff/loans/document?file=' . urlencode($fileName) . '&name=' . urlencode($origName));
+                                                    $downloadUrl = url('staff/loans/document?file=' . urlencode($fileName) . '&name=' . urlencode($origName) . '&download=1');
                                                 }
 
                                                 $iconClass = match($ext) {
@@ -227,10 +226,15 @@
                                                         </div>
                                                     </div>
                                                     <div class="d-flex gap-2 mt-auto pt-2 border-top">
-                                                        <a href="<?= $docUrl ?>" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-medium">
-                                                            <i class="bi bi-eye me-1"></i> เปิดดูเอกสาร
+                                                        <button type="button" 
+                                                                class="btn btn-sm btn-primary rounded-pill w-100 fw-medium"
+                                                                onclick="openLoanDocPreview('<?= e($streamUrl) ?>', '<?= e(addslashes($docName)) ?>', '<?= e($ext) ?>', '<?= e($downloadUrl) ?>')">
+                                                            <i class="bi bi-eye me-1"></i> ดูเอกสาร
+                                                        </button>
+                                                        <a href="<?= $streamUrl ?>" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-2.5" title="เปิดในแท็บใหม่">
+                                                            <i class="bi bi-box-arrow-up-right"></i>
                                                         </a>
-                                                        <a href="<?= $docUrl ?>" download="<?= e($origName) ?>" class="btn btn-sm btn-light border rounded-pill px-3 text-secondary" title="ดาวน์โหลดไฟล์">
+                                                        <a href="<?= $downloadUrl ?>" class="btn btn-sm btn-light border rounded-pill px-2.5 text-secondary" title="ดาวน์โหลดไฟล์">
                                                             <i class="bi bi-download"></i>
                                                         </a>
                                                     </div>
@@ -288,3 +292,77 @@
         </div>
     <?php endforeach; ?>
 <?php endif; ?>
+
+<!-- Document Previewer Modal -->
+<div class="modal fade" id="loanDocPreviewModal" tabindex="-1" aria-hidden="true" style="z-index: 1060;">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
+            <div class="modal-header bg-dark text-white py-2.5 px-4 border-0">
+                <div class="d-flex align-items-center gap-2 overflow-hidden me-auto">
+                    <i class="bi bi-file-earmark-text text-warning fs-5"></i>
+                    <h6 class="modal-title fw-bold text-truncate mb-0" id="previewModalTitle">ดูตัวอย่างเอกสาร</h6>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="#" id="previewOpenTabBtn" target="_blank" class="btn btn-sm btn-outline-light rounded-pill px-3 py-1">
+                        <i class="bi bi-box-arrow-up-right me-1"></i> เปิดในแท็บใหม่
+                    </a>
+                    <a href="#" id="previewDownloadBtn" class="btn btn-sm btn-warning text-dark fw-bold rounded-pill px-3 py-1">
+                        <i class="bi bi-download me-1"></i> ดาวน์โหลด
+                    </a>
+                    <button type="button" class="btn-close btn-close-white ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="modal-body p-0 bg-secondary-subtle d-flex align-items-center justify-content-center" style="min-height: 520px; max-height: 82vh;" id="previewModalBody">
+                <div class="p-5 text-center text-muted">
+                    <div class="spinner-border text-primary mb-2" role="status"></div>
+                    <div>กำลังโหลดตัวอย่างเอกสาร...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openLoanDocPreview(url, title, ext, downloadUrl) {
+    const modalEl = document.getElementById('loanDocPreviewModal');
+    const titleEl = document.getElementById('previewModalTitle');
+    const bodyEl = document.getElementById('previewModalBody');
+    const openTabBtn = document.getElementById('previewOpenTabBtn');
+    const downloadBtn = document.getElementById('previewDownloadBtn');
+
+    titleEl.textContent = title || 'ดูตัวอย่างเอกสาร';
+    openTabBtn.href = url;
+    downloadBtn.href = downloadUrl || url;
+
+    ext = (ext || 'pdf').toLowerCase();
+
+    if (ext === 'pdf') {
+        bodyEl.innerHTML = `
+            <iframe src="${url}#toolbar=1&navpanes=0" 
+                    style="width: 100%; height: 75vh; border: none; background: #fff;" 
+                    title="${title}">
+            </iframe>
+        `;
+    } else if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) {
+        bodyEl.innerHTML = `
+            <div class="p-3 text-center w-100 overflow-auto" style="max-height: 75vh;">
+                <img src="${url}" alt="${title}" class="img-fluid rounded-3 shadow-sm" style="max-height: 70vh; object-fit: contain;">
+            </div>
+        `;
+    } else {
+        bodyEl.innerHTML = `
+            <div class="p-5 text-center bg-white rounded-4 shadow-sm m-4">
+                <i class="bi bi-file-earmark-word text-primary display-3 mb-3 d-block"></i>
+                <h5 class="fw-bold text-dark mb-2">${title}</h5>
+                <p class="text-muted small mb-4">ไฟล์นามสกุล .${ext.toUpperCase()} ไม่สามารถแสดงผลตัวอย่างผ่านเบราว์เซอร์ได้โดยตรง</p>
+                <a href="${downloadUrl || url}" class="btn btn-primary rounded-pill px-4 fw-bold">
+                    <i class="bi bi-download me-1"></i> ดาวน์โหลดไฟล์เพื่อเปิดดูบนเครื่อง
+                </a>
+            </div>
+        `;
+    }
+
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+}
+</script>

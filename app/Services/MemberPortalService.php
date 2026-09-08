@@ -192,8 +192,8 @@ class MemberPortalService
     public static function submitLoanApplication(int $memberId, array $data, array $files = []): array
     {
         $year = date('Y');
-        $randNo = str_pad((string)rand(1, 99999), 5, '0', STR_PAD_LEFT);
-        $appNo = "LN-{$year}-0{$randNo}";
+        $lastId = (int)Database::value("SELECT MAX(id) FROM loan_applications") ?: 0;
+        $appNo = sprintf('LN-%s-%05d', $year, $lastId + 1);
 
         $loanType = $data['loan_type'] ?? 'ordinary';
         $amount = (float)($data['request_amount'] ?? 100000);

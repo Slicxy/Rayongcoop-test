@@ -46,7 +46,7 @@
                                 if (!is_array($docs)) $docs = [];
                             ?>
                             <tr>
-                                <td>
+                                <td data-order="<?= (int)$app['id'] ?>">
                                     <span class="fw-bold text-primary font-monospace"><?= e($app['application_no']) ?></span>
                                     <div class="text-muted" style="font-size: 0.72rem;"><?= date('d/m/Y H:i', strtotime($app['created_at'])) ?></div>
                                 </td>

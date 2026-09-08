@@ -70,9 +70,16 @@
                                 </td>
                                 <td>
                                     <?php if (!empty($docs)): ?>
-                                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2.5 py-1">
+                                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2.5 py-1 fw-bold">
                                             <i class="bi bi-paperclip me-1"></i> <?= count($docs) ?> ไฟล์
                                         </span>
+                                        <div class="mt-1" style="max-width: 150px;">
+                                            <?php foreach ($docs as $d): ?>
+                                                <div class="text-truncate text-muted" style="font-size: 0.70rem;" title="<?= e($d['original_name'] ?? $d['name'] ?? '') ?>">
+                                                    <i class="bi bi-file-earmark me-0.5"></i> <?= e($d['original_name'] ?? $d['name'] ?? '') ?>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
                                     <?php else: ?>
                                         <span class="badge bg-light text-muted border rounded-pill px-2 py-1">
                                             ไม่มีไฟล์
@@ -141,7 +148,7 @@
                                 <div class="row g-2">
                                     <div class="col-md-6">
                                         <div class="text-muted small">ผู้ขอกู้ (สมาชิก)</div>
-                                        <div class="fw-bold text-dark"><?= e($app['member_name']) ?> (<?= e($app['member_no']) ?>)</div>
+                                        <div class="fw-bold text-dark"><?= e($app['member_name'] ?? ($app['first_name'] . ' ' . $app['last_name'])) ?> (<?= e($app['member_no']) ?>)</div>
                                         <div class="text-muted small"><?= e($app['department'] ?? '-') ?> • โทร: <?= e($app['phone'] ?? '-') ?></div>
                                     </div>
                                     <div class="col-md-6">
@@ -210,25 +217,28 @@
                                             ?>
                                             <div class="col-md-6">
                                                 <div class="p-3 bg-white border rounded-3 h-100 d-flex flex-column justify-content-between shadow-xs">
-                                                    <div class="d-flex align-items-center gap-2 mb-2">
-                                                        <div class="rounded-3 p-2 bg-light border d-flex align-items-center justify-content-center flex-shrink-0" style="width: 42px; height: 42px;">
+                                                    <div class="d-flex align-items-start gap-2 mb-2">
+                                                        <div class="rounded-3 p-2 bg-light border d-flex align-items-center justify-content-center flex-shrink-0 mt-0.5" style="width: 44px; height: 44px;">
                                                             <i class="bi <?= $iconClass ?> fs-4"></i>
                                                         </div>
-                                                        <div class="overflow-hidden">
-                                                            <div class="fw-bold text-dark small text-truncate" title="<?= e($docName) ?>">
+                                                        <div class="overflow-hidden flex-grow-1">
+                                                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-0.5 rounded-pill mb-1" style="font-size: 0.70rem;">
                                                                 <?= e($docName) ?>
+                                                            </span>
+                                                            <div class="fw-bold text-dark small text-truncate" title="<?= e($origName) ?>">
+                                                                <?= e($origName) ?>
                                                             </div>
-                                                            <div class="text-muted" style="font-size: 0.72rem;">
-                                                                <span class="badge bg-light text-dark border me-1"><?= strtoupper($ext) ?></span>
-                                                                <span><?= e($docSize) ?></span>
-                                                                <span class="text-success ms-1"><i class="bi bi-check-circle-fill"></i> พร้อมตรวจสอบ</span>
+                                                            <div class="text-muted d-flex align-items-center gap-1 mt-0.5" style="font-size: 0.70rem;">
+                                                                <span class="badge bg-light text-dark border"><?= strtoupper($ext) ?></span>
+                                                                <span class="font-monospace"><?= e($docSize) ?></span>
+                                                                <span class="text-success ms-auto"><i class="bi bi-check-circle-fill"></i> แนบสำเร็จ</span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="d-flex gap-2 mt-auto pt-2 border-top">
                                                         <button type="button" 
                                                                 class="btn btn-sm btn-primary rounded-pill w-100 fw-medium"
-                                                                onclick="openLoanDocPreview('<?= e($streamUrl) ?>', '<?= e(addslashes($docName)) ?>', '<?= e($ext) ?>', '<?= e($downloadUrl) ?>')">
+                                                                onclick="openLoanDocPreview('<?= e($streamUrl) ?>', '<?= e(addslashes($origName)) ?> (<?= e(addslashes($docName)) ?>)', '<?= e($ext) ?>', '<?= e($downloadUrl) ?>')">
                                                             <i class="bi bi-eye me-1"></i> ดูเอกสาร
                                                         </button>
                                                         <a href="<?= $streamUrl ?>" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-2.5" title="เปิดในแท็บใหม่">

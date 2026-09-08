@@ -219,47 +219,55 @@ class MemberPortalService
             mkdir($uploadDir, 0755, true);
         }
 
-        // Process doc_salary
-        if (!empty($files['doc_salary']['tmp_name']) && $files['doc_salary']['error'] === UPLOAD_ERR_OK) {
-            $ext = strtolower(pathinfo($files['doc_salary']['name'], PATHINFO_EXTENSION));
-            if (in_array($ext, ['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx'])) {
-                $filename = "salary_{$appNo}_" . time() . ".{$ext}";
-                if (move_uploaded_file($files['doc_salary']['tmp_name'], $uploadDir . '/' . $filename)) {
-                    $docs[] = [
-                        'name' => 'สลิปเงินเดือนเดือนล่าสุด',
-                        'file' => 'uploads/loans/' . $filename,
-                        'original_name' => $files['doc_salary']['name'],
-                        'size' => number_format($files['doc_salary']['size'] / 1024, 1) . ' KB',
-                        'type' => $ext,
-                        'status' => 'uploaded'
-                    ];
-                }
-            }
-        }
+        $labelMap = [
+            'doc_salary' => 'สลิปเงินเดือนเดือนล่าสุด',
+            'doc_id_card' => 'สำเนาบัตรประชาชน',
+            'doc_guarantor' => 'เอกสารผู้ค้ำประกัน',
+            'doc_statement' => 'รายการเดินบัญชี (Bank Statement)',
+            'doc_house' => 'สำเนาทะเบียนบ้าน',
+            'doc_other' => 'เอกสารประกอบเพิ่มเติม',
+        ];
 
-        // Process doc_id_card
-        if (!empty($files['doc_id_card']['tmp_name']) && $files['doc_id_card']['error'] === UPLOAD_ERR_OK) {
-            $ext = strtolower(pathinfo($files['doc_id_card']['name'], PATHINFO_EXTENSION));
-            if (in_array($ext, ['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx'])) {
-                $filename = "idcard_{$appNo}_" . time() . ".{$ext}";
-                if (move_uploaded_file($files['doc_id_card']['tmp_name'], $uploadDir . '/' . $filename)) {
-                    $docs[] = [
-                        'name' => 'สำเนาบัตรประชาชน',
-                        'file' => 'uploads/loans/' . $filename,
-                        'original_name' => $files['doc_id_card']['name'],
-                        'size' => number_format($files['doc_id_card']['size'] / 1024, 1) . ' KB',
-                        'type' => $ext,
-                        'status' => 'uploaded'
-                    ];
+        if (!empty($files)) {
+            foreach ($files as $field => $fileItem) {
+                if (empty($fileItem['tmp_name']) || ($fileItem['error'] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK) {
+                    continue;
+                }
+
+                $origName = $fileItem['name'] ?? ('document_' . time());
+                $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
+                $allowed = ['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx', 'xls', 'xlsx'];
+
+                if (in_array($ext, $allowed)) {
+                    $prefix = preg_replace('/^doc_/', '', (string)$field);
+                    $filename = "{$prefix}_{$appNo}_" . time() . "_" . bin2hex(random_bytes(3)) . ".{$ext}";
+                    $targetPath = $uploadDir . '/' . $filename;
+
+                    if (move_uploaded_file($fileItem['tmp_name'], $targetPath) || copy($fileItem['tmp_name'], $targetPath)) {
+                        $sizeBytes = file_exists($targetPath) ? (filesize($targetPath) ?: 0) : ($fileItem['size'] ?? 0);
+                        $formattedSize = $sizeBytes > 1048576 
+                            ? number_format($sizeBytes / 1048576, 2) . ' MB' 
+                            : number_format($sizeBytes / 1024, 1) . ' KB';
+
+                        $docName = $labelMap[$field] ?? ('เอกสารแนบ (' . pathinfo($origName, PATHINFO_FILENAME) . ')');
+
+                        $docs[] = [
+                            'name' => $docName,
+                            'file' => 'uploads/loans/' . $filename,
+                            'original_name' => $origName,
+                            'size' => $formattedSize,
+                            'type' => $ext,
+                            'status' => 'uploaded'
+                        ];
+                    }
                 }
             }
         }
 
         if (empty($docs)) {
-            $docs = $data['documents'] ?? [
-                ['name' => 'สลิปเงินเดือนเดือนล่าสุด', 'file' => 'uploads/loans/salary_slip_verified.pdf', 'original_name' => 'salary_slip_verified.pdf', 'size' => '1.2 MB', 'type' => 'pdf', 'status' => 'uploaded'],
-                ['name' => 'สำเนาบัตรประชาชน', 'file' => 'uploads/loans/id_card_copy.pdf', 'original_name' => 'id_card_copy.pdf', 'size' => '850 KB', 'type' => 'pdf', 'status' => 'uploaded']
-            ];
+            if (!empty($data['documents']) && is_array($data['documents'])) {
+                $docs = $data['documents'];
+            }
         }
 
         $docJson = json_encode($docs, JSON_UNESCAPED_UNICODE);

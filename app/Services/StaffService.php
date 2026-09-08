@@ -92,7 +92,9 @@ class StaffService
      */
     public static function getLoanApplications(?string $status = null): array
     {
-        $sql = "SELECT a.*, m.member_no, m.prefix, m.first_name, m.last_name, m.department, m.phone 
+        $sql = "SELECT a.*, m.member_no, m.prefix, m.first_name, m.last_name, 
+                       CONCAT(COALESCE(m.prefix,''), COALESCE(m.first_name,''), ' ', COALESCE(m.last_name,'')) as member_name, 
+                       m.department, m.phone 
                 FROM loan_applications a
                 JOIN members m ON a.member_id = m.id
                 WHERE 1=1";

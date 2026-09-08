@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <form id="loanWizardForm" action="<?= url('member/loan-apply') ?>" method="POST" enctype="multipart/form-data">
+        <form id="loanWizardForm" action="<?= url('member/loan-apply') ?>" method="POST" enctype="multipart/form-data" novalidate>
             <?= csrf_field() ?>
 
             <!-- STEP 1: Select Loan Type -->
@@ -487,19 +487,83 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Form submission validation
+    // Form submission validation & AJAX upload
     const form = document.getElementById('loanWizardForm');
     if (form) {
         form.addEventListener('submit', function(e) {
-            if (!inputDocSalary.files.length || !inputDocIdCard.files.length) {
-                e.preventDefault();
+            e.preventDefault();
+
+            if (!inputDocSalary.files || !inputDocSalary.files.length) {
+                document.getElementById('boxDocSalary').style.borderColor = '#DC3545';
                 Swal.fire({
-                    icon: 'error',
+                    icon: 'warning',
                     title: 'เอกสารไม่ครบถ้วน',
-                    text: 'กรุณาแนบสลิปเงินเดือนและสำเนาบัตรประชาชนให้ครบถ้วน',
+                    text: 'กรุณาแนบไฟล์ "สลิปเงินเดือนเดือนล่าสุด" ให้ครบถ้วน',
                     confirmButtonColor: '#0066CC'
                 });
+                return;
             }
+
+            if (!inputDocIdCard.files || !inputDocIdCard.files.length) {
+                document.getElementById('boxDocIdCard').style.borderColor = '#DC3545';
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'เอกสารไม่ครบถ้วน',
+                    text: 'กรุณาแนบไฟล์ "สำเนาบัตรประชาชน" ให้ครบถ้วน',
+                    confirmButtonColor: '#0066CC'
+                });
+                return;
+            }
+
+            // Show Loading
+            Swal.fire({
+                title: 'กำลังส่งคำขอกู้เงิน...',
+                text: 'ระบบกำลังอัปโหลดเอกสารหลักฐานและบันทึกข้อมูล กรุณารอสักครู่',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'ยื่นคำขอกู้เงินสำเร็จ!',
+                        html: `ระบบได้บันทึกคำขอและเอกสารแนบเรียบร้อยแล้ว<br><b class="text-primary font-monospace fs-5 mt-2 d-inline-block">เลขที่คำขอ: ${data.application_no}</b>`,
+                        confirmButtonText: 'ไปที่หน้าติดตามสถานะคำขอ',
+                        confirmButtonColor: '#0066CC',
+                        allowOutsideClick: false
+                    }).then(() => {
+                        window.location.href = data.redirect || '<?= url("member/online-services") ?>';
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: data.message || 'ไม่สามารถส่งคำขอกู้เงินได้ กรุณาลองใหม่อีกครั้ง',
+                        confirmButtonColor: '#0066CC'
+                    });
+                }
+            })
+            .catch(err => {
+                console.error('Upload error:', err);
+                // Fallback standard submit if fetch fails
+                form.submit();
+            });
         });
     }
 

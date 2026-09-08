@@ -313,6 +313,11 @@
                 </a>
             </li>
             <li class="member-nav-item">
+                <a href="<?= url('member/suggestions') ?>" class="member-nav-link <?= str_starts_with($request->uri(), '/member/suggestions') ? 'active' : '' ?>">
+                    <i class="bi bi-chat-heart text-danger"></i> <span>กล่องข้อเสนอแนะ</span>
+                </a>
+            </li>
+            <li class="member-nav-item">
                 <a href="<?= url('member/online-services') ?>" class="member-nav-link <?= $request->uri() === '/member/online-services' ? 'active' : '' ?>">
                     <i class="bi bi-send-check"></i> <span>ติดตามคำขอออนไลน์</span>
                 </a>

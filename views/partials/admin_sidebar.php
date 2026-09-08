@@ -149,6 +149,11 @@
             </a>
         </li>
         <li class="admin-nav-item">
+            <a href="<?= url('admin/suggestions') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/admin/suggestions') ? 'active' : '' ?>">
+                <i class="bi bi-lightbulb text-warning"></i> <span>กล่องข้อเสนอแนะสมาชิก</span>
+            </a>
+        </li>
+        <li class="admin-nav-item">
             <a href="<?= url('admin/board-staff') ?>" class="admin-nav-link <?= str_starts_with($request->uri(), '/admin/board-staff') ? 'active' : '' ?>">
                 <i class="bi bi-people"></i> <span>กรรมการและเจ้าหน้าที่</span>
             </a>

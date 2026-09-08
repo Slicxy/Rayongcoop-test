@@ -120,6 +120,10 @@ $router->group(['prefix' => 'member', 'middleware' => [AuthMiddleware::class]], 
     $r->get('/surveys/{id}', 'Member\\SurveyController@show');
     $r->post('/surveys/{id}/submit', 'Member\\SurveyController@submit', [CsrfMiddleware::class]);
 
+    // Member Suggestions & Innovation Box
+    $r->get('/suggestions', 'Member\\SuggestionController@index');
+    $r->post('/suggestions/store', 'Member\\SuggestionController@store', [CsrfMiddleware::class]);
+
     $r->get('/notifications', 'Member\\MemberPortalController@notifications');
     $r->post('/notifications/read-all', 'Member\\MemberPortalController@markAllNotificationsRead');
     $r->get('/online-services', 'Member\\MemberPortalController@onlineServices');
@@ -241,6 +245,12 @@ $router->group(['prefix' => 'admin', 'middleware' => [AuthMiddleware::class]], f
     $r->get('/complaints', 'Admin\\ComplaintController@index');
     $r->get('/complaints/{id}', 'Admin\\ComplaintController@show');
     $r->post('/complaints/{id}/update-status', 'Admin\\ComplaintController@updateStatus', [CsrfMiddleware::class]);
+
+    // Member Suggestions Management
+    $r->get('/suggestions', 'Admin\\SuggestionController@index');
+    $r->get('/suggestions/{id}', 'Admin\\SuggestionController@show');
+    $r->post('/suggestions/{id}/update-status', 'Admin\\SuggestionController@updateStatus', [CsrfMiddleware::class]);
+    $r->post('/suggestions/{id}/delete', 'Admin\\SuggestionController@destroy', [CsrfMiddleware::class]);
 
     // Board & Staff
     $r->get('/board-staff', 'Admin\\BoardStaffController@index');

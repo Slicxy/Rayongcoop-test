@@ -96,15 +96,13 @@ class StaffController extends Controller
 
     public function welfare(): void
     {
-        $applications = Database::query("SELECT a.*, wt.name as welfare_name, m.member_no, CONCAT(m.prefix, m.first_name, ' ', m.last_name) as member_name, m.department, m.phone 
-            FROM welfare_applications a 
-            JOIN welfare_types wt ON a.welfare_type_id = wt.id 
-            JOIN members m ON a.member_id = m.id 
-            ORDER BY a.created_at DESC");
+        $status = $this->request->query('status');
+        $applications = StaffService::getWelfareApplications($status);
 
         $this->render('staff.welfare', [
             'title' => 'ตรวจสอบและอนุมัติสวัสดิการสมาชิก (Welfare Claims)',
             'applications' => $applications,
+            'currentStatus' => $status,
         ], 'layouts.admin');
     }
 

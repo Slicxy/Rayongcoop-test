@@ -108,6 +108,28 @@ class StaffService
     }
 
     /**
+     * Get welfare applications list for review queue
+     */
+    public static function getWelfareApplications(?string $status = null): array
+    {
+        $sql = "SELECT a.*, wt.name as welfare_name, m.member_no, m.prefix, m.first_name, m.last_name, 
+                       CONCAT(m.prefix, m.first_name, ' ', m.last_name) as member_name, m.department, m.phone 
+                FROM welfare_applications a 
+                JOIN welfare_types wt ON a.welfare_type_id = wt.id 
+                JOIN members m ON a.member_id = m.id 
+                WHERE 1=1";
+        $params = [];
+
+        if ($status) {
+            $sql .= " AND a.status = ?";
+            $params[] = $status;
+        }
+
+        $sql .= " ORDER BY a.created_at DESC";
+        return Database::query($sql, $params);
+    }
+
+    /**
      * Update loan application status with staff action
      */
     public static function reviewLoanApplication(int $appId, string $status, ?string $comment, int $staffUserId): bool

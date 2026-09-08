@@ -146,6 +146,7 @@ $router->group(['prefix' => 'staff', 'middleware' => [AuthMiddleware::class]], f
     $r->get('/loans', 'Staff\\StaffController@loans');
     $r->post('/loans/review', 'Staff\\StaffController@reviewLoan', [CsrfMiddleware::class]);
     $r->get('/welfare', 'Staff\\StaffController@welfare');
+    $r->post('/welfare/review', 'Staff\\StaffController@reviewWelfare', [CsrfMiddleware::class]);
     $r->get('/reports', 'Staff\\StaffController@reports');
     $r->get('/billing', 'Staff\\StaffController@billing');
     $r->post('/billing/generate', 'Staff\\StaffController@generateBatchBilling', [CsrfMiddleware::class]);

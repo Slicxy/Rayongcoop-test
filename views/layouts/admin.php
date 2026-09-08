@@ -68,6 +68,21 @@
                     }
                 });
             }
+
+            // Mobile Admin/Staff Sidebar Toggle
+            const sidebar = document.getElementById('adminSidebar');
+            const toggleBtn = document.getElementById('btnToggleSidebar');
+            if (toggleBtn && sidebar) {
+                toggleBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    sidebar.classList.toggle('show');
+                });
+                document.addEventListener('click', function(e) {
+                    if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+                        sidebar.classList.remove('show');
+                    }
+                });
+            }
         });
     </script>
 

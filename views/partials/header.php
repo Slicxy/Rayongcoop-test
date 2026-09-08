@@ -348,10 +348,21 @@ $portalName = match($authRole) {
                                     <div class="fw-bold text-navy small"><?= e($authUser['name'] ?? $authUser['username'] ?? 'สมาชิก') ?></div>
                                     <small class="text-muted">บทบาท: <?= e($authUser['role_name'] ?? $authRole) ?></small>
                                 </li>
-                                <li><a class="dropdown-item py-2 small" href="<?= $portalUrl ?>"><i class="bi bi-speedometer2 me-2 text-primary"></i> ไปที่ Dashboard</a></li>
-                                <li><a class="dropdown-item py-2 small" href="<?= url('member/profile') ?>"><i class="bi bi-person me-2 text-primary"></i> ข้อมูลสมาชิก</a></li>
-                                <li><a class="dropdown-item py-2 small" href="<?= url('member/deposits') ?>"><i class="bi bi-wallet2 me-2 text-success"></i> บัญชีเงินฝาก</a></li>
-                                <li><a class="dropdown-item py-2 small" href="<?= url('member/loans') ?>"><i class="bi bi-cash-stack me-2 text-warning"></i> สัญญาเงินกู้</a></li>
+                                <li><a class="dropdown-item py-2 small" href="<?= $portalUrl ?>"><i class="bi bi-speedometer2 me-2 text-primary"></i> ไปที่ <?= e($portalName) ?></a></li>
+                                <?php if ($authRole === 'staff'): ?>
+                                    <li><a class="dropdown-item py-2 small" href="<?= url('staff/members') ?>"><i class="bi bi-people me-2 text-primary"></i> จัดการสมาชิก 360°</a></li>
+                                    <li><a class="dropdown-item py-2 small" href="<?= url('staff/loans') ?>"><i class="bi bi-cash-stack me-2 text-warning"></i> ตรวจคำขอกู้เงิน</a></li>
+                                    <li><a class="dropdown-item py-2 small" href="<?= url('staff/welfare') ?>"><i class="bi bi-heart-pulse me-2 text-danger"></i> ตรวจคำขอสวัสดิการ</a></li>
+                                    <li><a class="dropdown-item py-2 small" href="<?= url('staff/reports') ?>"><i class="bi bi-file-earmark-spreadsheet me-2 text-success"></i> ศูนย์รายงานและส่งออก</a></li>
+                                <?php elseif (in_array($authRole, ['admin', 'super_admin'])): ?>
+                                    <li><a class="dropdown-item py-2 small" href="<?= url('admin/executive') ?>"><i class="bi bi-pie-chart me-2 text-warning"></i> Executive Dashboard</a></li>
+                                    <li><a class="dropdown-item py-2 small" href="<?= url('staff/dashboard') ?>"><i class="bi bi-briefcase me-2 text-primary"></i> Staff Dashboard</a></li>
+                                    <li><a class="dropdown-item py-2 small" href="<?= url('admin/users') ?>"><i class="bi bi-person-gear me-2 text-secondary"></i> จัดการผู้ใช้งาน</a></li>
+                                <?php else: ?>
+                                    <li><a class="dropdown-item py-2 small" href="<?= url('member/profile') ?>"><i class="bi bi-person me-2 text-primary"></i> ข้อมูลสมาชิก</a></li>
+                                    <li><a class="dropdown-item py-2 small" href="<?= url('member/deposits') ?>"><i class="bi bi-wallet2 me-2 text-success"></i> บัญชีเงินฝาก</a></li>
+                                    <li><a class="dropdown-item py-2 small" href="<?= url('member/loans') ?>"><i class="bi bi-cash-stack me-2 text-warning"></i> สัญญาเงินกู้</a></li>
+                                <?php endif; ?>
                                 <li><hr class="dropdown-divider my-1"></li>
                                 <li>
                                     <a class="dropdown-item py-2 small text-danger fw-medium" href="<?= url('logout') ?>">

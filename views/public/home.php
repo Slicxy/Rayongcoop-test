@@ -4,8 +4,12 @@
         <div class="swiper-wrapper">
             <?php if (!empty($heroSlides)): ?>
                 <?php foreach ($heroSlides as $slide): ?>
-                    <div class="swiper-slide hero-slide" style="background-image: url('<?= asset('img/hero_bg_default.jpg') ?>');">
-                        <div class="hero-overlay" style="opacity: <?= e($slide['overlay_opacity'] ?? '0.85') ?>;"></div>
+                    <?php 
+                        $slideImg = !empty($slide['desktop_image']) ? $slide['desktop_image'] : 'hero_bg_default.jpg';
+                        $bgUrl = asset('img/' . $slideImg);
+                    ?>
+                    <div class="swiper-slide hero-slide" style="background-image: url('<?= $bgUrl ?>');">
+                        <div class="hero-overlay" style="opacity: <?= e($slide['overlay_opacity'] ?? '0.80') ?>;"></div>
                         <div class="container-xl position-relative z-2">
                             <div class="row align-items-center g-4">
                                 <div class="col-lg-7 col-md-12 text-<?= e($slide['text_alignment'] ?? 'left') ?>">

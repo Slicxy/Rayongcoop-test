@@ -189,20 +189,39 @@
 
             <!-- STEP 4: Document Upload -->
             <div class="wizard-pane d-none" id="wizardStep4">
-                <h5 class="fw-bold text-navy mb-3">ขั้นตอนที่ 4: แนบเอกสารประกอบการขอกู้</h5>
-                <div class="row g-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-navy mb-0">ขั้นตอนที่ 4: แนบเอกสารประกอบการขอกู้</h5>
+                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-1 rounded-pill small">
+                        <i class="bi bi-asterisk me-1"></i> ต้องแนบเอกสารให้ครบถ้วนทุกรายการ
+                    </span>
+                </div>
+                <p class="text-muted small mb-4">กรุณาแนบไฟล์เอกสารในรูปแบบ <b>.PDF, .JPG หรือ .PNG</b> (ขนาดไม่เกิน 5MB ต่อไฟล์) พร้อมลงนามรับรองสำเนาถูกต้อง</p>
+
+                <div class="row g-4">
                     <div class="col-md-6">
-                        <div class="p-3 border rounded-3 bg-light">
-                            <label class="form-label small fw-bold"><i class="bi bi-file-earmark-pdf text-danger me-1"></i> สลิปเงินเดือนเดือนล่าสุด <span class="text-danger">*</span></label>
-                            <input type="file" name="doc_salary" class="form-control form-control-sm">
-                            <small class="text-muted">รองรับไฟล์ PDF, JPG, PNG ขนาดไม่เกิน 5MB</small>
+                        <div class="p-4 border-2 rounded-4 bg-light h-100 doc-upload-box" id="boxDocSalary" style="border: 2px dashed #CBD5E1;">
+                            <label class="form-label small fw-bold text-navy d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-file-earmark-pdf-fill text-danger me-1 fs-6"></i> 1. สลิปเงินเดือนเดือนล่าสุด <span class="text-danger fw-bold">*</span></span>
+                                <span class="badge bg-danger text-white font-monospace" style="font-size: 10px;">REQUIRED</span>
+                            </label>
+                            <input type="file" name="doc_salary" id="inputDocSalary" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+                            <div class="mt-2 text-muted small d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-info-circle me-1"></i> สลิปเงินเดือนฉบับจริงหรือพิมพ์จากระบบ</span>
+                                <span id="infoDocSalary" class="fw-bold text-success d-none"><i class="bi bi-check-circle-fill me-1"></i>พร้อมส่ง</span>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="p-3 border rounded-3 bg-light">
-                            <label class="form-label small fw-bold"><i class="bi bi-file-earmark-person text-primary me-1"></i> สำเนาบัตรประชาชน <span class="text-danger">*</span></label>
-                            <input type="file" name="doc_id_card" class="form-control form-control-sm">
-                            <small class="text-muted">พร้อมลงนามสำเนาถูกต้อง</small>
+                        <div class="p-4 border-2 rounded-4 bg-light h-100 doc-upload-box" id="boxDocIdCard" style="border: 2px dashed #CBD5E1;">
+                            <label class="form-label small fw-bold text-navy d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-file-earmark-person-fill text-primary me-1 fs-6"></i> 2. สำเนาบัตรประชาชน <span class="text-danger fw-bold">*</span></span>
+                                <span class="badge bg-danger text-white font-monospace" style="font-size: 10px;">REQUIRED</span>
+                            </label>
+                            <input type="file" name="doc_id_card" id="inputDocIdCard" class="form-control" accept=".pdf,.jpg,.jpeg,.png" required>
+                            <div class="mt-2 text-muted small d-flex justify-content-between align-items-center">
+                                <span><i class="bi bi-info-circle me-1"></i> รับรองสำเนาถูกต้องของผู้กู้</span>
+                                <span id="infoDocIdCard" class="fw-bold text-success d-none"><i class="bi bi-check-circle-fill me-1"></i>พร้อมส่ง</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -212,7 +231,7 @@
             <div class="wizard-pane d-none" id="wizardStep5">
                 <h5 class="fw-bold text-navy mb-3">ขั้นตอนที่ 5: ตรวจสอบข้อมูลคำขอกู้เงินก่อนยืนยัน</h5>
                 <div class="table-responsive">
-                    <table class="table table-bordered small">
+                    <table class="table table-bordered small align-middle">
                         <tbody>
                             <tr><th class="bg-light" style="width: 35%;">ผู้ขอกู้</th><td><?= e(($member['prefix'] ?? '') . ($member['first_name'] ?? '') . ' ' . ($member['last_name'] ?? '')) ?> (<?= e($member['member_no']) ?>)</td></tr>
                             <tr><th class="bg-light">ประเภทเงินกู้</th><td id="reviewType">เงินกู้สามัญ</td></tr>
@@ -220,6 +239,7 @@
                             <tr><th class="bg-light">ระยะเวลาผ่อนชำระ</th><td id="reviewTerm">36 งวด</td></tr>
                             <tr><th class="bg-light">ประมาณการค่างวด</th><td id="reviewMonthly" class="fw-bold font-monospace text-danger">3,173.61 บาท/เดือน</td></tr>
                             <tr><th class="bg-light">สัดส่วนเงินคงเหลือ (Net Ratio)</th><td id="reviewNetRatio" class="fw-bold font-monospace text-success">78.77% (ผ่านเกณฑ์)</td></tr>
+                            <tr><th class="bg-light">เอกสารแนบประกอบ</th><td id="reviewDocs" class="fw-medium text-navy"><i class="bi bi-paperclip me-1"></i> สลิปเงินเดือน, สำเนาบัตรประชาชน</td></tr>
                             <tr><th class="bg-light">วัตถุประสงค์</th><td id="reviewPurpose">เพื่อการพัฒนาคุณภาพชีวิต</td></tr>
                         </tbody>
                     </table>
@@ -278,6 +298,38 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnPrev = document.getElementById('btnWizardPrev');
     const btnNext = document.getElementById('btnWizardNext');
     const btnSubmit = document.getElementById('btnWizardSubmit');
+
+    const inputDocSalary = document.getElementById('inputDocSalary');
+    const inputDocIdCard = document.getElementById('inputDocIdCard');
+    const infoDocSalary = document.getElementById('infoDocSalary');
+    const infoDocIdCard = document.getElementById('infoDocIdCard');
+
+    // Live File Selection feedback
+    if (inputDocSalary) {
+        inputDocSalary.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                infoDocSalary.classList.remove('d-none');
+                infoDocSalary.innerHTML = `<i class="bi bi-check-circle-fill me-1"></i> ${this.files[0].name}`;
+                document.getElementById('boxDocSalary').style.borderColor = '#198754';
+            } else {
+                infoDocSalary.classList.add('d-none');
+                document.getElementById('boxDocSalary').style.borderColor = '#CBD5E1';
+            }
+        });
+    }
+
+    if (inputDocIdCard) {
+        inputDocIdCard.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                infoDocIdCard.classList.remove('d-none');
+                infoDocIdCard.innerHTML = `<i class="bi bi-check-circle-fill me-1"></i> ${this.files[0].name}`;
+                document.getElementById('boxDocIdCard').style.borderColor = '#198754';
+            } else {
+                infoDocIdCard.classList.add('d-none');
+                document.getElementById('boxDocIdCard').style.borderColor = '#CBD5E1';
+            }
+        });
+    }
 
     function calculateDSR() {
         const amount = parseFloat(document.getElementById('requestAmountInput').value) || 100000;
@@ -350,6 +402,10 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('reviewMonthly').textContent = monthlyNewInstallment.toLocaleString('th-TH', {minimumFractionDigits: 2}) + ' บาท/เดือน';
         document.getElementById('reviewNetRatio').textContent = remainingPercent.toFixed(1) + '% (' + (remainingPercent >= 30 ? 'ผ่านเกณฑ์' : 'ต่ำกว่าเกณฑ์') + ')';
         document.getElementById('reviewPurpose').textContent = document.querySelector('textarea[name="purpose"]')?.value || 'เพื่อการพัฒนาคุณภาพชีวิต';
+
+        const salaryName = inputDocSalary?.files[0]?.name || 'สลิปเงินเดือน';
+        const idCardName = inputDocIdCard?.files[0]?.name || 'สำเนาบัตรประชาชน';
+        document.getElementById('reviewDocs').innerHTML = `<span class="badge bg-success-subtle text-success me-1"><i class="bi bi-file-earmark-check me-1"></i>${escapeHtml(salaryName)}</span> <span class="badge bg-primary-subtle text-primary"><i class="bi bi-file-earmark-check me-1"></i>${escapeHtml(idCardName)}</span>`;
     }
 
     function updateWizardUI() {
@@ -367,7 +423,57 @@ document.addEventListener('DOMContentLoaded', function() {
         calculateDSR();
     }
 
+    function validateCurrentStep() {
+        if (currentStep === 2) {
+            const salary = parseFloat(document.getElementById('salaryInput').value);
+            const amount = parseFloat(document.getElementById('requestAmountInput').value);
+            if (!salary || salary <= 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณาระบุรายได้รวม',
+                    text: 'กรุณากรอกรายได้รวมต่อเดือนของผู้ขอกู้',
+                    confirmButtonColor: '#0066CC'
+                });
+                return false;
+            }
+            if (!amount || amount <= 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณาระบุวงเงินกู้',
+                    text: 'กรุณากรอกวงเงินกู้ที่ต้องการ',
+                    confirmButtonColor: '#0066CC'
+                });
+                return false;
+            }
+        } else if (currentStep === 4) {
+            if (!inputDocSalary.files || inputDocSalary.files.length === 0) {
+                document.getElementById('boxDocSalary').style.borderColor = '#DC3545';
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณาแนบเอกสารให้ครบถ้วน',
+                    text: 'กรุณาแนบไฟล์ "สลิปเงินเดือนเดือนล่าสุด" ก่อนดำเนินการต่อไป',
+                    confirmButtonColor: '#0066CC'
+                });
+                return false;
+            }
+            if (!inputDocIdCard.files || inputDocIdCard.files.length === 0) {
+                document.getElementById('boxDocIdCard').style.borderColor = '#DC3545';
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณาแนบเอกสารให้ครบถ้วน',
+                    text: 'กรุณาแนบไฟล์ "สำเนาบัตรประชาชน" ก่อนดำเนินการต่อไป',
+                    confirmButtonColor: '#0066CC'
+                });
+                return false;
+            }
+        }
+        return true;
+    }
+
     btnNext.addEventListener('click', function() {
+        if (!validateCurrentStep()) {
+            return;
+        }
         if (currentStep < totalSteps) {
             currentStep++;
             updateWizardUI();
@@ -380,6 +486,22 @@ document.addEventListener('DOMContentLoaded', function() {
             updateWizardUI();
         }
     });
+
+    // Form submission validation
+    const form = document.getElementById('loanWizardForm');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            if (!inputDocSalary.files.length || !inputDocIdCard.files.length) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เอกสารไม่ครบถ้วน',
+                    text: 'กรุณาแนบสลิปเงินเดือนและสำเนาบัตรประชาชนให้ครบถ้วน',
+                    confirmButtonColor: '#0066CC'
+                });
+            }
+        });
+    }
 
     // Inputs listener for live updates
     ['requestAmountInput', 'requestTermInput', 'salaryInput', 'existingDebtInput'].forEach(id => {
@@ -402,6 +524,12 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    function escapeHtml(str) {
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    }
 
     calculateDSR();
 });

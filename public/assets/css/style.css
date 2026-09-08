@@ -3,50 +3,57 @@
    Rayong Public Health Savings and Credit Cooperative Limited
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=Sarabun:wght@400;500;600&display=swap');
 
 :root {
-    --coop-navy: #073B74;
-    --coop-blue: #0B5ED7;
-    --coop-blue-hover: #094db2;
-    --coop-secondary: #2176D2;
-    --coop-light-blue: #EAF4FF;
-    --coop-light-subtle: #F0F6FF;
-    --coop-bg: #F5F8FC;
+    --coop-navy: #072C59;
+    --coop-navy-dark: #041A35;
+    --coop-blue: #0066CC;
+    --coop-blue-hover: #0052A3;
+    --coop-secondary: #0284C7;
+    --coop-light-blue: #EBF5FF;
+    --coop-light-subtle: #F0F7FF;
+    --coop-bg: #F8FAFC;
     --coop-white: #FFFFFF;
-    --coop-dark: #162033;
+    --coop-dark: #0F172A;
+    --coop-body: #334155;
     --coop-muted: #64748B;
     --coop-border: #E2E8F0;
-    --coop-success: #198754;
-    --coop-warning: #FFC107;
-    --coop-danger: #DC3545;
-    --coop-gold: #C99A2E;
-    --coop-gold-light: #FFF8E7;
+    --coop-border-subtle: #F1F5F9;
+    --coop-success: #059669;
+    --coop-warning: #D97706;
+    --coop-danger: #E11D48;
+    --coop-gold: #D97706;
+    --coop-gold-light: #FEF3C7;
+    --coop-purple: #7C3AED;
 
-    --font-family-base: 'Noto Sans Thai', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --font-family-number: 'Inter', 'Noto Sans Thai', sans-serif;
+    --font-family-base: 'Prompt', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-family-number: 'Inter', 'Prompt', sans-serif;
+    --font-family-doc: 'Sarabun', 'Prompt', sans-serif;
 
     --header-height: 80px;
     --topbar-height: 42px;
-    --shadow-subtle: 0 4px 20px rgba(7, 59, 116, 0.06);
-    --shadow-card: 0 10px 30px rgba(7, 59, 116, 0.08);
-    --shadow-hover: 0 16px 36px rgba(7, 59, 116, 0.14);
+    --shadow-subtle: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+    --shadow-card: 0 10px 30px -5px rgba(15, 23, 42, 0.07);
+    --shadow-hover: 0 20px 35px -8px rgba(7, 44, 89, 0.16);
     --border-radius-sm: 8px;
     --border-radius-md: 14px;
     --border-radius-lg: 20px;
-    --transition-fast: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-normal: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    --border-radius-pill: 50px;
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Base Elements */
 body {
     font-family: var(--font-family-base);
     background-color: var(--coop-bg);
-    color: var(--coop-dark);
+    color: var(--coop-body);
     line-height: 1.65;
     font-size: 15px;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
@@ -732,4 +739,139 @@ a:hover {
     outline: 3px solid var(--coop-blue);
     outline-offset: 2px;
 }
+
+/* ==========================================================================
+   ENHANCED UI/UX & MODERN TYPOGRAPHY UTILITIES
+   ========================================================================== */
+
+/* Typography & Text Hierarchy */
+.fw-medium { font-weight: 500 !important; }
+.fw-semibold { font-weight: 600 !important; }
+.fw-bold { font-weight: 700 !important; }
+.fw-bolder { font-weight: 800 !important; }
+
+.text-dark-navy { color: var(--coop-navy-dark) !important; }
+.text-emerald { color: var(--coop-success) !important; }
+.text-amber { color: var(--coop-warning) !important; }
+.text-purple { color: var(--coop-purple) !important; }
+.text-slate { color: var(--coop-muted) !important; }
+
+.gradient-text-primary {
+    background: linear-gradient(135deg, var(--coop-navy) 0%, var(--coop-blue) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-gold {
+    background: linear-gradient(135deg, #D97706 0%, #F59E0B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphism & Hover Lift */
+.glass-card {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06);
+}
+
+.hover-lift {
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover) !important;
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 20px rgba(0, 102, 204, 0.25) !important;
+}
+
+/* Interactive Pill Filter Tabs */
+.nav-pills-modern {
+    background: #F1F5F9;
+    padding: 5px;
+    border-radius: 50px;
+    display: inline-flex;
+    gap: 4px;
+}
+
+.nav-pills-modern .nav-link {
+    border-radius: 50px;
+    padding: 7px 18px !important;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--coop-muted);
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.nav-pills-modern .nav-link.active,
+.nav-pills-modern .nav-link:hover {
+    background: #FFFFFF;
+    color: var(--coop-navy);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
+}
+
+.nav-pills-modern .nav-link.active {
+    background: var(--coop-navy);
+    color: #FFFFFF !important;
+}
+
+/* Modern Form Controls with Soft Focus Glow */
+.form-control, .form-select {
+    font-family: var(--font-family-base);
+    border-color: #CBD5E1;
+    border-radius: var(--border-radius-sm);
+    padding: 0.65rem 1rem;
+    color: var(--coop-dark);
+    transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--coop-blue);
+    box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.14);
+    outline: none;
+}
+
+/* Enhanced Subtly-colored Badges */
+.badge-service-hot {
+    background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+    color: #FFFFFF;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.badge-service-fast {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: #FFFFFF;
+    font-weight: 700;
+}
+
+.badge-service-instant {
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    color: #FFFFFF;
+    font-weight: 700;
+}
+
+/* Smooth Table Micro-interactions */
+.table-modern {
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.table-modern tbody tr {
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+    transition: all 0.2s ease;
+}
+
+.table-modern tbody tr:hover {
+    transform: scale(1.002);
+    box-shadow: 0 6px 16px rgba(7, 44, 89, 0.08);
+}
+
 

@@ -6,17 +6,18 @@
     --sidebar-width: 260px;
     --sidebar-collapsed-width: 70px;
     --topbar-height: 64px;
-    --admin-navy: #073B74;
-    --admin-dark-navy: #05264c;
-    --admin-sidebar-bg: #0b1f3b;
-    --admin-sidebar-active: #0B5ED7;
-    --admin-bg: #F4F7FB;
+    --admin-navy: #072C59;
+    --admin-dark-navy: #041A35;
+    --admin-sidebar-bg: #07192F;
+    --admin-sidebar-active: #0066CC;
+    --admin-bg: #F8FAFC;
 }
 
 body.admin-body {
     background-color: var(--admin-bg);
-    font-family: 'Noto Sans Thai', 'Inter', -apple-system, sans-serif;
-    color: #1e293b;
+    font-family: 'Prompt', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1E293B;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* Admin Sidebar */

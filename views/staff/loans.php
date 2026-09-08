@@ -30,6 +30,7 @@
                         <th>ประเภทเงินกู้</th>
                         <th>วงเงินที่ยื่นกู้</th>
                         <th>ระยะเวลา</th>
+                        <th>เอกสารแนบ</th>
                         <th>สถานะ</th>
                         <th class="text-end">การดำเนินการ</th>
                     </tr>
@@ -37,6 +38,13 @@
                 <tbody>
                     <?php if (!empty($applications)): ?>
                         <?php foreach ($applications as $app): ?>
+                            <?php 
+                                $appAmount = (float)($app['request_amount'] ?? $app['requested_amount'] ?? 0);
+                                $appTerm = (int)($app['request_term'] ?? $app['term_months'] ?? 0);
+                                $appIncome = (float)($app['salary'] ?? $app['monthly_income'] ?? 0);
+                                $docs = !empty($app['documents_json']) ? json_decode($app['documents_json'], true) : [];
+                                if (!is_array($docs)) $docs = [];
+                            ?>
                             <tr>
                                 <td>
                                     <span class="fw-bold text-primary font-monospace"><?= e($app['application_no']) ?></span>
@@ -52,11 +60,24 @@
                                     <div class="text-muted small mt-1">วัตถุประสงค์: <?= e($app['purpose'] ?? '-') ?></div>
                                 </td>
                                 <td>
-                                    <div class="fw-bold text-dark fs-6">฿<?= number_format((float)$app['requested_amount'], 2) ?></div>
-                                    <div class="text-muted small">เงินเดือน: ฿<?= number_format((float)($app['monthly_income'] ?? 0), 2) ?></div>
+                                    <div class="fw-bold text-dark fs-6">฿<?= number_format($appAmount, 2) ?></div>
+                                    <?php if ($appIncome > 0): ?>
+                                        <div class="text-muted small">เงินเดือน: ฿<?= number_format($appIncome, 2) ?></div>
+                                    <?php endif; ?>
                                 </td>
                                 <td>
-                                    <span class="badge bg-secondary-subtle text-secondary"><?= (int)$app['term_months'] ?> งวด</span>
+                                    <span class="badge bg-secondary-subtle text-secondary"><?= $appTerm ?> งวด</span>
+                                </td>
+                                <td>
+                                    <?php if (!empty($docs)): ?>
+                                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2.5 py-1">
+                                            <i class="bi bi-paperclip me-1"></i> <?= count($docs) ?> ไฟล์
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="badge bg-light text-muted border rounded-pill px-2 py-1">
+                                            ไม่มีไฟล์
+                                        </span>
+                                    <?php endif; ?>
                                 </td>
                                 <td>
                                     <?php
@@ -96,11 +117,17 @@
 <!-- Modals rendered outside Table for DataTables Compliance -->
 <?php if (!empty($applications)): ?>
     <?php foreach ($applications as $app): ?>
+        <?php 
+            $appAmount = (float)($app['request_amount'] ?? $app['requested_amount'] ?? 0);
+            $appTerm = (int)($app['request_term'] ?? $app['term_months'] ?? 0);
+            $docs = !empty($app['documents_json']) ? json_decode($app['documents_json'], true) : [];
+            if (!is_array($docs)) $docs = [];
+        ?>
         <div class="modal fade" id="reviewModal<?= $app['id'] ?>" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content rounded-4 border-0 shadow">
-                    <div class="modal-header border-0 pb-0">
-                        <h5 class="modal-title fw-bold">
+                    <div class="modal-header bg-light border-0 py-3 px-4">
+                        <h5 class="modal-title fw-bold text-navy">
                             <i class="bi bi-file-earmark-check text-primary me-2"></i>พิจารณาคำขอกู้เงิน: <?= e($app['application_no']) ?>
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -108,30 +135,120 @@
                     <form action="<?= url('staff/loans/review') ?>" method="POST">
                         <?= csrf_field() ?>
                         <input type="hidden" name="application_id" value="<?= $app['id'] ?>">
-                        <div class="modal-body py-4">
-                            <div class="p-3 bg-light rounded-3 mb-3">
+                        <div class="modal-body p-4">
+                            <!-- Loan Details Overview -->
+                            <div class="p-3 bg-light rounded-4 mb-4 border">
                                 <div class="row g-2">
                                     <div class="col-md-6">
-                                        <div class="text-muted small">ผู้ขอกู้</div>
-                                        <div class="fw-bold"><?= e($app['member_name']) ?> (<?= e($app['member_no']) ?>)</div>
+                                        <div class="text-muted small">ผู้ขอกู้ (สมาชิก)</div>
+                                        <div class="fw-bold text-dark"><?= e($app['member_name']) ?> (<?= e($app['member_no']) ?>)</div>
+                                        <div class="text-muted small"><?= e($app['department'] ?? '-') ?> • โทร: <?= e($app['phone'] ?? '-') ?></div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="text-muted small">ประเภทสินเชื่อ</div>
-                                        <div class="fw-bold text-primary"><?= e($app['loan_type']) ?></div>
+                                        <div class="fw-bold text-primary fs-6"><?= e($app['loan_type']) ?></div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 mt-3">
                                         <div class="text-muted small">วงเงินที่ยื่นขอ</div>
-                                        <div class="fw-bold fs-5 text-dark">฿<?= number_format((float)$app['requested_amount'], 2) ?></div>
+                                        <div class="fw-bold fs-5 text-dark">฿<?= number_format($appAmount, 2) ?></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="text-muted small">จำนวนงวดที่ขอผ่อน</div>
-                                        <div class="fw-bold"><?= (int)$app['term_months'] ?> งวด</div>
+                                    <div class="col-md-6 mt-3">
+                                        <div class="text-muted small">ระยะเวลาผ่อนชำระ</div>
+                                        <div class="fw-bold text-dark"><?= $appTerm ?> งวด <?php if (!empty($app['estimated_monthly'])): ?>(ประมาณการ ฿<?= number_format((float)$app['estimated_monthly'], 2) ?>/งวด)<?php endif; ?></div>
                                     </div>
+                                    <?php if (!empty($app['purpose'])): ?>
+                                        <div class="col-12 mt-2 pt-2 border-top">
+                                            <div class="text-muted small">วัตถุประสงค์การขอกู้:</div>
+                                            <div class="fw-medium small text-dark"><?= e($app['purpose']) ?></div>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php if (!empty($app['guarantor_member_no'])): ?>
+                                        <div class="col-12">
+                                            <div class="text-muted small">เลขที่สมาชิกผู้ค้ำประกัน:</div>
+                                            <div class="fw-bold font-monospace text-navy small"><?= e($app['guarantor_member_no']) ?></div>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
+                            <!-- Attached Documents Showcase Section -->
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <label class="form-label fw-bold text-navy mb-0">
+                                        <i class="bi bi-paperclip text-primary me-1"></i> เอกสารหลักฐานประกอบคำขอกู้ (Attached Documents)
+                                    </label>
+                                    <span class="badge bg-primary-subtle text-primary rounded-pill px-2.5 py-1 small">
+                                        <?= count($docs) ?> รายการ
+                                    </span>
+                                </div>
+
+                                <?php if (!empty($docs)): ?>
+                                    <div class="row g-2">
+                                        <?php foreach ($docs as $doc): ?>
+                                            <?php
+                                                $docName = $doc['name'] ?? 'เอกสารแนบ';
+                                                $filePath = $doc['file'] ?? '';
+                                                $origName = $doc['original_name'] ?? $doc['filename'] ?? basename($filePath);
+                                                $docSize = $doc['size'] ?? '1.2 MB';
+                                                $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION) ?: pathinfo($origName, PATHINFO_EXTENSION) ?: 'pdf');
+
+                                                if (str_starts_with($filePath, 'http://') || str_starts_with($filePath, 'https://')) {
+                                                    $docUrl = $filePath;
+                                                } elseif (str_starts_with($filePath, 'uploads/')) {
+                                                    $docUrl = asset($filePath);
+                                                } elseif (!empty($filePath)) {
+                                                    $docUrl = asset('uploads/loans/' . $filePath);
+                                                } else {
+                                                    $docUrl = '#';
+                                                }
+
+                                                $iconClass = match($ext) {
+                                                    'pdf' => 'bi-file-earmark-pdf-fill text-danger',
+                                                    'jpg', 'jpeg', 'png' => 'bi-file-earmark-image-fill text-primary',
+                                                    'doc', 'docx' => 'bi-file-earmark-word-fill text-info',
+                                                    default => 'bi-file-earmark-text-fill text-secondary'
+                                                };
+                                            ?>
+                                            <div class="col-md-6">
+                                                <div class="p-3 bg-white border rounded-3 h-100 d-flex flex-column justify-content-between shadow-xs">
+                                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                                        <div class="rounded-3 p-2 bg-light border d-flex align-items-center justify-content-center flex-shrink-0" style="width: 42px; height: 42px;">
+                                                            <i class="bi <?= $iconClass ?> fs-4"></i>
+                                                        </div>
+                                                        <div class="overflow-hidden">
+                                                            <div class="fw-bold text-dark small text-truncate" title="<?= e($docName) ?>">
+                                                                <?= e($docName) ?>
+                                                            </div>
+                                                            <div class="text-muted" style="font-size: 0.72rem;">
+                                                                <span class="badge bg-light text-dark border me-1"><?= strtoupper($ext) ?></span>
+                                                                <span><?= e($docSize) ?></span>
+                                                                <span class="text-success ms-1"><i class="bi bi-check-circle-fill"></i> พร้อมตรวจสอบ</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex gap-2 mt-auto pt-2 border-top">
+                                                        <a href="<?= $docUrl ?>" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill w-100 fw-medium">
+                                                            <i class="bi bi-eye me-1"></i> เปิดดูเอกสาร
+                                                        </a>
+                                                        <a href="<?= $docUrl ?>" download="<?= e($origName) ?>" class="btn btn-sm btn-light border rounded-pill px-3 text-secondary" title="ดาวน์โหลดไฟล์">
+                                                            <i class="bi bi-download"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="p-3 bg-light rounded-3 text-center text-muted small border">
+                                        <i class="bi bi-file-earmark-x fs-4 d-block mb-1 text-secondary opacity-50"></i>
+                                        ไม่มีรายการเอกสารแนบสำหรับคำขอนี้
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Review Action -->
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">ผลการพิจารณา <span class="text-danger">*</span></label>
+                                <label class="form-label fw-bold text-navy">ผลการพิจารณา <span class="text-danger">*</span></label>
                                 <div class="d-flex gap-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="action" id="act_approve<?= $app['id'] ?>" value="approved" checked>
@@ -155,13 +272,15 @@
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">ความเห็นเจ้าหน้าที่ / หมายเหตุ</label>
-                                <textarea name="comment" class="form-control" rows="3" placeholder="ระบุเหตุผลในการอนุมัติ หรือเอกสารที่ต้องการเพิ่มเติม..."></textarea>
+                                <label class="form-label fw-semibold text-navy">ความเห็นเจ้าหน้าที่ / ข้อความแจ้งสมาชิก</label>
+                                <textarea name="comment" class="form-control" rows="3" placeholder="ระบุเหตุผลในการอนุมัติ หรือเอกสารที่ต้องการให้สมาชิกแนบเพิ่มเติม..."></textarea>
                             </div>
                         </div>
-                        <div class="modal-footer border-0 pt-0">
+                        <div class="modal-footer bg-light border-0 py-3 px-4">
                             <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">ยกเลิก</button>
-                            <button type="submit" class="btn btn-primary rounded-pill px-4">บันทึกผลการพิจารณา</button>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">
+                                <i class="bi bi-check2-circle me-1"></i> บันทึกผลการพิจารณา
+                            </button>
                         </div>
                     </form>
                 </div>

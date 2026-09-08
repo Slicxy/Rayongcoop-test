@@ -219,7 +219,8 @@ class MemberPortalController extends Controller
     public function submitLoanApplication(): void
     {
         $data = $this->request->all();
-        $res = MemberPortalService::submitLoanApplication($this->memberId, $data);
+        $files = $_FILES ?? [];
+        $res = MemberPortalService::submitLoanApplication($this->memberId, $data, $files);
 
         if ($this->request->isAjax()) {
             $this->response->json([

@@ -60,6 +60,12 @@ $router->get('/privacy/cookies', 'Public\\PrivacyController@cookies');
 $router->get('/terms', 'Public\\PrivacyController@terms');
 $router->get('/sitemap.xml', 'Public\\SitemapController@index');
 
+// Public Dividend & Tax Verification & Surveys
+$router->get('/dividend-estimator', 'Public\\DividendEstimatorController@index');
+$router->get('/verify-tax-cert/{token}', 'Public\\TaxCertificateController@verify');
+$router->get('/surveys/{slug}', 'Public\\SurveyController@show');
+$router->post('/surveys/{slug}/submit', 'Public\\SurveyController@submit', [CsrfMiddleware::class]);
+
 // APIs
 $router->post('/api/cookie-consent', 'Public\\ApiController@logCookieConsent');
 $router->post('/api/popups/event', 'Public\\ApiController@logPopupEvent');
@@ -101,6 +107,23 @@ $router->group(['prefix' => 'member', 'middleware' => [AuthMiddleware::class]], 
     $r->post('/beneficiaries/save', 'Member\\MemberPortalController@saveBeneficiary', [CsrfMiddleware::class]);
     $r->get('/receipts', 'Member\\MemberPortalController@receipts');
     $r->get('/receipts/print/{no}', 'Member\\MemberPortalController@printReceipt');
+
+    // Tax Certificates
+    $r->get('/tax-certificates', 'Member\\TaxCertificateController@index');
+    $r->get('/tax-certificates/print/{id}', 'Member\\TaxCertificateController@print');
+
+    // Dividend Estimator
+    $r->get('/dividend-estimator', 'Member\\DividendEstimatorController@index');
+
+    // Member Surveys & Polls
+    $r->get('/surveys', 'Member\\SurveyController@index');
+    $r->get('/surveys/{id}', 'Member\\SurveyController@show');
+    $r->post('/surveys/{id}/submit', 'Member\\SurveyController@submit', [CsrfMiddleware::class]);
+
+    // Member Suggestions & Innovation Box
+    $r->get('/suggestions', 'Member\\SuggestionController@index');
+    $r->post('/suggestions/store', 'Member\\SuggestionController@store', [CsrfMiddleware::class]);
+
     $r->get('/notifications', 'Member\\MemberPortalController@notifications');
     $r->post('/notifications/read-all', 'Member\\MemberPortalController@markAllNotificationsRead');
     $r->get('/online-services', 'Member\\MemberPortalController@onlineServices');
@@ -108,6 +131,7 @@ $router->group(['prefix' => 'member', 'middleware' => [AuthMiddleware::class]], 
     $r->get('/settings', 'Member\\MemberPortalController@settings');
     $r->post('/settings/password', 'Member\\MemberPortalController@changePassword', [CsrfMiddleware::class]);
     $r->post('/settings/line', 'Member\\MemberPortalController@toggleLine', [CsrfMiddleware::class]);
+    $r->post('/settings/revoke-sessions', 'Member\\MemberPortalController@revokeSessions', [CsrfMiddleware::class]);
 });
 
 /*
@@ -120,8 +144,10 @@ $router->group(['prefix' => 'staff', 'middleware' => [AuthMiddleware::class]], f
     $r->get('/members', 'Staff\\StaffController@members');
     $r->get('/members/detail', 'Staff\\StaffController@memberDetail');
     $r->get('/loans', 'Staff\\StaffController@loans');
+    $r->get('/loans/document', 'Staff\\StaffController@viewLoanDocument');
     $r->post('/loans/review', 'Staff\\StaffController@reviewLoan', [CsrfMiddleware::class]);
     $r->get('/welfare', 'Staff\\StaffController@welfare');
+    $r->post('/welfare/review', 'Staff\\StaffController@reviewWelfare', [CsrfMiddleware::class]);
     $r->get('/reports', 'Staff\\StaffController@reports');
     $r->get('/billing', 'Staff\\StaffController@billing');
     $r->post('/billing/generate', 'Staff\\StaffController@generateBatchBilling', [CsrfMiddleware::class]);
@@ -171,6 +197,13 @@ $router->group(['prefix' => 'admin', 'middleware' => [AuthMiddleware::class]], f
     $r->post('/contact-messages/{id}/update', 'Admin\\ContactMessageController@updateStatus', [CsrfMiddleware::class]);
     $r->post('/contact-messages/{id}/delete', 'Admin\\ContactMessageController@destroy', [CsrfMiddleware::class]);
 
+    // Member Surveys & Polls Management
+    $r->get('/surveys', 'Admin\\SurveyController@index');
+    $r->get('/surveys/create', 'Admin\\SurveyController@create');
+    $r->post('/surveys/store', 'Admin\\SurveyController@store', [CsrfMiddleware::class]);
+    $r->get('/surveys/{id}/results', 'Admin\\SurveyController@results');
+    $r->post('/surveys/{id}/delete', 'Admin\\SurveyController@destroy', [CsrfMiddleware::class]);
+
     // Hero Slides
     $r->get('/hero-slides', 'Admin\\HeroSlideController@index');
     $r->post('/hero-slides/store', 'Admin\\HeroSlideController@store', [CsrfMiddleware::class]);
@@ -214,6 +247,12 @@ $router->group(['prefix' => 'admin', 'middleware' => [AuthMiddleware::class]], f
     $r->get('/complaints', 'Admin\\ComplaintController@index');
     $r->get('/complaints/{id}', 'Admin\\ComplaintController@show');
     $r->post('/complaints/{id}/update-status', 'Admin\\ComplaintController@updateStatus', [CsrfMiddleware::class]);
+
+    // Member Suggestions Management
+    $r->get('/suggestions', 'Admin\\SuggestionController@index');
+    $r->get('/suggestions/{id}', 'Admin\\SuggestionController@show');
+    $r->post('/suggestions/{id}/update-status', 'Admin\\SuggestionController@updateStatus', [CsrfMiddleware::class]);
+    $r->post('/suggestions/{id}/delete', 'Admin\\SuggestionController@destroy', [CsrfMiddleware::class]);
 
     // Board & Staff
     $r->get('/board-staff', 'Admin\\BoardStaffController@index');

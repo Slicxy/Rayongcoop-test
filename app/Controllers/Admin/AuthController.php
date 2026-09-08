@@ -215,7 +215,15 @@ class AuthController extends Controller
         } catch (\Throwable $e) {}
 
         Session::flash('success', 'ยืนยันตัวตนสำเร็จ');
-        $this->redirect(url('dashboard'));
+
+        $roleSlug = $user['role_slug'] ?? 'member';
+        $targetUrl = match($roleSlug) {
+            'member' => url('member/dashboard'),
+            'staff' => url('staff/dashboard'),
+            default => url('admin/dashboard')
+        };
+
+        $this->redirect($targetUrl);
     }
 
     public function logout(): void

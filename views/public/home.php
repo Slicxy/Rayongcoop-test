@@ -92,21 +92,21 @@
                 </a>
             </div>
             <div class="col">
-                <a href="<?= url('loan-readiness') ?>" class="quick-service-item">
-                    <div class="quick-service-icon" style="background-color: #FFF8E1; color: #B78103;"><i class="bi bi-check2-square"></i></div>
-                    <span class="quick-service-label">เช็คสิทธิ์กู้</span>
-                </a>
-            </div>
-            <div class="col">
                 <a href="<?= url('calculator') ?>" class="quick-service-item">
                     <div class="quick-service-icon"><i class="bi bi-calculator"></i></div>
                     <span class="quick-service-label">คำนวณเงินกู้</span>
                 </a>
             </div>
             <div class="col">
-                <a href="<?= url('calendar') ?>" class="quick-service-item">
-                    <div class="quick-service-icon" style="background-color: #EEF2FF; color: #4338CA;"><i class="bi bi-calendar3"></i></div>
-                    <span class="quick-service-label">ปฏิทินกิจกรรม</span>
+                <a href="<?= url('rates') ?>" class="quick-service-item">
+                    <div class="quick-service-icon"><i class="bi bi-percent"></i></div>
+                    <span class="quick-service-label">อัตราดอกเบี้ย</span>
+                </a>
+            </div>
+            <div class="col">
+                <a href="<?= url('welfare') ?>" class="quick-service-item">
+                    <div class="quick-service-icon"><i class="bi bi-heart-pulse"></i></div>
+                    <span class="quick-service-label">สวัสดิการ</span>
                 </a>
             </div>
             <div class="col">
@@ -318,6 +318,59 @@
                         <div class="mt-4 pt-2">
                             <a href="<?= url('calculator') ?>" class="btn btn-gold w-100 py-2">
                                 <i class="bi bi-file-earmark-text me-1"></i> ดูตารางผ่อนชำระละเอียด (Amortization Schedule)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 4.1 Digital Services & Member Voice Hub -->
+<section class="py-4 py-lg-5" style="background: linear-gradient(180deg, #F8FAFC 0%, #EFF6FF 100%);">
+    <div class="container-xl">
+        <div class="row g-4">
+            <!-- Tool 1: Dividend Estimator -->
+            <div class="col-lg-6">
+                <div class="card h-100 border-0 rounded-4 shadow-sm p-4 p-md-4 position-relative overflow-hidden hover-shadow transition-all" style="background: linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%); border-top: 4px solid #10B981 !important;">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="rounded-4 p-3 d-flex align-items-center justify-content-center text-white flex-shrink-0 shadow-sm" style="width: 56px; height: 56px; background: linear-gradient(135deg, #059669 0%, #10B981 100%);">
+                            <i class="bi bi-pie-chart-fill fs-4"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1 mb-2 fw-semibold">
+                                <i class="bi bi-calculator me-1"></i> เครื่องมือวางแผนการเงิน
+                            </span>
+                            <h4 class="fw-bold text-navy mb-2">ประมาณการเงินปันผล & เฉลี่ยคืน</h4>
+                            <p class="text-muted small mb-4">
+                                จำลองผลตอบแทนรวมที่คุณจะได้รับจากทุนเรือนหุ้นและดอกเบี้ยเงินกู้สะสมรายปี ด้วยระบบจำลองคำนวณแบบ Real-time
+                            </p>
+                            <a href="<?= url('dividend-estimator') ?>" class="btn btn-success rounded-pill px-4 py-2 fw-semibold shadow-sm">
+                                <i class="bi bi-calculator me-1"></i> ทดลองคำนวณปันผลทันที <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool 2: Member Satisfaction Survey -->
+            <div class="col-lg-6">
+                <div class="card h-100 border-0 rounded-4 shadow-sm p-4 p-md-4 position-relative overflow-hidden hover-shadow transition-all" style="background: linear-gradient(135deg, #FFFFFF 0%, #EFF6FF 100%); border-top: 4px solid #3B82F6 !important;">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="rounded-4 p-3 d-flex align-items-center justify-content-center text-white flex-shrink-0 shadow-sm" style="width: 56px; height: 56px; background: linear-gradient(135deg, #1D4ED8 0%, #3B82F6 100%);">
+                            <i class="bi bi-chat-heart-fill fs-4"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 mb-2 fw-semibold">
+                                <i class="bi bi-ui-checks me-1"></i> เสียงสะท้อนสมาชิก
+                            </span>
+                            <h4 class="fw-bold text-navy mb-2">แบบสำรวจความพึงพอใจ 2569</h4>
+                            <p class="text-muted small mb-4">
+                                ร่วมสะท้อนความคิดเห็นและประเมินคุณภาพการให้บริการ เพื่อร่วมเป็นส่วนหนึ่งในการพัฒนาและยกระดับสิทธิประโยชน์ของสมาชิก
+                            </p>
+                            <a href="<?= url('surveys/member-satisfaction-2569') ?>" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold shadow-sm">
+                                <i class="bi bi-pencil-square me-1"></i> ร่วมตอบแบบสำรวจ (CSAT) <i class="bi bi-arrow-right ms-1"></i>
                             </a>
                         </div>
                     </div>

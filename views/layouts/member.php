@@ -280,8 +280,23 @@
                     <i class="bi bi-receipt"></i> <span>ใบเสร็จรับเงิน</span>
                 </a>
             </li>
+            <li class="member-nav-item">
+                <a href="<?= url('member/tax-certificates') ?>" class="member-nav-link <?= str_starts_with($request->uri(), '/member/tax-certificates') ? 'active' : '' ?>">
+                    <i class="bi bi-file-earmark-text text-primary"></i> <span>หนังสือรับรองภาษี</span>
+                </a>
+            </li>
 
             <li class="member-nav-header">บริการออนไลน์ & สิทธิประโยชน์</li>
+            <li class="member-nav-item">
+                <a href="<?= url('member/dividend-estimator') ?>" class="member-nav-link <?= $request->uri() === '/member/dividend-estimator' ? 'active' : '' ?>">
+                    <i class="bi bi-calculator text-warning"></i> <span>ประมาณการเงินปันผล</span>
+                </a>
+            </li>
+            <li class="member-nav-item">
+                <a href="<?= url('member/surveys') ?>" class="member-nav-link <?= str_starts_with($request->uri(), '/member/surveys') ? 'active' : '' ?>">
+                    <i class="bi bi-card-checklist text-info"></i> <span>แบบสำรวจสมาชิก</span>
+                </a>
+            </li>
             <li class="member-nav-item">
                 <a href="<?= url('member/loan-apply') ?>" class="member-nav-link <?= $request->uri() === '/member/loan-apply' ? 'active' : '' ?>">
                     <i class="bi bi-cash-stack text-success"></i> <span>ยื่นกู้ออนไลน์</span>
@@ -295,6 +310,11 @@
             <li class="member-nav-item">
                 <a href="<?= url('member/beneficiaries') ?>" class="member-nav-link <?= $request->uri() === '/member/beneficiaries' ? 'active' : '' ?>">
                     <i class="bi bi-people"></i> <span>ผู้รับผลประโยชน์</span>
+                </a>
+            </li>
+            <li class="member-nav-item">
+                <a href="<?= url('member/suggestions') ?>" class="member-nav-link <?= str_starts_with($request->uri(), '/member/suggestions') ? 'active' : '' ?>">
+                    <i class="bi bi-chat-heart text-danger"></i> <span>กล่องข้อเสนอแนะ</span>
                 </a>
             </li>
             <li class="member-nav-item">

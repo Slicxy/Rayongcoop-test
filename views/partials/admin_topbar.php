@@ -1,10 +1,18 @@
 <?php
-$activeUser = \App\Core\Auth::user() ?? [
+use App\Core\Auth;
+
+$activeUser = Auth::user() ?? [
     'username' => 'rayongcoop1',
     'name' => 'เจ้าหน้าที่สหกรณ์ (rayongcoop1)',
     'role_name' => 'ผู้ดูแลระบบ',
     'role_slug' => 'super_admin'
 ];
+$userRoleSlug = $activeUser['role_slug'] ?? 'super_admin';
+$dashboardUrl = match($userRoleSlug) {
+    'member' => url('member/dashboard'),
+    'staff' => url('staff/dashboard'),
+    default => url('admin/dashboard')
+};
 ?>
 <header class="admin-topbar">
     <div class="d-flex align-items-center">
@@ -56,8 +64,13 @@ $activeUser = \App\Core\Auth::user() ?? [
                     <div class="fw-bold text-navy small"><?= e($activeUser['name'] ?? 'rayongcoop1') ?></div>
                     <small class="text-muted">Username: <?= e($activeUser['username'] ?? 'rayongcoop1') ?></small>
                 </li>
-                <li><a class="dropdown-item py-2" href="<?= url('dashboard') ?>"><i class="bi bi-speedometer2 me-2 text-primary"></i> Dashboard</a></li>
-                <li><a class="dropdown-item py-2" href="<?= url('admin/users') ?>"><i class="bi bi-person-gear me-2 text-secondary"></i> จัดการผู้ใช้งาน</a></li>
+                <li><a class="dropdown-item py-2" href="<?= $dashboardUrl ?>"><i class="bi bi-speedometer2 me-2 text-primary"></i> Dashboard</a></li>
+                <?php if ($userRoleSlug === 'staff'): ?>
+                    <li><a class="dropdown-item py-2" href="<?= url('staff/members') ?>"><i class="bi bi-people me-2 text-secondary"></i> จัดการสมาชิก</a></li>
+                    <li><a class="dropdown-item py-2" href="<?= url('staff/loans') ?>"><i class="bi bi-cash-stack me-2 text-warning"></i> ตรวจคำขอกู้เงิน</a></li>
+                <?php else: ?>
+                    <li><a class="dropdown-item py-2" href="<?= url('admin/users') ?>"><i class="bi bi-person-gear me-2 text-secondary"></i> จัดการผู้ใช้งาน</a></li>
+                <?php endif; ?>
                 <li><hr class="dropdown-divider my-1"></li>
                 <li>
                     <a class="dropdown-item py-2 text-danger fw-medium" href="<?= url('logout') ?>">

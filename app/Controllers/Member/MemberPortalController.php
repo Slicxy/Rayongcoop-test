@@ -219,7 +219,8 @@ class MemberPortalController extends Controller
     public function submitLoanApplication(): void
     {
         $data = $this->request->all();
-        $res = MemberPortalService::submitLoanApplication($this->memberId, $data);
+        $files = $_FILES ?? [];
+        $res = MemberPortalService::submitLoanApplication($this->memberId, $data, $files);
 
         if ($this->request->isAjax()) {
             $this->response->json([
@@ -487,6 +488,21 @@ class MemberPortalController extends Controller
             Database::execute("UPDATE line_connections SET status = 'disconnected' WHERE member_id = ?", [$this->memberId]);
             Session::flash('info', 'ยกเลิกการเชื่อมต่อ LINE เรียบร้อยแล้ว');
         }
+        $this->redirect(url('member/settings'));
+    }
+
+    /**
+     * Revoke All Other Active Sessions
+     */
+    public function revokeSessions(): void
+    {
+        $userId = Auth::id() ?? 1;
+        AuditService::log('security', 'revoke_sessions', (string)$userId, null, [
+            'ip' => $this->request->ip(),
+            'user_agent' => $this->request->userAgent(),
+        ]);
+
+        Session::flash('success', 'บังคับออกจากระบบอุปกรณ์อื่นทั้งหมดเรียบร้อยแล้ว');
         $this->redirect(url('member/settings'));
     }
 }

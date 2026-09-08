@@ -73,15 +73,39 @@
     </div>
 </div>
 
-<!-- Login Activities History (Section 21) & PDPA (Section 22) -->
+<!-- Login Activities History & Device Security -->
 <div class="row g-4 mt-2">
-    <!-- Login History -->
+    <!-- Login History & Active Sessions -->
     <div class="col-lg-7">
         <div class="card border-0 shadow-sm rounded-4 h-100">
-            <div class="card-header bg-transparent border-0 p-4 pb-0">
-                <h5 class="fw-bold text-navy mb-0"><i class="bi bi-clock-history text-primary me-2"></i>ประวัติการเข้าใช้งานระบบ (Login Activity)</h5>
+            <div class="card-header bg-transparent border-0 p-4 pb-0 d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="fw-bold text-navy mb-0"><i class="bi bi-shield-shaded text-primary me-2"></i>อุปกรณ์และความปลอดภัยเซสชัน (Device Security)</h5>
+                    <p class="text-muted small mb-0">ประวัติการเข้าใช้งานและจัดการการล็อกอินบนอุปกรณ์ต่างๆ</p>
+                </div>
+                <form action="<?= url('member/settings/revoke-sessions') ?>" method="POST" onsubmit="return confirmRevokeSessions(event, this);">
+                    <?= csrf_field() ?>
+                    <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                        <i class="bi bi-box-arrow-right me-1"></i> ออกจากระบบเครื่องอื่น
+                    </button>
+                </form>
             </div>
             <div class="card-body p-4">
+                <!-- Current Device Badge -->
+                <div class="p-3 bg-light rounded-4 border mb-3 d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-success text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                            <i class="bi bi-laptop fs-5"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold text-navy small">อุปกรณ์นี้ (เซสชันปัจจุบัน)</div>
+                            <small class="text-muted">กำลังใช้งาน &bull; IP: <?= e($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1') ?></small>
+                        </div>
+                    </div>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1">Active Now</span>
+                </div>
+
+                <h6 class="fw-bold text-navy small mb-2"><i class="bi bi-clock-history me-1"></i>ประวัติการเข้าสู่ระบบล่าสุด</h6>
                 <div class="table-responsive">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light small">
@@ -106,9 +130,11 @@
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="5" class="text-center py-3 text-muted small">
-                                        <?= date('d/m/Y H:i') ?> — Windows / Chrome — สำเร็จ (เซสชันปัจจุบัน)
-                                    </td>
+                                    <td class="small font-monospace text-muted"><?= date('d/m/Y H:i') ?></td>
+                                    <td class="small fw-medium text-navy">Windows PC</td>
+                                    <td class="small text-muted">Chrome</td>
+                                    <td class="small font-monospace text-muted"><?= e($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1') ?></td>
+                                    <td><span class="badge bg-success-subtle text-success small">เซสชันปัจจุบัน</span></td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
@@ -146,3 +172,25 @@
         </div>
     </div>
 </div>
+
+<script>
+function confirmRevokeSessions(e, form) {
+    e.preventDefault();
+    Swal.fire({
+        title: 'ยืนยันออกจากระบบเครื่องอื่น?',
+        text: 'ระบบจะบังคับให้อุปกรณ์และเบราว์เซอร์อื่นทั้งหมดออกจากระบบทันที (ยกเว้นอุปกรณ์นี้)',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#DC3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'ใช่, บังคับออกจากระบบ',
+        cancelButtonText: 'ยกเลิก'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
+    return false;
+}
+</script>
+

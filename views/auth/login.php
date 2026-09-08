@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (ok && data && data.success) {
                 showAlert('เข้าสู่ระบบสำเร็จ กำลังพาไปยัง Dashboard...', true);
                 setTimeout(() => {
-                    window.location.href = data.redirect || '<?= url('dashboard') ?>';
+                    window.location.href = data.redirect || '<?= url('admin/dashboard') ?>';
                 }, 400);
             } else {
                 setLoading(false);

@@ -84,6 +84,9 @@ class MemberPortalService
             ],
             'monthlyDeduction' => $monthlyDeduction,
             'chartData' => $chartData,
+            'share_total' => (float)($shares['total_amount'] ?? 0),
+            'deposit_total' => (float)$totalDepositBalance,
+            'loan_total' => (float)$totalLoanPrincipal,
             'netWorth' => ($shares['total_amount'] + $totalDepositBalance) - $totalLoanPrincipal
         ];
     }
@@ -189,14 +192,16 @@ class MemberPortalService
     /**
      * Submit an online loan application
      */
-    public static function submitLoanApplication(int $memberId, array $data): array
+    public static function submitLoanApplication(int $memberId, array $data, array $files = []): array
     {
-        $appNo = 'LN-' . date('Y') . '-' . str_pad((string)rand(100, 99999), 6, '0', STR_PAD_LEFT);
-        
+        $year = date('Y');
+        $lastId = (int)Database::value("SELECT MAX(id) FROM loan_applications") ?: 0;
+        $appNo = sprintf('LN-%s-%05d', $year, $lastId + 1);
+
         $loanType = $data['loan_type'] ?? 'ordinary';
         $amount = (float)($data['request_amount'] ?? 100000);
         $term = (int)($data['request_term'] ?? 36);
-        $salary = (float)($data['salary'] ?? 35000);
+        $salary = (float)($data['salary'] ?? 30000);
         $purpose = trim((string)($data['purpose'] ?? 'เพื่อการพัฒนาคุณภาพชีวิต'));
         $guarantor = trim((string)($data['guarantor_member_no'] ?? ''));
 
@@ -211,10 +216,64 @@ class MemberPortalService
         $monthlyPrincipal = $amount / $term;
         $estimatedMonthly = round($monthlyPrincipal + $monthlyInterest, 2);
 
-        $docJson = json_encode($data['documents'] ?? [
-            ['name' => 'สลิปเงินเดือนเดือนล่าสุด', 'file' => 'salary_slip_verified.pdf', 'status' => 'uploaded'],
-            ['name' => 'สำเนาบัตรประชาชน', 'file' => 'id_card_copy.pdf', 'status' => 'uploaded']
-        ], JSON_UNESCAPED_UNICODE);
+        $docs = [];
+        $uploadDir = dirname(__DIR__, 2) . '/public/uploads/loans';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        $labelMap = [
+            'doc_salary' => 'สลิปเงินเดือนเดือนล่าสุด',
+            'doc_id_card' => 'สำเนาบัตรประชาชน',
+            'doc_guarantor' => 'เอกสารผู้ค้ำประกัน',
+            'doc_statement' => 'รายการเดินบัญชี (Bank Statement)',
+            'doc_house' => 'สำเนาทะเบียนบ้าน',
+            'doc_other' => 'เอกสารประกอบเพิ่มเติม',
+        ];
+
+        if (!empty($files)) {
+            foreach ($files as $field => $fileItem) {
+                if (empty($fileItem['tmp_name']) || ($fileItem['error'] ?? UPLOAD_ERR_OK) !== UPLOAD_ERR_OK) {
+                    continue;
+                }
+
+                $origName = $fileItem['name'] ?? ('document_' . time());
+                $ext = strtolower(pathinfo($origName, PATHINFO_EXTENSION));
+                $allowed = ['pdf', 'jpg', 'jpeg', 'png', 'doc', 'docx', 'xls', 'xlsx'];
+
+                if (in_array($ext, $allowed)) {
+                    $prefix = preg_replace('/^doc_/', '', (string)$field);
+                    $filename = "{$prefix}_{$appNo}_" . time() . "_" . bin2hex(random_bytes(3)) . ".{$ext}";
+                    $targetPath = $uploadDir . '/' . $filename;
+
+                    if (move_uploaded_file($fileItem['tmp_name'], $targetPath) || copy($fileItem['tmp_name'], $targetPath)) {
+                        $sizeBytes = file_exists($targetPath) ? (filesize($targetPath) ?: 0) : ($fileItem['size'] ?? 0);
+                        $formattedSize = $sizeBytes > 1048576 
+                            ? number_format($sizeBytes / 1048576, 2) . ' MB' 
+                            : number_format($sizeBytes / 1024, 1) . ' KB';
+
+                        $docName = $labelMap[$field] ?? ('เอกสารแนบ (' . pathinfo($origName, PATHINFO_FILENAME) . ')');
+
+                        $docs[] = [
+                            'name' => $docName,
+                            'file' => 'uploads/loans/' . $filename,
+                            'original_name' => $origName,
+                            'size' => $formattedSize,
+                            'type' => $ext,
+                            'status' => 'uploaded'
+                        ];
+                    }
+                }
+            }
+        }
+
+        if (empty($docs)) {
+            if (!empty($data['documents']) && is_array($data['documents'])) {
+                $docs = $data['documents'];
+            }
+        }
+
+        $docJson = json_encode($docs, JSON_UNESCAPED_UNICODE);
 
         $newId = Database::insert(
             "INSERT INTO loan_applications (application_no, member_id, loan_type, request_amount, request_term, estimated_monthly, salary, purpose, guarantor_member_no, documents_json, status, current_step, created_at, updated_at) 

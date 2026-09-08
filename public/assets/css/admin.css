@@ -207,3 +207,20 @@ body.admin-body {
         margin-left: 0;
     }
 }
+
+/* High Contrast Heading & Text Rules for Admin CMS */
+.admin-content h1, .admin-content h2, .admin-content h3, .admin-content h4, .admin-content h5, .admin-content h6,
+.admin-card-title, .card-header h5, .card-header h6 {
+    color: var(--admin-navy) !important;
+    font-weight: 700;
+}
+
+.admin-sidebar-brand .fw-bold {
+    color: #FFFFFF !important;
+}
+
+.table th {
+    color: var(--admin-navy) !important;
+    font-weight: 700;
+}
+

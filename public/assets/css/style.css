@@ -56,11 +56,78 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* Base Elements & High-Contrast Headings */
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: var(--font-family-base);
     font-weight: 700;
     color: var(--coop-navy);
     letter-spacing: -0.01em;
+    line-height: 1.35;
+}
+
+/* Headings on Dark / Gradient Backgrounds (Anti-Blend Contrast Rules) */
+.text-white,
+.text-white h1, .text-white h2, .text-white h3, .text-white h4, .text-white h5, .text-white h6,
+.text-white .h1, .text-white .h2, .text-white .h3, .text-white .h4, .text-white .h5, .text-white .h6,
+h1.text-white, h2.text-white, h3.text-white, h4.text-white, h5.text-white, h6.text-white,
+.bg-navy h1, .bg-navy h2, .bg-navy h3, .bg-navy h4, .bg-navy h5, .bg-navy h6,
+.bg-primary h1, .bg-primary h2, .bg-primary h3, .bg-primary h4, .bg-primary h5, .bg-primary h6,
+.bg-dark h1, .bg-dark h2, .bg-dark h3, .bg-dark h4, .bg-dark h5, .bg-dark h6,
+.hero-section h1, .hero-section h2, .hero-section h3, .hero-section h4, .hero-section h5, .hero-section h6,
+.hero-slide h1, .hero-slide h2, .hero-slide h3, .hero-slide h4, .hero-slide h5, .hero-slide h6,
+.stats-section h1, .stats-section h2, .stats-section h3, .stats-section h4, .stats-section h5, .stats-section h6,
+.main-footer h1, .main-footer h2, .main-footer h3, .main-footer h4, .main-footer h5, .main-footer h6,
+.calc-result-box h1, .calc-result-box h2, .calc-result-box h3, .calc-result-box h4, .calc-result-box h5, .calc-result-box h6,
+.card-banner-dark h1, .card-banner-dark h2, .card-banner-dark h3, .card-banner-dark h4, .card-banner-dark h5, .card-banner-dark h6 {
+    color: #FFFFFF !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Headings on Cards, Light Backgrounds & Modals */
+.card h1:not(.text-white):not(.text-warning):not(.text-success):not(.text-danger):not(.text-primary):not(.text-info):not(.text-purple),
+.card h2:not(.text-white):not(.text-warning):not(.text-success):not(.text-danger):not(.text-primary):not(.text-info):not(.text-purple),
+.card h3:not(.text-white):not(.text-warning):not(.text-success):not(.text-danger):not(.text-primary):not(.text-info):not(.text-purple),
+.card h4:not(.text-white):not(.text-warning):not(.text-success):not(.text-danger):not(.text-primary):not(.text-info):not(.text-purple),
+.card h5:not(.text-white):not(.text-warning):not(.text-success):not(.text-danger):not(.text-primary):not(.text-info):not(.text-purple),
+.card h6:not(.text-white):not(.text-warning):not(.text-success):not(.text-danger):not(.text-primary):not(.text-info):not(.text-purple),
+.modal-title:not(.text-white) {
+    color: var(--coop-navy);
+}
+
+.card-title {
+    color: var(--coop-navy);
+    font-weight: 700;
+}
+
+/* High Contrast Accent Classes */
+.text-navy { color: var(--coop-navy) !important; }
+.text-dark-navy { color: var(--coop-navy-dark) !important; }
+.text-gold { color: var(--coop-gold) !important; }
+.text-muted-coop { color: var(--coop-muted) !important; }
+.bg-navy { background-color: var(--coop-navy) !important; color: #fff; }
+.bg-light-blue { background-color: var(--coop-light-blue) !important; }
+.bg-gold-light { background-color: var(--coop-gold-light) !important; }
+
+/* Dark container text overrides */
+.hero-section .text-gold,
+.bg-navy .text-gold,
+.stats-section .text-gold,
+.card[style*="linear-gradient"] .text-gold,
+.card[style*="linear-gradient"] .text-warning {
+    color: #FBBF24 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.hero-section .text-success,
+.bg-navy .text-success,
+.card[style*="linear-gradient"] .text-success {
+    color: #34D399 !important;
+}
+
+.hero-section .text-info,
+.bg-navy .text-info,
+.card[style*="linear-gradient"] .text-info {
+    color: #38BDF8 !important;
 }
 
 a {
@@ -78,14 +145,6 @@ a:hover {
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum";
 }
-
-/* Custom Text & Colors */
-.text-navy { color: var(--coop-navy) !important; }
-.text-gold { color: var(--coop-gold) !important; }
-.text-muted-coop { color: var(--coop-muted) !important; }
-.bg-navy { background-color: var(--coop-navy) !important; color: #fff; }
-.bg-light-blue { background-color: var(--coop-light-blue) !important; }
-.bg-gold-light { background-color: var(--coop-gold-light) !important; }
 
 /* Buttons */
 .btn-primary {

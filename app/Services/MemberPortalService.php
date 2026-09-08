@@ -84,6 +84,9 @@ class MemberPortalService
             ],
             'monthlyDeduction' => $monthlyDeduction,
             'chartData' => $chartData,
+            'share_total' => (float)($shares['total_amount'] ?? 0),
+            'deposit_total' => (float)$totalDepositBalance,
+            'loan_total' => (float)$totalLoanPrincipal,
             'netWorth' => ($shares['total_amount'] + $totalDepositBalance) - $totalLoanPrincipal
         ];
     }

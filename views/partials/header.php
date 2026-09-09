@@ -1,6 +1,7 @@
 <?php
 use App\Core\Auth;
 
+$request = $request ?? request();
 $isLoggedIn = Auth::check();
 $authUser = Auth::user();
 $authRole = $authUser['role_slug'] ?? 'member';
@@ -23,9 +24,7 @@ $portalName = match($authRole) {
         <nav class="navbar navbar-expand-xl navbar-light py-2">
             <!-- Brand Logo & Name (Member Portal Style) -->
             <a class="navbar-brand d-flex align-items-center py-0 me-3" href="<?= url('/') ?>">
-                <div class="brand-icon me-2 d-flex align-items-center justify-content-center text-white rounded-3 shadow-sm" style="width: 44px; height: 44px; background: linear-gradient(135deg, #073B74 0%, #0066CC 100%);">
-                    <i class="bi bi-bank2 fs-4"></i>
-                </div>
+                <img src="<?= asset('img/logo.webp') ?>" alt="<?= e(config('app.coop.short_name')) ?>" class="me-2" style="height: 48px; width: auto; object-fit: contain;">
                 <div>
                     <div class="brand-text-main fw-bold text-navy" style="font-size: 1.15rem; line-height: 1.2; letter-spacing: -0.01em;"><?= config('app.coop.short_name') ?></div>
                     <div class="brand-text-sub text-muted small d-none d-sm-block" style="font-size: 0.72rem;"><?= config('app.coop.full_name_th') ?></div>
@@ -387,8 +386,9 @@ $portalName = match($authRole) {
 <!-- Mobile Offcanvas Menu (Categorized Cleanly) -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenuOffcanvas" aria-labelledby="mobileMenuOffcanvasLabel">
     <div class="offcanvas-header bg-navy text-white">
-        <h5 class="offcanvas-title d-flex align-items-center" id="mobileMenuOffcanvasLabel">
-            <i class="bi bi-bank2 me-2"></i> สอ.สธ.ระยอง
+        <h5 class="offcanvas-title d-flex align-items-center mb-0" id="mobileMenuOffcanvasLabel">
+            <img src="<?= asset('img/logo.webp') ?>" alt="<?= e(config('app.coop.short_name')) ?>" class="me-2 rounded-circle bg-white p-1" style="height: 36px; width: 36px; object-fit: contain;">
+            <?= config('app.coop.short_name') ?>
         </h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>

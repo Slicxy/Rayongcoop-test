@@ -1,3 +1,4 @@
+<?php $request = $request ?? request(); ?>
 <aside class="admin-sidebar" id="adminSidebar">
     <div class="admin-sidebar-brand">
         <div class="bg-primary text-white rounded-3 p-2 me-2 d-flex align-items-center justify-content-center">

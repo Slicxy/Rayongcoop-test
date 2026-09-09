@@ -15,6 +15,9 @@ class View
             throw new \RuntimeException("View file not found: {$viewFile}");
         }
 
+        // Ensure request instance is always available in views
+        $data['request'] = $data['request'] ?? request();
+
         // Extract variables to scope
         extract($data, EXTR_SKIP);
 

@@ -1,3 +1,4 @@
+<?php $request = $request ?? request(); ?>
 <!DOCTYPE html>
 <html lang="th">
 <head>

@@ -5,7 +5,22 @@ declare(strict_types=1);
 use App\Core\Auth;
 use App\Core\Csrf;
 use App\Core\Database;
+use App\Core\Request;
 use App\Core\Session;
+
+/**
+ * Get current Request instance
+ */
+if (!function_exists('request')) {
+    function request(): Request
+    {
+        static $instance = null;
+        if ($instance === null) {
+            $instance = new Request();
+        }
+        return $instance;
+    }
+}
 
 /**
  * Get environment variable with fallback

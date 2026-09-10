@@ -4,7 +4,7 @@
 <div class="py-5 bg-navy text-white position-relative overflow-hidden">
     <div class="container position-relative z-1">
         <div class="d-flex align-items-center gap-2 mb-2">
-            <span class="badge bg-gold text-white px-3 py-1 rounded-pill">ประวัติและข้อมูลองค์กร</span>
+            <span class="badge bg-gold text-white py-1 rounded-pill">ประวัติและข้อมูลองค์กร</span>
             <span class="badge bg-white text-navy px-3 py-1 rounded-pill d-none d-sm-inline-block">สอ.สธ.ระยอง</span>
         </div>
         <h1 class="text-white fw-bold display-6 mb-2">เกี่ยวกับสหกรณ์ออมทรัพย์สาธารณสุขระยอง จำกัด</h1>
@@ -203,7 +203,7 @@
                     <h4 class="fw-bold text-navy mb-3">
                         <i class="bi bi-journal-text text-primary me-2"></i>กำเนิดและพัฒนาการสหกรณ์ไทย
                     </h4>
-                    
+
                     <p class="text-secondary leading-relaxed mb-3">
                         การสหกรณ์ในประเทศไทยมีมูลเหตุสืบเนื่องมาจาก เมื่อประเทศไทยเริ่มติดต่อค้าขายกับต่างประเทศมากขึ้นในสมัยกรุงรัตนโกสินทร์ ส่งผลให้ระบบเศรษฐกิจของชนบทค่อยๆ เปลี่ยนผ่านจากระบบเศรษฐกิจแบบพึ่งพาเพื่อเลี้ยงตนเอง เข้าสู่ระบบเศรษฐกิจแบบการค้า ประชาชนและเกษตรกรจึงเริ่มประสบปัญหาการขาดแคลนเงินทุนและภาระหนี้สิน
                     </p>

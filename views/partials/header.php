@@ -115,7 +115,7 @@ $portalName = match($authRole) {
 
                     <!-- 3. Mega Menu: บริการทางการเงิน (เงินฝาก, สินเชื่อ, คำนวณเงินกู้) -->
                     <li class="nav-item dropdown has-megamenu">
-                        <a class="nav-link dropdown-toggle px-3 rounded-pill fw-medium <?= in_array($request->uri(), ['/deposits', '/loans', '/calculator', '/rates']) ? 'active text-primary fw-bold bg-light' : 'text-dark' ?>" href="#" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle px-3 rounded-pill fw-medium <?= in_array($request->uri(), ['/deposits', '/loans', '/calculator', '/rates', '/loan-readiness', '/dividend-estimator']) ? 'active text-primary fw-bold bg-light' : 'text-dark' ?>" href="#" data-bs-toggle="dropdown">
                             <i class="bi bi-wallet2 me-1"></i> บริการทางการเงิน
                         </a>
                         <div class="dropdown-menu megamenu-dropdown shadow-lg border-0 rounded-4 p-4">
@@ -125,53 +125,32 @@ $portalName = match($authRole) {
                                     <a class="megamenu-item-link" href="<?= url('deposits') ?>">
                                         <div class="megamenu-icon text-success" style="background-color: #E8F5E9;"><i class="bi bi-wallet2"></i></div>
                                         <div>
-                                            <div class="fw-semibold">เงินฝากออมทรัพย์</div>
-                                            <small class="text-muted">คล่องตัว ดอกเบี้ยสูง ปลอดภาษี</small>
-                                        </div>
-                                    </a>
-                                    <a class="megamenu-item-link" href="<?= url('deposits') ?>">
-                                        <div class="megamenu-icon text-success" style="background-color: #E8F5E9;"><i class="bi bi-safe2"></i></div>
-                                        <div>
-                                            <div class="fw-semibold">เงินฝากออมทรัพย์พิเศษ</div>
-                                            <small class="text-muted">ผลตอบแทนคุ้มค่าเพื่อความมั่นคง</small>
+                                            <div class="fw-semibold">ผลิตภัณฑ์เงินฝากสหกรณ์</div>
+                                            <small class="text-muted">ออมทรัพย์และออมทรัพย์พิเศษ ดอกเบี้ยสูง ปลอดภาษี</small>
                                         </div>
                                     </a>
                                     <a class="megamenu-item-link" href="<?= url('rates') ?>">
                                         <div class="megamenu-icon text-success" style="background-color: #E8F5E9;"><i class="bi bi-percent"></i></div>
                                         <div>
                                             <div class="fw-semibold">ประกาศอัตราดอกเบี้ย</div>
-                                            <small class="text-muted">ดอกเบี้ยเงินฝากและเงินกู้ล่าสุด</small>
+                                            <small class="text-muted">อัตราดอกเบี้ยเงินฝากและเงินกู้ล่าสุด</small>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-md-4">
                                     <h6 class="fw-bold text-navy mb-3 pb-2 border-bottom"><i class="bi bi-cash-stack me-1 text-primary"></i> สินเชื่อและเงินกู้</h6>
                                     <a class="megamenu-item-link" href="<?= url('loans') ?>">
-                                        <div class="megamenu-icon"><i class="bi bi-lightning-charge"></i></div>
+                                        <div class="megamenu-icon text-primary" style="background-color: #EFF6FF;"><i class="bi bi-cash-coin"></i></div>
                                         <div>
-                                            <div class="fw-semibold">เงินกู้เพื่อเหตุฉุกเฉิน</div>
-                                            <small class="text-muted">อนุมัติไว เพื่อเหตุจำเป็นเร่งด่วน</small>
-                                        </div>
-                                    </a>
-                                    <a class="megamenu-item-link" href="<?= url('loans') ?>">
-                                        <div class="megamenu-icon"><i class="bi bi-cash-coin"></i></div>
-                                        <div>
-                                            <div class="fw-semibold">เงินกู้สามัญ</div>
-                                            <small class="text-muted">วงเงินกู้สูง ผ่อนชำระระยะยาว</small>
-                                        </div>
-                                    </a>
-                                    <a class="megamenu-item-link" href="<?= url('loans') ?>">
-                                        <div class="megamenu-icon"><i class="bi bi-house-door"></i></div>
-                                        <div>
-                                            <div class="fw-semibold">เงินกู้พิเศษเพื่อการเคหะ</div>
-                                            <small class="text-muted">เพื่อที่อยู่อาศัยและคุณภาพชีวิต</small>
+                                            <div class="fw-semibold">บริการสินเชื่อและเงินกู้</div>
+                                            <small class="text-muted">เงินกู้ฉุกเฉิน เงินกู้สามัญ และเงินกู้พิเศษ</small>
                                         </div>
                                     </a>
                                     <a class="megamenu-item-link" href="<?= url('loan-readiness') ?>">
                                         <div class="megamenu-icon text-warning" style="background-color: #FFF8E1;"><i class="bi bi-check2-square"></i></div>
                                         <div>
                                             <div class="fw-semibold text-warning-emphasis">เช็คความพร้อมก่อนยื่นกู้</div>
-                                            <small class="text-muted">ประเมินสิทธิ์และเตรียมเอกสาร</small>
+                                            <small class="text-muted">ประเมินคุณสมบัติและเตรียมเอกสาร</small>
                                         </div>
                                     </a>
                                 </div>
@@ -179,17 +158,14 @@ $portalName = match($authRole) {
                                     <div class="p-3 bg-light-blue rounded-4 border h-100 d-flex flex-column justify-content-between">
                                         <div>
                                             <h6 class="fw-bold text-navy mb-2"><i class="bi bi-calculator me-1 text-warning"></i> เครื่องมือช่วยสมาชิก</h6>
-                                            <p class="small text-muted mb-3">จำลองการผ่อนชำระรายเดือน และประมาณการเงินปันผล-เฉลี่ยคืนล่วงหน้า</p>
+                                            <p class="small text-muted mb-3">จำลองการผ่อนชำระเงินกู้ และประมาณการผลตอบแทนเงินปันผล-เฉลี่ยคืน</p>
                                         </div>
                                         <div class="d-flex flex-column gap-2">
                                             <a href="<?= url('calculator') ?>" class="btn btn-sm btn-warning text-navy fw-bold w-100 rounded-pill shadow-sm">
-                                                <i class="bi bi-calculator me-1"></i> คำนวณเงินกู้ทันที
+                                                <i class="bi bi-calculator me-1"></i> โปรแกรมคำนวณเงินกู้
                                             </a>
                                             <a href="<?= url('dividend-estimator') ?>" class="btn btn-sm btn-primary fw-medium w-100 rounded-pill">
-                                                <i class="bi bi-pie-chart-fill me-1"></i> ประมาณการเงินปันผล
-                                            </a>
-                                            <a href="<?= url('loan-readiness') ?>" class="btn btn-sm btn-outline-primary fw-medium w-100 rounded-pill">
-                                                <i class="bi bi-clipboard-check me-1"></i> รายการตรวจความพร้อม
+                                                <i class="bi bi-pie-chart-fill me-1"></i> ประมาณการเงินปันผล-เฉลี่ยคืน
                                             </a>
                                         </div>
                                     </div>
@@ -210,15 +186,8 @@ $portalName = match($authRole) {
                                     <a class="megamenu-item-link" href="<?= url('welfare') ?>">
                                         <div class="megamenu-icon text-danger" style="background-color: #FFEBEE;"><i class="bi bi-gift"></i></div>
                                         <div>
-                                            <div class="fw-semibold">เงินสงเคราะห์สมาชิก</div>
-                                            <small class="text-muted">ช่วยเหลือครอบครัว คลอดบุตร เจ็บป่วย</small>
-                                        </div>
-                                    </a>
-                                    <a class="megamenu-item-link" href="<?= url('welfare') ?>">
-                                        <div class="megamenu-icon text-danger" style="background-color: #FFEBEE;"><i class="bi bi-mortarboard"></i></div>
-                                        <div>
-                                            <div class="fw-semibold">ทุนการศึกษาบุตร</div>
-                                            <small class="text-muted">มอบทุนการศึกษาประจำปีทุกระดับ</small>
+                                            <div class="fw-semibold">สวัสดิการสมาชิกสหกรณ์</div>
+                                            <small class="text-muted">เงินสงเคราะห์ครอบครัว คลอดบุตร เจ็บป่วย และทุนการศึกษา</small>
                                         </div>
                                     </a>
                                 </div>
@@ -228,7 +197,7 @@ $portalName = match($authRole) {
                                         <div class="megamenu-icon text-info" style="background-color: #E0F7FA;"><i class="bi bi-file-text"></i></div>
                                         <div>
                                             <div class="fw-semibold">แบบฟอร์มคำขอต่าง ๆ</div>
-                                            <small class="text-muted">แบบฟอร์มขอกู้ เปลี่ยนค่าหุ้น สวัสดิการ</small>
+                                            <small class="text-muted">แบบฟอร์มขอกู้ เปลี่ยนค่าหุ้น และสวัสดิการ</small>
                                         </div>
                                     </a>
                                     <a class="megamenu-item-link" href="<?= url('documents?cat=regulations') ?>">
@@ -286,34 +255,31 @@ $portalName = match($authRole) {
                                     </a>
                                 </div>
                                 <div class="col-md-4">
-                                    <h6 class="fw-bold text-navy mb-3 pb-2 border-bottom"><i class="bi bi-geo-alt me-1 text-secondary"></i> ช่องทางติดต่อ</h6>
+                                    <h6 class="fw-bold text-navy mb-3 pb-2 border-bottom"><i class="bi bi-geo-alt me-1 text-secondary"></i> ช่องทางติดต่อ & ข้อมูล</h6>
                                     <a class="megamenu-item-link" href="<?= url('contact') ?>">
                                         <div class="megamenu-icon text-secondary" style="background-color: #F1F5F9;"><i class="bi bi-pin-map"></i></div>
                                         <div>
-                                            <div class="fw-semibold">สถานที่ตั้งและแผนที่</div>
-                                            <small class="text-muted">สำนักงานสหกรณ์ จ.ระยอง</small>
+                                            <div class="fw-semibold">ติดต่อและที่ทำการสหกรณ์</div>
+                                            <small class="text-muted">สถานที่ตั้ง แผนที่ เบอร์โทรศัพท์ และเวลาทำการ</small>
                                         </div>
                                     </a>
-                                    <a class="megamenu-item-link" href="<?= url('contact') ?>">
-                                        <div class="megamenu-icon text-secondary" style="background-color: #F1F5F9;"><i class="bi bi-telephone"></i></div>
+                                    <a class="megamenu-item-link" href="<?= url('faqs') ?>">
+                                        <div class="megamenu-icon text-warning" style="background-color: #FFFBEB;"><i class="bi bi-question-circle"></i></div>
                                         <div>
-                                            <div class="fw-semibold">เบอร์โทรศัพท์ & อีเมล</div>
-                                            <small class="text-muted">ติดต่อเจ้าหน้าที่ในวันเวลาทำการ</small>
+                                            <div class="fw-semibold">คำถามที่พบบ่อย (FAQs)</div>
+                                            <small class="text-muted">รวมข้อสงสัยและคำแนะนำการใช้งาน</small>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="p-3 bg-light-blue rounded-4 border h-100 d-flex flex-column justify-content-between">
                                         <div>
-                                            <h6 class="fw-bold text-navy mb-2"><i class="bi bi-chat-heart-fill me-1 text-primary"></i> เสียงสะท้อนสมาชิก & FAQs</h6>
-                                            <p class="small text-muted mb-3">ร่วมตอบแบบสำรวจความพึงพอใจเพื่อพัฒนาบริการ หรือค้นหาคำตอบข้อสงสัยที่พบบ่อย</p>
+                                            <h6 class="fw-bold text-navy mb-2"><i class="bi bi-chat-heart-fill me-1 text-primary"></i> เสียงสะท้อนสมาชิก</h6>
+                                            <p class="small text-muted mb-3">ร่วมตอบแบบสำรวจความพึงพอใจเพื่อนำข้อคิดเห็นไปพัฒนาการให้บริการของสหกรณ์</p>
                                         </div>
                                         <div class="d-flex flex-column gap-2">
                                             <a href="<?= url('surveys/member-satisfaction-2569') ?>" class="btn btn-sm btn-primary fw-medium w-100 rounded-pill shadow-sm">
                                                 <i class="bi bi-ui-checks me-1"></i> ทำแบบสำรวจความพึงพอใจ
-                                            </a>
-                                            <a href="<?= url('faqs') ?>" class="btn btn-sm btn-outline-primary w-100 fw-medium rounded-pill">
-                                                <i class="bi bi-search me-1"></i> ดูคำถามที่พบบ่อย (FAQs)
                                             </a>
                                         </div>
                                     </div>

@@ -402,31 +402,39 @@
 
         <div class="row g-4">
             <div class="col-lg-3 col-6">
-                <div class="stat-box">
-                    <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
-                    <div class="stat-number"><?= number_format($latestStats['total_members']) ?></div>
-                    <div class="stat-label">สมาชิกทั้งหมด (คน)</div>
+                <div class="card bg-white border-0 rounded-4 shadow-sm p-4 text-center h-100 hover-lift">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mx-auto mb-3" style="width: 52px; height: 52px; background: rgba(7, 59, 116, 0.08); color: var(--coop-navy);">
+                        <i class="bi bi-people-fill fs-4"></i>
+                    </div>
+                    <div class="h3 fw-bold text-navy mb-1"><?= number_format($latestStats['total_members']) ?></div>
+                    <div class="text-muted small fw-medium">สมาชิกทั้งหมด (คน)</div>
                 </div>
             </div>
             <div class="col-lg-3 col-6">
-                <div class="stat-box">
-                    <div class="stat-icon"><i class="bi bi-wallet2"></i></div>
-                    <div class="stat-number"><?= number_format((float)$latestStats['total_assets'] / 1000000000, 2) ?> พันล้าน</div>
-                    <div class="stat-label">สินทรัพย์รวม (บาท)</div>
+                <div class="card bg-white border-0 rounded-4 shadow-sm p-4 text-center h-100 hover-lift">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mx-auto mb-3" style="width: 52px; height: 52px; background: rgba(11, 94, 215, 0.08); color: var(--coop-blue);">
+                        <i class="bi bi-wallet2 fs-4"></i>
+                    </div>
+                    <div class="h3 fw-bold text-navy mb-1"><?= number_format((float)$latestStats['total_assets'] / 1000000000, 2) ?> พันล้าน</div>
+                    <div class="text-muted small fw-medium">สินทรัพย์รวม (บาท)</div>
                 </div>
             </div>
             <div class="col-lg-3 col-6">
-                <div class="stat-box">
-                    <div class="stat-icon"><i class="bi bi-piggy-bank"></i></div>
-                    <div class="stat-number"><?= number_format((float)$latestStats['total_deposits'] / 1000000000, 2) ?> พันล้าน</div>
-                    <div class="stat-label">เงินฝากรวม (บาท)</div>
+                <div class="card bg-white border-0 rounded-4 shadow-sm p-4 text-center h-100 hover-lift">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mx-auto mb-3" style="width: 52px; height: 52px; background: rgba(16, 185, 129, 0.1); color: #059669;">
+                        <i class="bi bi-piggy-bank fs-4"></i>
+                    </div>
+                    <div class="h3 fw-bold text-navy mb-1"><?= number_format((float)$latestStats['total_deposits'] / 1000000000, 2) ?> พันล้าน</div>
+                    <div class="text-muted small fw-medium">เงินฝากรวม (บาท)</div>
                 </div>
             </div>
             <div class="col-lg-3 col-6">
-                <div class="stat-box">
-                    <div class="stat-icon"><i class="bi bi-award-fill"></i></div>
-                    <div class="stat-number text-gold"><?= number_format((float)$latestStats['dividend_rate'], 2) ?>%</div>
-                    <div class="stat-label">อัตราเงินปันผลล่าสุด</div>
+                <div class="card bg-white border-0 rounded-4 shadow-sm p-4 text-center h-100 hover-lift">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mx-auto mb-3" style="width: 52px; height: 52px; background: rgba(217, 119, 6, 0.1); color: #d97706;">
+                        <i class="bi bi-award-fill fs-4"></i>
+                    </div>
+                    <div class="h3 fw-bold text-gold mb-1"><?= number_format((float)$latestStats['dividend_rate'], 2) ?>%</div>
+                    <div class="text-muted small fw-medium">อัตราเงินปันผลล่าสุด</div>
                 </div>
             </div>
         </div>

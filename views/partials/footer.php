@@ -41,7 +41,7 @@
                 <ul class="footer-links">
                     <li><a href="<?= url('eservice') ?>"><i class="bi bi-chevron-right me-1 small"></i> ระบบ E-Service สมาชิก</a></li>
                     <li><a href="<?= url('welfare') ?>"><i class="bi bi-chevron-right me-1 small"></i> สวัสดิการสงเคราะห์</a></li>
-                    <li><a href="<?= url('surveys/member-satisfaction-2569') ?>"><i class="bi bi-chevron-right me-1 small text-primary"></i> แบบสำรวจความพึงพอใจ</a></li>
+                    <li><a href="<?= url('surveys/member-satisfaction-2569') ?>"><i class="bi bi-chevron-right me-1 small"></i> แบบสำรวจความพึงพอใจ</a></li>
                     <li><a href="<?= url('documents') ?>"><i class="bi bi-chevron-right me-1 small"></i> ดาวน์โหลดแบบฟอร์ม</a></li>
                     <li><a href="<?= url('documents?cat=regulations') ?>"><i class="bi bi-chevron-right me-1 small"></i> ระเบียบและข้อบังคับ</a></li>
                     <li><a href="<?= url('complaints') ?>"><i class="bi bi-chevron-right me-1 small"></i> ศูนย์รับเรื่องร้องเรียน</a></li>

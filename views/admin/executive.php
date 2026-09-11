@@ -1,3 +1,7 @@
+<?php
+$latest = $latest ?? null;
+$statsHistory = $statsHistory ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h3 class="fw-bold text-navy mb-1"><i class="bi bi-pie-chart-fill text-warning me-2"></i> Executive Financial Dashboard</h3>
@@ -8,7 +12,7 @@
     </a>
 </div>
 
-<?php if ($latest): ?>
+<?php if (!empty($latest)): ?>
 <div class="row g-4 mb-4">
     <div class="col-xl-3 col-sm-6">
         <div class="admin-card p-4">

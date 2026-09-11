@@ -1,3 +1,7 @@
+<?php
+$latest = $latest ?? null;
+$statsHistory = $statsHistory ?? [];
+?>
 <div class="py-5 bg-navy text-white">
     <div class="container">
         <span class="badge bg-gold text-white mb-2 px-3 py-1">ความมั่นคงทางการเงิน</span>
@@ -7,7 +11,7 @@
 </div>
 
 <div class="container py-5">
-    <?php if ($latest): ?>
+    <?php if (!empty($latest)): ?>
     <div class="row g-4 mb-5">
         <div class="col-lg-3 col-6">
             <div class="coop-card p-4 text-center">

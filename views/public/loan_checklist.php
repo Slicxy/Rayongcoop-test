@@ -1,3 +1,7 @@
+<?php
+$loans = $loans ?? [];
+$currentLoan = $currentLoan ?? null;
+?>
 <div class="py-5 bg-navy text-white">
     <div class="container-xl">
         <span class="badge bg-gold text-white mb-2 px-3 py-1"><i class="bi bi-clipboard2-check me-1"></i> บริการข้อมูลสินเชื่อ</span>

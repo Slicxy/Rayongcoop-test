@@ -1,3 +1,10 @@
+<?php
+$selectedCategory = $selectedCategory ?? '';
+$events = $events ?? [];
+$upcoming = $upcoming ?? [];
+$selectedMonth = $selectedMonth ?? '';
+$selectedYear = $selectedYear ?? '';
+?>
 <div class="py-5 bg-navy text-white">
     <div class="container-xl">
         <span class="badge bg-gold text-white mb-2 px-3 py-1"><i class="bi bi-calendar-event me-1"></i> ปฏิทินและกำหนดการ</span>

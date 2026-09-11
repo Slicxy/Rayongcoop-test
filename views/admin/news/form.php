@@ -1,3 +1,7 @@
+<?php
+$news = $news ?? null;
+$categories = $categories ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h3 class="fw-bold text-navy mb-1"><?= $news ? 'แก้ไขข่าวสาร' : 'สร้างข่าวสารใหม่' ?></h3>

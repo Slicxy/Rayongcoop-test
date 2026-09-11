@@ -1,3 +1,8 @@
+<?php
+$isValid = $isValid ?? false;
+$totalPercentage = $totalPercentage ?? 0;
+$beneficiaries = $beneficiaries ?? [];
+?>
 <!-- Beneficiaries Total Allocation Alert -->
 <div class="alert <?= $isValid ? 'alert-success' : 'alert-warning' ?> d-flex align-items-center justify-content-between rounded-4 p-3 mb-4 shadow-sm" role="alert">
     <div class="d-flex align-items-center gap-2">

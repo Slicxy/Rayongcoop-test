@@ -1,3 +1,8 @@
+<?php
+$loans = $loans ?? [];
+$activeLoan = $activeLoan ?? null;
+$schedules = $schedules ?? [];
+?>
 <!-- Loans Contract Cards -->
 <div class="row g-3 mb-4">
     <?php foreach ($loans as $ln): ?>

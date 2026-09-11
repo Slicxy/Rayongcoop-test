@@ -1,3 +1,10 @@
+<?php
+$stats = $stats ?? ['total_paid' => 0, 'share_paid' => 0, 'loan_paid' => 0];
+$selectedYear = $selectedYear ?? (int)date('Y');
+$selectedMonth = $selectedMonth ?? null;
+$receipts = $receipts ?? [];
+$member = $member ?? [];
+?>
 <!-- Header & Stats -->
 <div class="row g-3 mb-4">
     <div class="col-md-4">

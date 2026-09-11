@@ -1,3 +1,6 @@
+<?php
+$welfares = $welfares ?? [];
+?>
 <div class="py-5 bg-navy text-white">
     <div class="container">
         <span class="badge bg-gold text-white mb-2 px-3 py-1">การเกื้อกูลสมาชิก</span>

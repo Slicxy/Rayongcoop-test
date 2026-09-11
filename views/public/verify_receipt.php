@@ -1,3 +1,8 @@
+<?php
+$isValid = $isValid ?? false;
+$receipt = $receipt ?? null;
+$token = $token ?? '';
+?>
 <!DOCTYPE html>
 <html lang="th">
 <head>

@@ -1,3 +1,9 @@
+<?php
+$keyword = $keyword ?? '';
+$departments = $departments ?? [];
+$selectedDept = $selectedDept ?? '';
+$members = $members ?? [];
+?>
 <div class="container-fluid py-4">
     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
         <div>

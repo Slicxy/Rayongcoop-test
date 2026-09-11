@@ -142,6 +142,12 @@ if (!function_exists('storage_url')) {
 if (!function_exists('e')) {
     function e(mixed $value): string
     {
+        if (is_array($value)) {
+            return htmlspecialchars(json_encode($value, JSON_UNESCAPED_UNICODE), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        }
+        if (is_object($value) && !method_exists($value, '__toString')) {
+            return htmlspecialchars(get_class($value), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        }
         return htmlspecialchars((string) ($value ?? ''), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
     }
 }
@@ -225,7 +231,7 @@ if (!function_exists('format_money')) {
 if (!function_exists('thai_date')) {
     function thai_date(?string $datetime, bool $includeTime = false, bool $shortMonth = false): string
     {
-        if (empty($datetime)) {
+        if ($datetime === null || $datetime === '' || $datetime === '0000-00-00' || $datetime === '0000-00-00 00:00:00') {
             return '-';
         }
         $timestamp = strtotime($datetime);
@@ -261,7 +267,7 @@ if (!function_exists('thai_date')) {
  * คืนชื่อเดือนภาษาไทยแบบย่อจากลำดับเดือน 1-12
  */
 if (!function_exists('thai_month')) {
-    function thai_month(int $month): string
+    function thai_month(int|string $month): string
     {
         $months = [
             1 => 'ม.ค.', 2 => 'ก.พ.', 3 => 'มี.ค.', 4 => 'เม.ย.',
@@ -269,7 +275,17 @@ if (!function_exists('thai_month')) {
             9 => 'ก.ย.', 10 => 'ต.ค.', 11 => 'พ.ย.', 12 => 'ธ.ค.',
         ];
 
-        return $months[$month] ?? '';
+        return $months[(int) $month] ?? '';
+    }
+}
+
+/**
+ * Alias for thai_month
+ */
+if (!function_exists('thai_month_short')) {
+    function thai_month_short(int|string $month): string
+    {
+        return thai_month($month);
     }
 }
 

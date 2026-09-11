@@ -1,3 +1,10 @@
+<?php
+$survey = $survey ?? ['title' => 'ผลการสำรวจ', 'slug' => '', 'description' => ''];
+$totalResponses = $totalResponses ?? 0;
+$csatScore = $csatScore ?? 0;
+$averageRating = $averageRating ?? 0;
+$questionStats = $questionStats ?? [];
+?>
 <div class="row g-4">
     <!-- Header -->
     <div class="col-12">

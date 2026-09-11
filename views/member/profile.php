@@ -1,3 +1,6 @@
+<?php
+$member = $member ?? [];
+?>
 <div class="row g-4">
     <!-- Left Column: Member Card Summary -->
     <div class="col-lg-4">
@@ -20,11 +23,11 @@
             <ul class="list-group list-group-flush text-start small border-top pt-3">
                 <li class="list-group-item d-flex justify-content-between px-0 py-2 border-0">
                     <span class="text-muted">หน่วยงานต้นสังกัด</span>
-                    <span class="fw-medium text-end" style="max-width: 180px;"><?= e($member['department']) ?></span>
+                    <span class="fw-medium text-end" style="max-width: 180px;"><?= e($member['department'] ?? '-') ?></span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between px-0 py-2 border-0">
                     <span class="text-muted">วันที่เป็นสมาชิก</span>
-                    <span class="fw-medium"><?= date('d/m/Y', strtotime($member['join_date'])) ?></span>
+                    <span class="fw-medium"><?= !empty($member['join_date']) ? date('d/m/Y', strtotime($member['join_date'])) : '-' ?></span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between px-0 py-2 border-0">
                     <span class="text-muted">สถานะสมาชิกภาพ</span>
@@ -52,7 +55,7 @@
                         <!-- Readonly Info -->
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted">รหัสสมาชิก (Member ID)</label>
-                            <input type="text" class="form-control bg-light" value="<?= e($member['member_no']) ?>" readonly>
+                            <input type="text" class="form-control bg-light" value="<?= e($member['member_no'] ?? '') ?>" readonly>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted">เลขบัตรประจำตัวประชาชน</label>
@@ -64,7 +67,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-muted">ตำแหน่ง</label>
-                            <input type="text" class="form-control bg-light" value="<?= e($member['position']) ?>" readonly>
+                            <input type="text" class="form-control bg-light" value="<?= e($member['position'] ?? '') ?>" readonly>
                         </div>
                     </div>
 
@@ -75,7 +78,7 @@
                             <label class="form-label small fw-bold">หมายเลขโทรศัพท์มือถือ <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light"><i class="bi bi-telephone"></i></span>
-                                <input type="text" name="phone" class="form-control" value="<?= e($member['phone']) ?>" required>
+                                <input type="text" name="phone" class="form-control" value="<?= e($member['phone'] ?? '') ?>" required>
                             </div>
                         </div>
 
@@ -83,13 +86,13 @@
                             <label class="form-label small fw-bold">อีเมล (Email) <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light"><i class="bi bi-envelope"></i></span>
-                                <input type="email" name="email" class="form-control" value="<?= e($member['email']) ?>" required>
+                                <input type="email" name="email" class="form-control" value="<?= e($member['email'] ?? '') ?>" required>
                             </div>
                         </div>
 
                         <div class="col-12">
                             <label class="form-label small fw-bold">ที่อยู่ปัจจุบันที่ติดต่อได้ <span class="text-danger">*</span></label>
-                            <textarea name="address" class="form-control" rows="3" required><?= e($member['address']) ?></textarea>
+                            <textarea name="address" class="form-control" rows="3" required><?= e($member['address'] ?? '') ?></textarea>
                         </div>
                     </div>
 

@@ -1,3 +1,7 @@
+<?php
+$member = $member ?? [];
+$loanTypes = $loanTypes ?? [];
+?>
 <div class="card border-0 shadow-sm rounded-4 mb-4">
     <div class="card-header bg-transparent border-0 p-4 pb-0 text-center">
         <h4 class="fw-bold text-navy mb-1"><i class="bi bi-cash-coin text-warning me-2"></i>ยื่นคำขอกู้เงินออนไลน์ (Online Loan Wizard)</h4>

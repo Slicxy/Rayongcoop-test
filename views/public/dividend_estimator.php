@@ -1,11 +1,15 @@
+<?php
+$defaultDividendRate = $defaultDividendRate ?? 5.10;
+$defaultRefundRate = $defaultRefundRate ?? 12.50;
+?>
 <div class="py-5" style="background: linear-gradient(135deg, #073B74 0%, #0052A3 100%); color: #ffffff;">
     <div class="container-xl text-center">
         <span class="badge bg-gold text-white px-3 py-1 rounded-pill mb-2 fw-semibold">
             <i class="bi bi-stars me-1"></i> เครื่องมือช่วยคำนวณออนไลน์
         </span>
-        <h1 class="fw-bold mb-2">โปรแกรมจำลองและประมาณการเงินปันผล-เฉลี่ยคืน</h1>
-        <p class="text-light-blue small mb-0" style="max-width: 650px; margin: 0 auto;">
-            คำนวณผลตอบแทนจากเงินปันผลตามหุ้นและเงินเฉลี่ยคืนจากดอกเบี้ยเงินกู้ของสหกรณ์ออมทรัพย์สาธารณสุขระยอง จำกัด
+        <h1 class="fw-bold mb-2 text-white">โปรแกรมจำลองและประมาณการเงินปันผล-เฉลี่ยคืน</h1>
+        <p class="text-white small mb-0" style="max-width: 650px; margin: 0 auto;">
+            คำนวณผลตอบแทนจากเงินปันผลตามหุ้นและเงินเฉลี่ยคืนจากดอกเบี้ยเงินกู้
         </p>
     </div>
 </div>
@@ -86,12 +90,12 @@
                                 <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold">
                                     <i class="bi bi-stars me-1"></i> ประมาณการผลตอบแทน
                                 </span>
-                                <span class="small text-white-50">รอบปีบัญชี</span>
+                                <span class="small text-white">รอบปีบัญชี</span>
                             </div>
 
                             <div class="text-center my-4">
                                 <div class="small text-white-70 mb-1">ยอดเงินปันผลและเฉลี่ยคืนรวมสุทธิ</div>
-                                <div class="display-5 fw-bold text-warning font-monospace" id="pubTotalReturns">฿0.00</div>
+                                <div class="display-5 fw-bold text-white font-monospace" id="pubTotalReturns">฿0.00</div>
                             </div>
 
                             <!-- Breakdown Box -->
@@ -134,48 +138,57 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const inputShares = document.getElementById('pubInputShares');
-    const rangeDivRate = document.getElementById('pubRangeDivRate');
-    const labelDivRate = document.getElementById('pubLabelDivRate');
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputShares = document.getElementById('pubInputShares');
+        const rangeDivRate = document.getElementById('pubRangeDivRate');
+        const labelDivRate = document.getElementById('pubLabelDivRate');
 
-    const inputInterest = document.getElementById('pubInputInterest');
-    const rangeRefundRate = document.getElementById('pubRangeRefundRate');
-    const labelRefundRate = document.getElementById('pubLabelRefundRate');
+        const inputInterest = document.getElementById('pubInputInterest');
+        const rangeRefundRate = document.getElementById('pubRangeRefundRate');
+        const labelRefundRate = document.getElementById('pubLabelRefundRate');
 
-    const pubTotalReturns = document.getElementById('pubTotalReturns');
-    const pubDivAmount = document.getElementById('pubDivAmount');
-    const pubRefAmount = document.getElementById('pubRefAmount');
-    const pubDivNote = document.getElementById('pubDivNote');
-    const pubRefNote = document.getElementById('pubRefNote');
+        const pubTotalReturns = document.getElementById('pubTotalReturns');
+        const pubDivAmount = document.getElementById('pubDivAmount');
+        const pubRefAmount = document.getElementById('pubRefAmount');
+        const pubDivNote = document.getElementById('pubDivNote');
+        const pubRefNote = document.getElementById('pubRefNote');
 
-    function calculate() {
-        const shares = parseFloat(inputShares.value) || 0;
-        const divRate = parseFloat(rangeDivRate.value) || 0;
+        function calculate() {
+            const shares = parseFloat(inputShares.value) || 0;
+            const divRate = parseFloat(rangeDivRate.value) || 0;
 
-        const interest = parseFloat(inputInterest.value) || 0;
-        const refundRate = parseFloat(rangeRefundRate.value) || 0;
+            const interest = parseFloat(inputInterest.value) || 0;
+            const refundRate = parseFloat(rangeRefundRate.value) || 0;
 
-        labelDivRate.textContent = divRate.toFixed(2) + '%';
-        labelRefundRate.textContent = refundRate.toFixed(2) + '%';
+            labelDivRate.textContent = divRate.toFixed(2) + '%';
+            labelRefundRate.textContent = refundRate.toFixed(2) + '%';
 
-        const divAmount = (shares * divRate) / 100;
-        const refAmount = (interest * refundRate) / 100;
-        const total = divAmount + refAmount;
+            const divAmount = (shares * divRate) / 100;
+            const refAmount = (interest * refundRate) / 100;
+            const total = divAmount + refAmount;
 
-        pubDivAmount.textContent = '+฿' + divAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        pubRefAmount.textContent = '+฿' + refAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        pubTotalReturns.textContent = '฿' + total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            pubDivAmount.textContent = '+฿' + divAmount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            pubRefAmount.textContent = '+฿' + refAmount.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            pubTotalReturns.textContent = '฿' + total.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
 
-        pubDivNote.textContent = '(' + shares.toLocaleString('en-US') + ' ฿ × ' + divRate.toFixed(2) + '%)';
-        pubRefNote.textContent = '(' + interest.toLocaleString('en-US') + ' ฿ × ' + refundRate.toFixed(2) + '%)';
-    }
+            pubDivNote.textContent = '(' + shares.toLocaleString('en-US') + ' ฿ × ' + divRate.toFixed(2) + '%)';
+            pubRefNote.textContent = '(' + interest.toLocaleString('en-US') + ' ฿ × ' + refundRate.toFixed(2) + '%)';
+        }
 
-    inputShares.addEventListener('input', calculate);
-    rangeDivRate.addEventListener('input', calculate);
-    inputInterest.addEventListener('input', calculate);
-    rangeRefundRate.addEventListener('input', calculate);
+        inputShares.addEventListener('input', calculate);
+        rangeDivRate.addEventListener('input', calculate);
+        inputInterest.addEventListener('input', calculate);
+        rangeRefundRate.addEventListener('input', calculate);
 
-    calculate();
-});
+        calculate();
+    });
 </script>

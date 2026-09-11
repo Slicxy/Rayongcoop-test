@@ -32,20 +32,20 @@
             </h3>
             <ul class="list-unstyled text-secondary mb-0">
                 <li class="mb-3 d-flex align-items-start">
-                    <i class="bi bi-check-circle-fill text-primary me-2 mt-1 fs-5"></i>
-                    <span>ส่งเสริมและปลูกฝังวินัยการออมอย่างต่อเนื่องให้แก่สมาชิก</span>
+                    <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                    <span class="mt-1">ส่งเสริมและปลูกฝังวินัยการออมอย่างต่อเนื่องให้แก่สมาชิก</span>
                 </li>
                 <li class="mb-3 d-flex align-items-start">
-                    <i class="bi bi-check-circle-fill text-primary me-2 mt-1 fs-5"></i>
-                    <span>ให้บริการสินเชื่ออัตราดอกเบี้ยเป็นธรรม เพื่อบรรเทาความเดือดร้อนและพัฒนาคุณภาพชีวิต</span>
+                    <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                    <span class="mt-1">ให้บริการสินเชื่ออัตราดอกเบี้ยเป็นธรรม เพื่อบรรเทาความเดือดร้อนและพัฒนาคุณภาพชีวิต</span>
                 </li>
                 <li class="mb-3 d-flex align-items-start">
-                    <i class="bi bi-check-circle-fill text-primary me-2 mt-1 fs-5"></i>
-                    <span>จัดสวัสดิการคุ้มครองและเกื้อกูลสมาชิกในทุกช่วงชีวิต</span>
+                    <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                    <span class="mt-1">จัดสวัสดิการคุ้มครองและเกื้อกูลสมาชิกในทุกช่วงชีวิต</span>
                 </li>
                 <li class="mb-2 d-flex align-items-start">
-                    <i class="bi bi-check-circle-fill text-primary me-2 mt-1 fs-5"></i>
-                    <span>พัฒนาระบบเทคโนโลยีดิจิทัล (FinTech) เพื่อการบริการที่สะดวก รวดเร็ว และปลอดภัย</span>
+                    <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                    <span class="mt-1">พัฒนาระบบเทคโนโลยีดิจิทัล (FinTech) เพื่อการบริการที่สะดวก รวดเร็ว และปลอดภัย</span>
                 </li>
             </ul>
         </div>
@@ -179,7 +179,7 @@
             <div class="col-lg-5">
                 <div class="p-4 p-md-5 bg-navy text-white rounded-4 shadow-sm h-100 d-flex flex-column justify-content-between">
                     <div>
-                        <span class="badge bg-gold text-white mb-3 px-3 py-1 rounded-pill">จุดเริ่มต้นและวิวัฒนาการ</span>
+                        <span class="badge bg-white text-navy mb-3 py-1 ">จุดเริ่มต้นและวิวัฒนาการ</span>
                         <h3 class="fw-bold text-white mb-3">ประวัติการสหกรณ์ ในประเทศไทย</h3>
                         <p class="text-light-blue leading-relaxed small mb-0">
                             การสหกรณ์เป็นเครื่องมือสำคัญในการแก้ไขปัญหาทางเศรษฐกิจและสังคม โดยมีรากฐานมาจากการรวมตัวเพื่อช่วยเหลือซึ่งกันและกันของประชาชน

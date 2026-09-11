@@ -1,8 +1,8 @@
 <?php
-$totalShareAmount = $totalShareAmount ?? 100000;
-$defaultDividendRate = $defaultDividendRate ?? 4.75;
-$totalInterestPaid = $totalInterestPaid ?? 30000;
-$defaultRefundRate = $defaultRefundRate ?? 12.0;
+$defaultDividendRate = $defaultDividendRate ?? 5.10;
+$defaultRefundRate = $defaultRefundRate ?? 12.50;
+$totalShareAmount = $totalShareAmount ?? 0.00;
+$totalInterestPaid = $totalInterestPaid ?? 0.00;
 ?>
 <div class="row g-4">
     <!-- Header -->

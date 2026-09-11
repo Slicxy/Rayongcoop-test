@@ -1,11 +1,12 @@
 <?php
-$m = $data['member'];
-$shares = $data['shares'];
-$deposits = $data['deposits'];
-$loans = $data['loans'];
-$welfares = $data['welfares'];
-$beneficiaries = $data['beneficiaries'];
-$requests = $data['requests'];
+$data = $data ?? [];
+$m = $data['member'] ?? [];
+$shares = $data['shares'] ?? [];
+$deposits = $data['deposits'] ?? [];
+$loans = $data['loans'] ?? [];
+$welfares = $data['welfares'] ?? [];
+$beneficiaries = $data['beneficiaries'] ?? [];
+$requests = $data['requests'] ?? [];
 ?>
 <div class="container-fluid py-4">
     <!-- Breadcrumb & Top bar -->
@@ -15,12 +16,12 @@ $requests = $data['requests'];
                 <ol class="breadcrumb mb-1">
                     <li class="breadcrumb-item"><a href="<?= url('staff/dashboard') ?>">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="<?= url('staff/members') ?>">สมาชิก</a></li>
-                    <li class="breadcrumb-item active"><?= e($m['member_no']) ?></li>
+                    <li class="breadcrumb-item active"><?= e($m['member_no'] ?? '') ?></li>
                 </ol>
             </nav>
             <h1 class="h3 fw-bold text-dark mb-0">
-                <?= e($m['prefix'] . $m['first_name'] . ' ' . $m['last_name']) ?>
-                <span class="badge bg-success-subtle text-success fs-6 fw-normal ms-2 rounded-pill">สถานะ: <?= e($m['status']) ?></span>
+                <?= e(($m['prefix'] ?? '') . ($m['first_name'] ?? '') . ' ' . ($m['last_name'] ?? '')) ?>
+                <span class="badge bg-success-subtle text-success fs-6 fw-normal ms-2 rounded-pill">สถานะ: <?= e($m['status'] ?? 'active') ?></span>
             </h1>
         </div>
         <div class="d-flex gap-2">

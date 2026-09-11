@@ -1,9 +1,31 @@
+<?php
+$receipt = array_merge([
+    'receipt_no' => 'REC-2569-0001',
+    'issue_date' => date('Y-m-d'),
+    'billing_month' => date('m'),
+    'thai_year' => (int)date('Y') + 543,
+    'member_no' => 'MEM-2569-001',
+    'prefix' => 'นาย',
+    'first_name' => 'สมาชิก',
+    'last_name' => 'สหกรณ์',
+    'department' => '-',
+    'position' => '-',
+    'share_amount' => 0,
+    'loan_principal' => 0,
+    'loan_interest' => 0,
+    'deposit_amount' => 0,
+    'other_amount' => 0,
+    'total_amount' => 0,
+    'baht_text' => 'ศูนย์บาทถ้วน',
+    'qr_verify_token' => ''
+], $receipt ?? []);
+?>
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ใบเสร็จรับเงิน <?= e($receipt['receipt_no']) ?> - สหกรณ์ออมทรัพย์สาธารณสุขระยอง จำกัด</title>
+    <title>ใบเสร็จรับเงิน <?= e($receipt['receipt_no'] ?? '') ?> - สหกรณ์ออมทรัพย์สาธารณสุขระยอง จำกัด</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

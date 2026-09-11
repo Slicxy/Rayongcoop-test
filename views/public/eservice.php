@@ -1,6 +1,7 @@
 <?php
 use App\Core\Auth;
 
+$eservices = $eservices ?? [];
 $isLoggedIn = Auth::check();
 $portalUrl = $isLoggedIn ? url('member/dashboard') : url('login');
 ?>

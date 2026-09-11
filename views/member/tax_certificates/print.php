@@ -1,3 +1,25 @@
+<?php
+$title = $title ?? 'หนังสือรับรองดอกเบี้ยเงินกู้';
+$cert = array_merge([
+    'thai_year' => date('Y') + 543,
+    'tax_year' => date('Y'),
+    'certificate_no' => 'TAX-' . date('Ymd-0001'),
+    'issue_date' => date('Y-m-d'),
+    'borrower_name' => '-',
+    'member_no' => '-',
+    'id_card_no' => '-',
+    'department' => '-',
+    'contract_no' => '-',
+    'loan_type' => '-',
+    'property_address' => 'ตามสัญญาเงินกู้ที่ระบุไว้กับสหกรณ์',
+    'monthly_breakdown' => [],
+    'total_principal_paid' => 0,
+    'total_interest_paid' => 0,
+    'total_paid' => 0,
+    'interest_baht_text' => 'ศูนย์บาทถ้วน',
+    'qr_verify_token' => ''
+], $cert ?? []);
+?>
 <!DOCTYPE html>
 <html lang="th">
 <head>

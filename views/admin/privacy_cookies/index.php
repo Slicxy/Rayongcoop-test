@@ -1,3 +1,10 @@
+<?php
+$consentsCount = $consentsCount ?? 0;
+$analyticsConsentCount = $analyticsConsentCount ?? 0;
+$marketingConsentCount = $marketingConsentCount ?? 0;
+$categories = $categories ?? [];
+$recentConsents = $recentConsents ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h3 class="fw-bold text-navy mb-1"><i class="bi bi-shield-check me-2 text-primary"></i> จัดการความเป็นส่วนตัวและคุกกี้ (PDPA CMP)</h3>

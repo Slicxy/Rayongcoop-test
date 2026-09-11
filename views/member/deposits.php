@@ -1,3 +1,9 @@
+<?php
+$accounts = $accounts ?? [];
+$activeAccount = $activeAccount ?? null;
+$typeFilter = $typeFilter ?? 'all';
+$transactions = $transactions ?? [];
+?>
 <!-- Account Selector Tabs -->
 <div class="row g-3 mb-4">
     <?php foreach ($accounts as $acc): ?>

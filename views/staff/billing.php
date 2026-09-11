@@ -1,3 +1,8 @@
+<?php
+$receipts = $receipts ?? [];
+$selectedYear = $selectedYear ?? (int)date('Y');
+$selectedMonth = $selectedMonth ?? null;
+?>
 <div class="container-fluid py-4">
     <!-- Header -->
     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">

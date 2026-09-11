@@ -1,3 +1,7 @@
+<?php
+$products = $products ?? [];
+$schedules = $schedules ?? [];
+?>
 <div class="py-5 bg-navy text-white">
     <div class="container">
         <div class="row align-items-center">

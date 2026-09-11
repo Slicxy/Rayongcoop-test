@@ -1,3 +1,8 @@
+<?php
+$ticket = $ticket ?? '';
+$complaint = $complaint ?? null;
+$logs = $logs ?? [];
+?>
 <div class="py-5 bg-navy text-white">
     <div class="container">
         <span class="badge bg-gold text-white mb-2 px-3 py-1">บริการติดตามเรื่อง</span>

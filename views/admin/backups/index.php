@@ -1,3 +1,10 @@
+<?php
+$backups = $backups ?? [];
+$totalSize = $totalSize ?? 0;
+$lastBackupTime = $lastBackupTime ?? null;
+$tableCount = $tableCount ?? 0;
+$dbSize = $dbSize ?? 0;
+?>
 <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
     <div>
         <h3 class="fw-bold text-navy mb-1"><i class="bi bi-database-check me-2 text-primary"></i> ศูนย์สำรองและกู้คืนข้อมูล (Backup & Disaster Recovery)</h3>

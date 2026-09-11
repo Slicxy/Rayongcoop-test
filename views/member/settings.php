@@ -1,3 +1,7 @@
+<?php
+$lineConn = $lineConn ?? null;
+$loginHistory = $loginHistory ?? [];
+?>
 <div class="row g-4">
     <!-- Change Password & Security -->
     <div class="col-lg-6">

@@ -1,3 +1,8 @@
+<?php
+$isValid = $isValid ?? false;
+$cert = $cert ?? null;
+$token = $token ?? '';
+?>
 <!DOCTYPE html>
 <html lang="th">
 <head>

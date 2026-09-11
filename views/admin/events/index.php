@@ -1,3 +1,8 @@
+<?php
+$category = $category ?? '';
+$status = $status ?? '';
+$events = $events ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h4 class="fw-bold text-navy mb-1"><i class="bi bi-calendar-event-fill text-info me-2"></i> จัดการปฏิทินกิจกรรม & กำหนดการ</h4>

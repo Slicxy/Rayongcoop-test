@@ -1,3 +1,6 @@
+<?php
+$list = $list ?? [];
+?>
 <div class="card border-0 shadow-sm rounded-4">
     <div class="card-header bg-transparent border-0 p-4 pb-2 d-flex justify-content-between align-items-center">
         <div>

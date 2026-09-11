@@ -1,3 +1,6 @@
+<?php
+$certificates = $certificates ?? [];
+?>
 <div class="row g-4">
     <!-- Header -->
     <div class="col-12">

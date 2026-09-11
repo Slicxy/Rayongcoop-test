@@ -1,3 +1,20 @@
+<?php
+$message = array_merge([
+    'id' => 0,
+    'subject' => '',
+    'message' => '',
+    'name' => '-',
+    'phone' => '-',
+    'email' => '-',
+    'sender_name' => '-',
+    'sender_email' => '-',
+    'sender_phone' => '-',
+    'status' => 'new',
+    'admin_response' => '',
+    'created_at' => date('Y-m-d H:i:s'),
+    'ip_address' => '-'
+], $message ?? []);
+?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <a href="<?= url('admin/contact-messages') ?>" class="btn btn-sm btn-outline-secondary rounded-pill mb-2">

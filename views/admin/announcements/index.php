@@ -1,3 +1,8 @@
+<?php
+$priority = $priority ?? '';
+$status = $status ?? '';
+$announcements = $announcements ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h4 class="fw-bold text-navy mb-1"><i class="bi bi-megaphone-fill text-warning me-2"></i> จัดการประกาศสำคัญ (Important Announcements)</h4>

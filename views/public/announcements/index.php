@@ -1,3 +1,8 @@
+<?php
+$selectedPriority = $selectedPriority ?? '';
+$keyword = $keyword ?? '';
+$announcements = $announcements ?? [];
+?>
 <div class="py-5 bg-navy text-white">
     <div class="container-xl">
         <span class="badge bg-gold text-white mb-2 px-3 py-1"><i class="bi bi-megaphone-fill me-1"></i> ข่าวสารสำคัญ</span>

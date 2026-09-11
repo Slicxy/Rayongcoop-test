@@ -1,3 +1,8 @@
+<?php
+$kpis = $kpis ?? [];
+$recentLoans = $recentLoans ?? [];
+$recentMembers = $recentMembers ?? [];
+?>
 <div class="container-fluid py-4">
     <!-- Header -->
     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">

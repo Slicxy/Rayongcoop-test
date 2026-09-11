@@ -1,3 +1,6 @@
+<?php
+$event = $event ?? ['id' => 0, 'title' => '', 'category' => 'activity', 'description' => '', 'start_date' => date('Y-m-d'), 'end_date' => '', 'start_time' => '', 'end_time' => '', 'location' => '', 'related_link' => '', 'status' => 'upcoming', 'is_featured' => 0];
+?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <a href="<?= url('admin/events') ?>" class="btn btn-sm btn-outline-secondary rounded-pill mb-2">

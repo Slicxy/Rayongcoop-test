@@ -1,3 +1,6 @@
+<?php
+$products = $products ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h3 class="fw-bold text-navy mb-1"><i class="bi bi-piggy-bank me-2 text-primary"></i> จัดการผลิตภัณฑ์เงินฝาก</h3>

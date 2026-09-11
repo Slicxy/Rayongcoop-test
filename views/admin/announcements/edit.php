@@ -1,3 +1,21 @@
+<?php
+$announcement = array_merge([
+    'id' => 0,
+    'title' => '',
+    'priority' => 'general',
+    'summary' => '',
+    'content' => '',
+    'announcement_no' => '',
+    'effective_date' => '',
+    'publication_date' => date('Y-m-d'),
+    'effective_start_date' => '',
+    'expiry_date' => '',
+    'resolution_no' => '',
+    'is_pinned' => 0,
+    'status' => 'published',
+    'attachment' => ''
+], $announcement ?? []);
+?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <a href="<?= url('admin/announcements') ?>" class="btn btn-sm btn-outline-secondary rounded-pill mb-2">

@@ -1,3 +1,11 @@
+<?php
+$stats = $stats ?? ['total' => 0, 'submitted' => 0, 'under_review' => 0, 'approved' => 0, 'implemented' => 0, 'rejected' => 0];
+$categories = $categories ?? [];
+$selectedCategory = $selectedCategory ?? '';
+$statuses = $statuses ?? [];
+$selectedStatus = $selectedStatus ?? '';
+$suggestions = $suggestions ?? [];
+?>
 <!-- Header -->
 <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
     <div>

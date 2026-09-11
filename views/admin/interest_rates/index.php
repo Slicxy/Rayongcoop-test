@@ -1,3 +1,8 @@
+<?php
+$depositRates = $depositRates ?? [];
+$loanRates = $loanRates ?? [];
+$history = $history ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h3 class="fw-bold text-navy mb-1"><i class="bi bi-percent me-2 text-primary"></i> จัดการอัตราดอกเบี้ยและประวัติ</h3>

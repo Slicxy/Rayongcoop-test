@@ -1,3 +1,7 @@
+<?php
+$shares = $shares ?? [];
+$requests = $requests ?? [];
+?>
 <!-- Shares Summary Cards -->
 <div class="row g-3 g-xl-4 mb-4">
     <div class="col-md-4">

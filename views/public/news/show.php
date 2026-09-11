@@ -1,3 +1,7 @@
+<?php
+$news = $news ?? ['title' => 'ข่าวสาร', 'category_name' => '', 'publish_at' => date('Y-m-d'), 'views_count' => 0, 'content' => ''];
+$related = $related ?? [];
+?>
 <div class="py-4 bg-light border-bottom">
     <div class="container">
         <nav aria-label="breadcrumb">

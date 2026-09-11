@@ -1,3 +1,6 @@
+<?php
+$slides = $slides ?? [];
+?>
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
     <div>
         <h3 class="fw-bold text-navy mb-1"><i class="bi bi-images me-2 text-primary"></i> จัดการ Hero Slideshow</h3>

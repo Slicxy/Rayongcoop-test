@@ -1,3 +1,7 @@
+<?php
+$announcement = $announcement ?? ['title' => 'ประกาศสำคัญ', 'priority' => 'general', 'publish_at' => date('Y-m-d'), 'publication_date' => date('Y-m-d'), 'views_count' => 0, 'view_count' => 0, 'content' => ''];
+$related = $related ?? [];
+?>
 <div class="py-4 bg-navy text-white">
     <div class="container-xl">
         <nav aria-label="breadcrumb" class="mb-2">
@@ -7,7 +11,7 @@
                 <li class="breadcrumb-item active text-white" aria-current="page">รายละเอียดประกาศ</li>
             </ol>
         </nav>
-        <h1 class="h3 fw-bold text-white mb-0"><?= e($announcement['title']) ?></h1>
+        <h1 class="h3 fw-bold text-white mb-0"><?= e($announcement['title'] ?? '') ?></h1>
     </div>
 </div>
 
@@ -18,9 +22,9 @@
             <div class="coop-card p-4 p-md-5 mb-4">
                 <!-- Meta Tags -->
                 <div class="d-flex flex-wrap align-items-center gap-2 mb-4 pb-3 border-bottom">
-                    <?php if ($announcement['priority'] === 'urgent'): ?>
+                    <?php if (($announcement['priority'] ?? '') === 'urgent'): ?>
                         <span class="badge bg-danger"><i class="bi bi-exclamation-octagon-fill me-1"></i> ด่วนที่สุด</span>
-                    <?php elseif ($announcement['priority'] === 'important'): ?>
+                    <?php elseif (($announcement['priority'] ?? '') === 'important'): ?>
                         <span class="badge bg-warning text-dark"><i class="bi bi-star-fill me-1"></i> ประกาศสำคัญ</span>
                     <?php else: ?>
                         <span class="badge bg-secondary">ทั่วไป</span>
@@ -33,7 +37,7 @@
                     <?php endif; ?>
 
                     <span class="text-muted small">
-                        <i class="bi bi-calendar3 me-1"></i> วันที่ประกาศ: <?= thai_date($announcement['publication_date']) ?>
+                        <i class="bi bi-calendar3 me-1"></i> วันที่ประกาศ: <?= thai_date($announcement['publication_date'] ?? $announcement['publish_at'] ?? date('Y-m-d')) ?>
                     </span>
 
                     <?php if (!empty($announcement['expiry_date'])): ?>
@@ -43,7 +47,7 @@
                     <?php endif; ?>
 
                     <span class="text-muted small ms-auto">
-                        <i class="bi bi-eye me-1"></i> เข้าชม <?= number_format($announcement['view_count']) ?> ครั้ง
+                        <i class="bi bi-eye me-1"></i> เข้าชม <?= number_format((float)($announcement['view_count'] ?? $announcement['views_count'] ?? 0)) ?> ครั้ง
                     </span>
                 </div>
 

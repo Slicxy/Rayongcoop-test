@@ -1,3 +1,22 @@
+<?php
+$complaint = array_merge([
+    'id' => 0,
+    'ticket_no' => '',
+    'category' => '',
+    'subject' => '',
+    'description' => '',
+    'created_at' => date('Y-m-d H:i:s'),
+    'status' => 'received',
+    'priority' => 'normal',
+    'assigned_to' => null,
+    'response_message' => '',
+    'complainant_name' => '-',
+    'complainant_phone' => '-',
+    'complainant_email' => '-'
+], $complaint ?? []);
+$logs = $logs ?? [];
+$officers = $officers ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h3 class="fw-bold text-navy mb-1">

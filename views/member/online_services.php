@@ -1,3 +1,6 @@
+<?php
+$requests = $requests ?? [];
+?>
 <!-- Header & Overview Hero Banner -->
 <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 text-white overflow-hidden position-relative" style="background: linear-gradient(135deg, #072C59 0%, #0066CC 60%, #0284C7 100%);">
     <div class="position-absolute end-0 top-0 bottom-0 d-none d-lg-block opacity-10 pe-5 pt-3 pointer-events-none" style="font-size: 140px;">

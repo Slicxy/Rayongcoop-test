@@ -1,3 +1,38 @@
+<?php
+$member = array_merge([
+    'first_name' => 'สมาชิก',
+    'last_name' => '',
+    'prefix' => '',
+    'member_no' => '-',
+    'department' => '-'
+], $member ?? []);
+
+$summary = array_merge([
+    'share_value' => 0,
+    'total_deposit' => 0,
+    'loan_balance' => 0,
+    'welfare_count' => 0,
+    'monthly_share' => 0,
+    'deposit_count' => 0,
+    'active_loans_count' => 0,
+    'welfare_received_total' => 0,
+    'deposits' => ['total_balance' => 0, 'count' => 0, 'total_interest' => 0],
+    'loans' => ['total_principal' => 0, 'count' => 0, 'total_installment' => 0],
+    'monthlyDeduction' => [
+        'share' => 0,
+        'loan_principal' => 0,
+        'loan_interest' => 0,
+        'deposit' => 0,
+        'other' => 0,
+        'total' => 0
+    ]
+], $summary ?? []);
+if (!isset($summary['deposits']) || !is_array($summary['deposits'])) $summary['deposits'] = ['total_balance' => 0, 'count' => 0, 'total_interest' => 0];
+if (!isset($summary['loans']) || !is_array($summary['loans'])) $summary['loans'] = ['total_principal' => 0, 'count' => 0, 'total_installment' => 0];
+if (!isset($summary['monthlyDeduction']) || !is_array($summary['monthlyDeduction'])) {
+    $summary['monthlyDeduction'] = ['share' => 0, 'loan_principal' => 0, 'loan_interest' => 0, 'deposit' => 0, 'other' => 0, 'total' => 0];
+}
+?>
 <!-- 1. Member Greeting Banner -->
 <div class="card border-0 shadow-sm rounded-4 mb-4" style="background: linear-gradient(135deg, #073B74 0%, #0066CC 100%); color: #FFFFFF;">
     <div class="card-body p-4">

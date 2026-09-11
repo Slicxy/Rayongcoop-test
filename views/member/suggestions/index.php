@@ -1,3 +1,8 @@
+<?php
+$suggestions = $suggestions ?? [];
+$categories = $categories ?? [];
+$statuses = $statuses ?? [];
+?>
 <!-- Header Banner -->
 <div class="card border-0 shadow-sm rounded-4 bg-gradient-primary text-white p-4 mb-4" style="background: linear-gradient(135deg, #073B74 0%, #0B5ED7 100%);">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">

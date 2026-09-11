@@ -1,3 +1,7 @@
+<?php
+$types = $types ?? [];
+$applications = $applications ?? [];
+?>
 <!-- Welfare Benefits Catalog -->
 <div class="row g-3 mb-4">
     <?php foreach ($types as $w): ?>

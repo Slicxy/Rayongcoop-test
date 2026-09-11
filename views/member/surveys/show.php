@@ -1,3 +1,7 @@
+<?php
+$survey = array_merge(['id' => 0, 'title' => 'แบบสำรวจความคิดเห็น', 'slug' => '', 'description' => ''], $survey ?? []);
+$questions = $questions ?? [];
+?>
 <div class="row g-4 justify-content-center">
     <!-- Header -->
     <div class="col-lg-10">

@@ -1,3 +1,13 @@
+<?php
+$heroSlides = $heroSlides ?? [];
+$importantAnnouncements = $importantAnnouncements ?? [];
+$depositRates = $depositRates ?? [];
+$loanRates = $loanRates ?? [];
+$latestStats = $latestStats ?? null;
+$latestNews = $latestNews ?? [];
+$upcomingEvents = $upcomingEvents ?? [];
+$eservices = $eservices ?? [];
+?>
 <!-- 1. Hero Slideshow Section (Swiper) -->
 <section class="hero-section position-relative">
     <div class="swiper hero-swiper">
@@ -391,7 +401,7 @@
 </section>
 
 <!-- 5. Executive Financial Highlights Section -->
-<?php if ($latestStats): ?>
+<?php if (!empty($latestStats)): ?>
 <section class="stats-section">
     <div class="container-xl position-relative z-2">
         <div class="text-center mb-5">

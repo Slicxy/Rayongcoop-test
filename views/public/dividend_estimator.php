@@ -1,3 +1,7 @@
+<?php
+$defaultDividendRate = $defaultDividendRate ?? 4.75;
+$defaultRefundRate = $defaultRefundRate ?? 12.0;
+?>
 <div class="py-5" style="background: linear-gradient(135deg, #073B74 0%, #0052A3 100%); color: #ffffff;">
     <div class="container-xl text-center">
         <span class="badge bg-gold text-white px-3 py-1 rounded-pill mb-2 fw-semibold">

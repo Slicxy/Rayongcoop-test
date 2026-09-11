@@ -4,7 +4,7 @@
 <div class="py-5 bg-navy text-white position-relative overflow-hidden">
     <div class="container position-relative z-1">
         <div class="d-flex align-items-center gap-2 mb-2">
-            <span class="badge bg-gold text-white py-1 rounded-pill">ประวัติและข้อมูลองค์กร</span>
+            <span class="badge bg-gold text-white px-1 py-1 rounded-pill">ประวัติและข้อมูลองค์กร</span>
             <span class="badge bg-white text-navy px-3 py-1 rounded-pill d-none d-sm-inline-block">สอ.สธ.ระยอง</span>
         </div>
         <h1 class="text-white fw-bold display-6 mb-2">เกี่ยวกับสหกรณ์ออมทรัพย์สาธารณสุขระยอง จำกัด</h1>
@@ -32,29 +32,27 @@
             </h3>
             <ul class="list-unstyled text-secondary mb-0">
                 <li class="mb-3 d-flex align-items-start">
-                    <i class="bi bi-check-circle-fill text-primary me-2 mt-1 fs-5"></i>
-                    <span>ส่งเสริมและปลูกฝังวินัยการออมอย่างต่อเนื่องให้แก่สมาชิก</span>
+                    <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                    <span class="mt-1">ส่งเสริมและปลูกฝังวินัยการออมอย่างต่อเนื่องให้แก่สมาชิก</span>
                 </li>
                 <li class="mb-3 d-flex align-items-start">
-                    <i class="bi bi-check-circle-fill text-primary me-2 mt-1 fs-5"></i>
-                    <span>ให้บริการสินเชื่ออัตราดอกเบี้ยเป็นธรรม เพื่อบรรเทาความเดือดร้อนและพัฒนาคุณภาพชีวิต</span>
+                    <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                    <span class="mt-1">ให้บริการสินเชื่ออัตราดอกเบี้ยเป็นธรรม เพื่อบรรเทาความเดือดร้อนและพัฒนาคุณภาพชีวิต</span>
                 </li>
                 <li class="mb-3 d-flex align-items-start">
-                    <i class="bi bi-check-circle-fill text-primary me-2 mt-1 fs-5"></i>
-                    <span>จัดสวัสดิการคุ้มครองและเกื้อกูลสมาชิกในทุกช่วงชีวิต</span>
+                    <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                    <span class="mt-1">จัดสวัสดิการคุ้มครองและเกื้อกูลสมาชิกในทุกช่วงชีวิต</span>
                 </li>
                 <li class="mb-2 d-flex align-items-start">
-                    <i class="bi bi-check-circle-fill text-primary me-2 mt-1 fs-5"></i>
-                    <span>พัฒนาระบบเทคโนโลยีดิจิทัล (FinTech) เพื่อการบริการที่สะดวก รวดเร็ว และปลอดภัย</span>
+                    <i class="bi bi-check-circle-fill text-primary me-2 fs-5"></i>
+                    <span class="mt-1">พัฒนาระบบเทคโนโลยีดิจิทัล (FinTech) เพื่อการบริการที่สะดวก รวดเร็ว และปลอดภัย</span>
                 </li>
             </ul>
         </div>
         <div class="col-lg-6">
             <div class="coop-card p-4 p-md-5 bg-white shadow-sm rounded-4 border">
                 <div class="d-flex align-items-center mb-3">
-                    <div class="p-3 bg-light-blue rounded-circle me-3 text-primary">
-                        <i class="bi bi-bank2 fs-2"></i>
-                    </div>
+                    <img src="<?= asset('img/logo.webp') ?>" alt="<?= e(config('app.coop.short_name')) ?>" class="me-3 p-1 bg-light rounded-4 shadow-sm" style="width: 58px; height: 58px; object-fit: contain;">
                     <div>
                         <h4 class="fw-bold text-navy mb-1">สหกรณ์ออมทรัพย์สาธารณสุขระยอง จำกัด</h4>
                         <span class="text-muted small">มั่นคง โปร่งใส เคียงข้างสมาชิก</span>
@@ -129,7 +127,7 @@
                         <div class="badge bg-primary text-white rounded-circle p-2 me-3 fs-6" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;">1</div>
                         <div>
                             <div class="fw-bold text-navy">นายแพทย์อรรณพ สมาธิวัฒน์</div>
-                            <span class="badge bg-gold text-white small">ประธาน</span>
+                            <span class="badge bg-light-blue text-navy small">ประธาน</span>
                         </div>
                     </div>
                 </div>
@@ -181,7 +179,7 @@
             <div class="col-lg-5">
                 <div class="p-4 p-md-5 bg-navy text-white rounded-4 shadow-sm h-100 d-flex flex-column justify-content-between">
                     <div>
-                        <span class="badge bg-gold text-white mb-3 px-3 py-1 rounded-pill">จุดเริ่มต้นและวิวัฒนาการ</span>
+                        <span class="badge bg-white text-navy mb-3 py-1 ">จุดเริ่มต้นและวิวัฒนาการ</span>
                         <h3 class="fw-bold text-white mb-3">ประวัติการสหกรณ์ ในประเทศไทย</h3>
                         <p class="text-light-blue leading-relaxed small mb-0">
                             การสหกรณ์เป็นเครื่องมือสำคัญในการแก้ไขปัญหาทางเศรษฐกิจและสังคม โดยมีรากฐานมาจากการรวมตัวเพื่อช่วยเหลือซึ่งกันและกันของประชาชน

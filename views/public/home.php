@@ -1,28 +1,31 @@
 <?php
 $heroSlides = $heroSlides ?? [];
-$importantAnnouncements = $importantAnnouncements ?? [];
 $depositRates = $depositRates ?? [];
 $loanRates = $loanRates ?? [];
-$latestStats = $latestStats ?? null;
 $latestNews = $latestNews ?? [];
-$upcomingEvents = $upcomingEvents ?? [];
+$featuredDeposits = $featuredDeposits ?? [];
+$featuredLoans = $featuredLoans ?? [];
+$latestStats = $latestStats ?? null;
 $eservices = $eservices ?? [];
+$importantAnnouncements = $importantAnnouncements ?? [];
+$upcomingEvents = $upcomingEvents ?? [];
 ?>
+
 <!-- 1. Hero Slideshow Section (Swiper) -->
 <section class="hero-section position-relative">
     <div class="swiper hero-swiper">
         <div class="swiper-wrapper">
             <?php if (!empty($heroSlides)): ?>
                 <?php foreach ($heroSlides as $slide): ?>
-                    <?php 
-                        $slideImg = !empty($slide['desktop_image']) ? $slide['desktop_image'] : 'hero_bg_default.jpg';
-                        if (str_starts_with($slideImg, 'http://') || str_starts_with($slideImg, 'https://')) {
-                            $bgUrl = $slideImg;
-                        } elseif (str_starts_with($slideImg, 'storage/') || str_starts_with($slideImg, '/storage/')) {
-                            $bgUrl = url(ltrim($slideImg, '/'));
-                        } else {
-                            $bgUrl = asset('img/' . $slideImg);
-                        }
+                    <?php
+                    $slideImg = !empty($slide['desktop_image']) ? $slide['desktop_image'] : 'hero_bg_default.jpg';
+                    if (str_starts_with($slideImg, 'http://') || str_starts_with($slideImg, 'https://')) {
+                        $bgUrl = $slideImg;
+                    } elseif (str_starts_with($slideImg, 'storage/') || str_starts_with($slideImg, '/storage/')) {
+                        $bgUrl = url(ltrim($slideImg, '/'));
+                    } else {
+                        $bgUrl = asset('img/' . $slideImg);
+                    }
                     ?>
                     <div class="swiper-slide hero-slide" style="background-image: url('<?= $bgUrl ?>');">
                         <div class="hero-overlay" style="opacity: <?= e($slide['overlay_opacity'] ?? '0.80') ?>;"></div>
@@ -143,36 +146,36 @@ $eservices = $eservices ?? [];
 
 <!-- 2.1 Important Announcements Ribbon / Card Section -->
 <?php if (!empty($importantAnnouncements)): ?>
-<section class="container-xl mt-4">
-    <div class="card border-0 rounded-4 shadow-sm overflow-hidden" style="background: linear-gradient(135deg, #FEF2F2 0%, #FFF1F2 100%); border-left: 5px solid #EF4444 !important;">
-        <div class="card-body p-3 p-md-4">
-            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white flex-shrink-0" style="width: 44px; height: 44px; background-color: #EF4444;">
-                        <i class="bi bi-pin-angle-fill fs-5"></i>
-                    </div>
-                    <div>
-                        <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
-                            <span class="badge bg-danger">ประกาศสำคัญ</span>
-                            <span class="small text-muted"><?= date('d/m/Y', strtotime($importantAnnouncements[0]['publication_date'] ?? 'now')) ?></span>
+    <section class="container-xl mt-4">
+        <div class="card border-0 rounded-4 shadow-sm overflow-hidden" style="background: linear-gradient(135deg, #FEF2F2 0%, #FFF1F2 100%); border-left: 5px solid #EF4444 !important;">
+            <div class="card-body p-3 p-md-4">
+                <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-circle d-flex align-items-center justify-content-center text-white flex-shrink-0" style="width: 44px; height: 44px; background-color: #EF4444;">
+                            <i class="bi bi-pin-angle-fill fs-5"></i>
                         </div>
-                        <a href="<?= url('announcements/' . $importantAnnouncements[0]['slug']) ?>" class="fw-bold text-dark text-decoration-none hover-primary mb-0" style="font-size: 1.05rem;">
-                            <?= e($importantAnnouncements[0]['title']) ?>
+                        <div>
+                            <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                                <span class="badge bg-danger">ประกาศสำคัญ</span>
+                                <span class="small text-muted"><?= date('d/m/Y', strtotime($importantAnnouncements[0]['publication_date'] ?? 'now')) ?></span>
+                            </div>
+                            <a href="<?= url('announcements/' . $importantAnnouncements[0]['slug']) ?>" class="fw-bold text-dark text-decoration-none hover-primary mb-0" style="font-size: 1.05rem;">
+                                <?= e($importantAnnouncements[0]['title']) ?>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 flex-shrink-0 ms-auto">
+                        <a href="<?= url('announcements/' . $importantAnnouncements[0]['slug']) ?>" class="btn btn-sm btn-danger rounded-pill px-3">
+                            อ่านประกาศ <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                        <a href="<?= url('announcements') ?>" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                            ดูทั้งหมด (<?= count($importantAnnouncements) ?>)
                         </a>
                     </div>
                 </div>
-                <div class="d-flex align-items-center gap-2 flex-shrink-0 ms-auto">
-                    <a href="<?= url('announcements/' . $importantAnnouncements[0]['slug']) ?>" class="btn btn-sm btn-danger rounded-pill px-3">
-                        อ่านประกาศ <i class="bi bi-arrow-right ms-1"></i>
-                    </a>
-                    <a href="<?= url('announcements') ?>" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
-                        ดูทั้งหมด (<?= count($importantAnnouncements) ?>)
-                    </a>
-                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 <?php endif; ?>
 
 <!-- 3. Financial Rates Dashboard Section -->
@@ -359,9 +362,6 @@ $eservices = $eservices ?? [];
                             <i class="bi bi-pie-chart-fill fs-4"></i>
                         </div>
                         <div class="flex-grow-1">
-                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1 mb-2 fw-semibold">
-                                <i class="bi bi-calculator me-1"></i> เครื่องมือวางแผนการเงิน
-                            </span>
                             <h4 class="fw-bold text-navy mb-2">ประมาณการเงินปันผล & เฉลี่ยคืน</h4>
                             <p class="text-muted small mb-4">
                                 จำลองผลตอบแทนรวมที่คุณจะได้รับจากทุนเรือนหุ้นและดอกเบี้ยเงินกู้สะสมรายปี ด้วยระบบจำลองคำนวณแบบ Real-time
@@ -382,9 +382,6 @@ $eservices = $eservices ?? [];
                             <i class="bi bi-chat-heart-fill fs-4"></i>
                         </div>
                         <div class="flex-grow-1">
-                            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1 mb-2 fw-semibold">
-                                <i class="bi bi-ui-checks me-1"></i> เสียงสะท้อนสมาชิก
-                            </span>
                             <h4 class="fw-bold text-navy mb-2">แบบสำรวจความพึงพอใจ 2569</h4>
                             <p class="text-muted small mb-4">
                                 ร่วมสะท้อนความคิดเห็นและประเมินคุณภาพการให้บริการ เพื่อร่วมเป็นส่วนหนึ่งในการพัฒนาและยกระดับสิทธิประโยชน์ของสมาชิก
@@ -402,46 +399,54 @@ $eservices = $eservices ?? [];
 
 <!-- 5. Executive Financial Highlights Section -->
 <?php if (!empty($latestStats)): ?>
-<section class="stats-section">
-    <div class="container-xl position-relative z-2">
-        <div class="text-center mb-5">
-            <span class="badge bg-gold text-white px-3 py-1 rounded-pill mb-2">สถิติทางการเงิน</span>
-            <h2 class="text-white fw-bold">ฐานะทางการเงินที่มั่นคงและเติบโตอย่างยั่งยืน</h2>
-            <p class="text-light-blue small mb-0">ข้อมูล ณ เดือนมิถุนายน <?= e($latestStats['year']) ?></p>
-        </div>
+    <section class="stats-section">
+        <div class="container-xl position-relative z-2">
+            <div class="text-center mb-5">
+                <span class="badge bg-gold text-white px-3 py-1 rounded-pill mb-2">สถิติทางการเงิน</span>
+                <h2 class="text-white fw-bold">ฐานะทางการเงินที่มั่นคงและเติบโตอย่างยั่งยืน</h2>
+                <p class="text-light-blue small mb-0">ข้อมูล ณ เดือนมิถุนายน <?= e($latestStats['year']) ?></p>
+            </div>
 
-        <div class="row g-4">
-            <div class="col-lg-3 col-6">
-                <div class="stat-box">
-                    <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
-                    <div class="stat-number"><?= number_format($latestStats['total_members']) ?></div>
-                    <div class="stat-label">สมาชิกทั้งหมด (คน)</div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-6">
+                    <div class="card bg-white border-0 rounded-4 shadow-sm p-4 text-center h-100 hover-lift">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle mx-auto mb-3" style="width: 52px; height: 52px; background: rgba(7, 59, 116, 0.08); color: var(--coop-navy);">
+                            <i class="bi bi-people-fill fs-4"></i>
+                        </div>
+                        <div class="h3 fw-bold text-navy mb-1"><?= number_format($latestStats['total_members']) ?></div>
+                        <div class="text-muted small fw-medium">สมาชิกทั้งหมด (คน)</div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-6">
-                <div class="stat-box">
-                    <div class="stat-icon"><i class="bi bi-wallet2"></i></div>
-                    <div class="stat-number"><?= number_format((float)$latestStats['total_assets'] / 1000000000, 2) ?> พันล้าน</div>
-                    <div class="stat-label">สินทรัพย์รวม (บาท)</div>
+                <div class="col-lg-3 col-6">
+                    <div class="card bg-white border-0 rounded-4 shadow-sm p-4 text-center h-100 hover-lift">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle mx-auto mb-3" style="width: 52px; height: 52px; background: rgba(11, 94, 215, 0.08); color: var(--coop-blue);">
+                            <i class="bi bi-wallet2 fs-4"></i>
+                        </div>
+                        <div class="h3 fw-bold text-navy mb-1"><?= number_format((float)$latestStats['total_assets'] / 1000000000, 2) ?> พันล้าน</div>
+                        <div class="text-muted small fw-medium">สินทรัพย์รวม (บาท)</div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-6">
-                <div class="stat-box">
-                    <div class="stat-icon"><i class="bi bi-piggy-bank"></i></div>
-                    <div class="stat-number"><?= number_format((float)$latestStats['total_deposits'] / 1000000000, 2) ?> พันล้าน</div>
-                    <div class="stat-label">เงินฝากรวม (บาท)</div>
+                <div class="col-lg-3 col-6">
+                    <div class="card bg-white border-0 rounded-4 shadow-sm p-4 text-center h-100 hover-lift">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle mx-auto mb-3" style="width: 52px; height: 52px; background: rgba(16, 185, 129, 0.1); color: #059669;">
+                            <i class="bi bi-piggy-bank fs-4"></i>
+                        </div>
+                        <div class="h3 fw-bold text-navy mb-1"><?= number_format((float)$latestStats['total_deposits'] / 1000000000, 2) ?> พันล้าน</div>
+                        <div class="text-muted small fw-medium">เงินฝากรวม (บาท)</div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-6">
-                <div class="stat-box">
-                    <div class="stat-icon"><i class="bi bi-award-fill"></i></div>
-                    <div class="stat-number text-gold"><?= number_format((float)$latestStats['dividend_rate'], 2) ?>%</div>
-                    <div class="stat-label">อัตราเงินปันผลล่าสุด</div>
+                <div class="col-lg-3 col-6">
+                    <div class="card bg-white border-0 rounded-4 shadow-sm p-4 text-center h-100 hover-lift">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle mx-auto mb-3" style="width: 52px; height: 52px; background: rgba(217, 119, 6, 0.1); color: #d97706;">
+                            <i class="bi bi-award-fill fs-4"></i>
+                        </div>
+                        <div class="h3 fw-bold text-gold mb-1"><?= number_format((float)$latestStats['dividend_rate'], 2) ?>%</div>
+                        <div class="text-muted small fw-medium">อัตราเงินปันผลล่าสุด</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 <?php endif; ?>
 
 <!-- 6. Latest News & Announcements Section -->
@@ -462,8 +467,8 @@ $eservices = $eservices ?? [];
                 <div class="col-lg-4 col-md-6">
                     <div class="coop-card h-100 d-flex flex-column">
                         <div class="position-relative bg-light" style="height: 200px; overflow: hidden;">
-                            <?php 
-                                $newsThumb = !empty($news['thumbnail']) ? storage_url($news['thumbnail']) : (!empty($news['featured_image']) ? storage_url($news['featured_image']) : asset('img/news_placeholder.jpg')); 
+                            <?php
+                            $newsThumb = !empty($news['thumbnail']) ? storage_url($news['thumbnail']) : (!empty($news['featured_image']) ? storage_url($news['featured_image']) : asset('img/news_placeholder.jpg'));
                             ?>
                             <img src="<?= $newsThumb ?>" onerror="this.onerror=null; this.src='<?= asset('img/news_placeholder.jpg') ?>';" class="w-100 h-100 object-fit-cover" alt="<?= e($news['title']) ?>">
                             <span class="position-absolute top-0 start-0 m-3 badge bg-navy">
@@ -497,59 +502,59 @@ $eservices = $eservices ?? [];
 
 <!-- 6.1 Upcoming Events & Important Schedule Section -->
 <?php if (!empty($upcomingEvents)): ?>
-<section class="py-5 bg-white border-top border-bottom">
-    <div class="container-xl">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <span class="text-primary fw-bold text-uppercase small"><i class="bi bi-calendar-event me-1"></i> ปฏิทินและกำหนดการ</span>
-                <h2 class="fw-bold text-navy mb-0">กำหนดการและกิจกรรมสำคัญเร็ว ๆ นี้</h2>
+    <section class="py-5 bg-white border-top border-bottom">
+        <div class="container-xl">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <span class="text-primary fw-bold text-uppercase small"><i class="bi bi-calendar-event me-1"></i> ปฏิทินและกำหนดการ</span>
+                    <h2 class="fw-bold text-navy mb-0">กำหนดการและกิจกรรมสำคัญเร็ว ๆ นี้</h2>
+                </div>
+                <a href="<?= url('calendar') ?>" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                    ดูปฏิทินทั้งหมด <i class="bi bi-chevron-right ms-1"></i>
+                </a>
             </div>
-            <a href="<?= url('calendar') ?>" class="btn btn-outline-primary btn-sm rounded-pill px-3">
-                ดูปฏิทินทั้งหมด <i class="bi bi-chevron-right ms-1"></i>
-            </a>
-        </div>
 
-        <div class="row g-3">
-            <?php 
-            $catIcons = [
-                'meeting' => ['icon' => 'bi-people-fill', 'bg' => '#EFF6FF', 'color' => '#1D4ED8'],
-                'loan_window' => ['icon' => 'bi-cash-coin', 'bg' => '#ECFDF5', 'color' => '#047857'],
-                'dividend' => ['icon' => 'bi-gift-fill', 'bg' => '#FEF3C7', 'color' => '#B45309'],
-                'holiday' => ['icon' => 'bi-slash-circle-fill', 'bg' => '#FEE2E2', 'color' => '#B91C1C'],
-                'activity' => ['icon' => 'bi-calendar-check', 'bg' => '#F3E8FF', 'color' => '#6D28D9'],
-            ];
-            foreach ($upcomingEvents as $evt): 
-                $cfg = $catIcons[$evt['category'] ?? 'activity'] ?? $catIcons['activity'];
-                $eDate = strtotime($evt['start_date']);
-                $thaiDay = date('j', $eDate);
-                $thaiMonth = thai_month((int)date('n', $eDate));
-            ?>
-                <div class="col-lg-3 col-md-6">
-                    <div class="card h-100 border-0 rounded-4 shadow-sm p-3 hover-shadow transition-all" style="background-color: #F8FAFC;">
-                        <div class="d-flex align-items-start gap-3">
-                            <div class="rounded-3 text-center p-2 flex-shrink-0" style="background: <?= $cfg['bg'] ?>; color: <?= $cfg['color'] ?>; min-width: 58px;">
-                                <div class="fw-bold fs-4 lh-1"><?= $thaiDay ?></div>
-                                <div class="small fw-semibold lh-1 mt-1"><?= $thaiMonth ?></div>
-                            </div>
-                            <div class="flex-grow-1">
-                                <h6 class="fw-bold text-navy mb-1 line-clamp-2"><?= e($evt['title']) ?></h6>
-                                <div class="small text-muted mb-1">
-                                    <i class="bi bi-clock me-1"></i>
-                                    <?= !empty($evt['is_all_day']) ? 'ตลอดทั้งวัน' : (!empty($evt['start_time']) ? substr($evt['start_time'], 0, 5) . ' น.' : 'ตามกำหนดการ') ?>
+            <div class="row g-3">
+                <?php
+                $catIcons = [
+                    'meeting' => ['icon' => 'bi-people-fill', 'bg' => '#EFF6FF', 'color' => '#1D4ED8'],
+                    'loan_window' => ['icon' => 'bi-cash-coin', 'bg' => '#ECFDF5', 'color' => '#047857'],
+                    'dividend' => ['icon' => 'bi-gift-fill', 'bg' => '#FEF3C7', 'color' => '#B45309'],
+                    'holiday' => ['icon' => 'bi-slash-circle-fill', 'bg' => '#FEE2E2', 'color' => '#B91C1C'],
+                    'activity' => ['icon' => 'bi-calendar-check', 'bg' => '#F3E8FF', 'color' => '#6D28D9'],
+                ];
+                foreach ($upcomingEvents as $evt):
+                    $cfg = $catIcons[$evt['category'] ?? 'activity'] ?? $catIcons['activity'];
+                    $eDate = strtotime($evt['start_date']);
+                    $thaiDay = date('j', $eDate);
+                    $thaiMonth = thai_month((int)date('n', $eDate));
+                ?>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="card h-100 border-0 rounded-4 shadow-sm p-3 hover-shadow transition-all" style="background-color: #F8FAFC;">
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="rounded-3 text-center p-2 flex-shrink-0" style="background: <?= $cfg['bg'] ?>; color: <?= $cfg['color'] ?>; min-width: 58px;">
+                                    <div class="fw-bold fs-4 lh-1"><?= $thaiDay ?></div>
+                                    <div class="small fw-semibold lh-1 mt-1"><?= $thaiMonth ?></div>
                                 </div>
-                                <?php if (!empty($evt['location'])): ?>
-                                    <div class="small text-muted text-truncate" style="max-width: 170px;">
-                                        <i class="bi bi-geo-alt me-1"></i> <?= e($evt['location']) ?>
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-bold text-navy mb-1 line-clamp-2"><?= e($evt['title']) ?></h6>
+                                    <div class="small text-muted mb-1">
+                                        <i class="bi bi-clock me-1"></i>
+                                        <?= !empty($evt['is_all_day']) ? 'ตลอดทั้งวัน' : (!empty($evt['start_time']) ? substr($evt['start_time'], 0, 5) . ' น.' : 'ตามกำหนดการ') ?>
                                     </div>
-                                <?php endif; ?>
+                                    <?php if (!empty($evt['location'])): ?>
+                                        <div class="small text-muted text-truncate" style="max-width: 170px;">
+                                            <i class="bi bi-geo-alt me-1"></i> <?= e($evt['location']) ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 <?php endif; ?>
 
 <!-- 7. E-Service Gateway Section -->
@@ -597,7 +602,9 @@ $eservices = $eservices ?? [];
                 },
                 speed: 700,
                 effect: 'fade',
-                fadeEffect: { crossFade: true },
+                fadeEffect: {
+                    crossFade: true
+                },
                 pagination: {
                     el: '.swiper-pagination',
                     clickable: true

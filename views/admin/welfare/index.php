@@ -1,3 +1,6 @@
+<?php
+$welfares = $welfares ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h3 class="fw-bold text-navy mb-1"><i class="bi bi-heart-pulse me-2 text-primary"></i> จัดการสวัสดิการสมาชิก</h3>

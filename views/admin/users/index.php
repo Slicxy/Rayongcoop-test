@@ -1,3 +1,7 @@
+<?php
+$users = $users ?? [];
+$roles = $roles ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h3 class="fw-bold text-navy mb-1"><i class="bi bi-person-gear me-2 text-primary"></i> จัดการผู้ใช้งานและสิทธิ์ (User & RBAC)</h3>

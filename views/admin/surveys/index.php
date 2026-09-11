@@ -1,3 +1,6 @@
+<?php
+$surveys = $surveys ?? [];
+?>
 <div class="row g-4">
     <!-- Header -->
     <div class="col-12">

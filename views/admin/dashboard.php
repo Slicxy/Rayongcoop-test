@@ -1,3 +1,8 @@
+<?php
+$user = $user ?? [];
+$coopSummary = $coopSummary ?? [];
+$recentAudits = $recentAudits ?? [];
+?>
 <!-- 1. Welcome Banner Header -->
 <div class="card border-0 shadow-sm rounded-4 mb-4" style="background: linear-gradient(135deg, #073B74 0%, #0066CC 100%); color: #FFFFFF;">
     <div class="card-body p-4">

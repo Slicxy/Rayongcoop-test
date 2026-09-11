@@ -1,3 +1,8 @@
+<?php
+$counts = $counts ?? ['all' => 0, 'new' => 0, 'in_progress' => 0, 'answered' => 0, 'closed' => 0];
+$status = $status ?? '';
+$messages = $messages ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h4 class="fw-bold text-navy mb-1"><i class="bi bi-chat-left-text-fill text-primary me-2"></i> ข้อความติดต่อจากผู้ใช้งาน</h4>
